@@ -24,3 +24,8 @@ aoc24-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+/.clj-kondo/
+/.cpcache/
+/.lsp/
+.nrepl-port
