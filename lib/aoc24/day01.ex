@@ -1,15 +1,14 @@
 defmodule Aoc24.Day01 do
-  @spec part1(String.t()) :: integer()
-  def part1(file \\ "./assets/day01.txt") do
+  def part1(file) do
     file
     |> parse_input()
-    |> then(fn [a, b] -> Enum.zip(Enum.sort(a), Enum.sort(b)) end)
+    |> Enum.map(&Enum.sort/1)
+    |> then(fn [a, b] -> Enum.zip(a, b) end)
     |> Enum.map(fn {a, b} -> abs(a - b) end)
     |> Enum.sum()
   end
 
-  @spec part2(String.t()) :: integer()
-  def part2(file \\ "./assets/day01.txt") do
+  def part2(file) do
     file
     |> parse_input()
     |> then(fn [left, right] ->
@@ -28,10 +27,6 @@ defmodule Aoc24.Day01 do
     |> Enum.reject(&(&1 == ""))
     |> Enum.map(&String.split(&1, "   "))
     |> Enum.zip_with(& &1)
-    |> then(fn [a, b] ->
-      left = Enum.map(a, &String.to_integer/1)
-      right = Enum.map(b, &String.to_integer/1)
-      [left, right]
-    end)
+    |> Enum.map(fn nums -> Enum.map(nums, &String.to_integer/1) end)
   end
 end

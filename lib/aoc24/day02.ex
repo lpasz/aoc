@@ -1,6 +1,5 @@
 defmodule Aoc24.Day02 do
-  @spec part1(String.t()) :: integer()
-  def part1(file \\ "./assets/day01/input.txt") do
+  def part1(file) do
     file
     |> parse_input()
     |> Enum.filter(&is_safe/1)
@@ -18,8 +17,7 @@ defmodule Aoc24.Day02 do
     end)
   end
 
-  @spec part2(String.t()) :: integer()
-  def part2(file \\ "./assets/day01/input.txt") do
+  def part2(file) do
     file
     |> parse_input()
     |> Enum.filter(&is_safe_with_margin/1)

@@ -9,10 +9,10 @@
   ([args body value] `((fn ~args ~body) ~value)))
 
 (defn fnvec [& funs]
-  "create a function that receives a coll/vector and 
+  "create a function that receives a coll/vector and
    returns a vector with first fn applied to first elem, second to second
-   
-   example: 
+
+   example:
    ((fnvec inc dec core/parse-int) [0 3 \"3\"]) #=> [1 2 3]"
   (fn [args] (mapv (fn [fun args] (fun args)) funs args)))
 

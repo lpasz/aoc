@@ -1,41 +1,35 @@
 defmodule Aoc24.Day03 do
-  @spec part1(String.t()) :: integer()
   def part1(file \\ "./assets/day01/input.txt") do
-    text = parse_input(file)
+    text = File.read!(file)
 
     ~r/mul\(\d{1,3},\d{1,3}\)/
     |> Regex.scan(text)
     |> Enum.map(&List.first/1)
-    |> Enum.map(&Regex.scan(~r/\d+/, &1))
-    |> Enum.map(fn [[n1], [n2]] -> String.to_integer(n1) * String.to_integer(n2) end)
+    |> Enum.map(&mul/1)
     |> Enum.sum()
   end
 
-  @spec part2(String.t()) :: integer()
   def part2(file \\ "./assets/day01/input.txt") do
-    text =
-      file
-      |> parse_input()
+    text = File.read!(file)
 
     ~r/(mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\))/
     |> Regex.scan(text)
     |> Enum.map(&List.first/1)
     |> Enum.map(fn
-      "do()" -> :enable
-      "don't()" -> :disable
-      mul -> Regex.scan(~r/\d+/, mul)
+      "do()" -> {:ignore, false}
+      "don't()" -> {:ignore, true}
+      expr -> {:mul, mul(expr)}
     end)
-    |> Enum.reduce([0, true], fn
-      :enable, [cnt, enabled?] -> [cnt, true]
-      :disable, [cnt, enabled?] -> [cnt, false]
-      [[n1], [n2]], [cnt, true] -> [cnt + String.to_integer(n1) * String.to_integer(n2), true]
-      _, [cnt, false] -> [cnt, false]
+    |> Enum.reduce({0, false}, fn
+      {:mul, mul}, {cnt, _ignored? = false} -> {cnt + mul, false}
+      {:mul, _ignored_mul}, {cnt, _ignored? = true} -> {cnt, true}
+      {:ignore, ignore?}, {cnt, _ignore?} -> {cnt, ignore?}
     end)
-    |> List.first()
+    |> then(fn {cnt, _} -> cnt end)
   end
 
-  defp parse_input(file) do
-    file
-    |> File.read!()
+  defp mul(expr) do
+    [[n1], [n2]] = Regex.scan(~r/\d+/, expr)
+    String.to_integer(n1) * String.to_integer(n2)
   end
 end
