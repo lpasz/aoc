@@ -241,3 +241,10 @@
        (let [next-costs (update-costs-shortest g costs unvisited curr)
              next-node (apply min-key next-costs unvisited)]
          (recur next-costs next-node (disj unvisited next-node)))))))
+
+(defn rotations [coll]
+  (let [cnt (count coll)
+        rng (range 0 cnt)]
+    (->> rng
+         (map #(take cnt (drop % (cycle coll)))))))
+

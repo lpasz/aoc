@@ -1,26 +1,20 @@
 (ns aoc24.day04
   (:require [core :as c]))
 
+(defn spell-xmas? [coords mtx]
+  (= "XMAS" (->> coords (map mtx) (reduce str))))
+
 (defn part1 [file]
   (let [mtx (c/to-matrix (slurp file))]
-    (->> mtx
-         (mapcat (fn [[coord _]]
-                   (->> (c/cross-and-x coord 3)
-                        (map #(reduce str (map mtx %))))))
-         (filter #{"XMAS" "SAMX"})
-         (count)
-         ;; it double because it scans all twice to cover all directions
-         (#(/ % 2)))))
+    (->> (keys mtx)
+         (mapcat #(c/cross-and-x % 3))
+         (filter #(spell-xmas? % mtx))
+         (count))))
 
 (defn part2 [file]
   (let [mtx (c/to-matrix (slurp file))]
     (->> mtx
-         (keep (fn [[coord letter]]
-                 (when (= letter \A)
-                   (->> coord
-                        (c/diagonals)
-                        (map mtx)))))
-
-         (filter #{[\M \M \S \S] [\S \M \M \S] [\S \S \M \M] [\M \S \S \M]})
+         (filter #(= \A (second %)))
+         (map #(->> (first %) (c/diagonals) (map mtx)))
+         (filter (set (c/rotations [\M \M \S \S])))
          (count))))
-
