@@ -1,6 +1,5 @@
 (ns aoc24.day04
-  (:require [clojure.string :as s]
-            [core :as c]))
+  (:require [core :as c]))
 
 (defn xmas-dirs [[x y]]
   [[[x y] [(+ x 1) y] [(+ x 2) y] [(+ x 3) y]]
@@ -18,18 +17,17 @@
          (mapcat (fn [[coord _]]
                    (->> coord
                         (xmas-dirs)
-                        (map (fn [coords] (reduce str (map mtx coords)))))))
+                        (map #(reduce str (map mtx %))))))
          (filter #{"XMAS" "SAMX"})
          (count)
          ;; it double because it scans all twice to cover all directions
          (#(/ % 2)))))
 
 (defn x-mas [[x y]]
-  [[(inc x) (inc y)]
-   [(dec x) (dec y)]
-   [(dec x) (inc y)]
+  [[(dec x) (dec y)]
    [(inc x) (dec y)]
-   [x y]])
+   [(inc x) (inc y)]
+   [(dec x) (inc y)]])
 
 (defn part2 [file]
   (let [mtx (c/to-matrix (slurp file))]
@@ -38,9 +36,8 @@
                  (when (= letter \A)
                    (->> coord
                         (x-mas)
-                        (map mtx)
-                        (frequencies)))))
+                        (map mtx)))))
 
-         (filter #{{\M 2 \S 2 \A 1}})
+         (filter #{[\M \M \S \S] [\S \M \M \S] [\S \S \M \M] [\M \S \S \M]})
          (count))))
 
