@@ -54,6 +54,29 @@
    [(dec x) y]
    [(inc x) y]])
 
+(defn diagonals [[x y]]
+  [[(inc x) (dec y)]
+   [(inc x) (inc y)]
+   [(dec x) (inc y)]
+   [(dec x) (dec y)]])
+
+(defn x [[x y] len]
+  (let [rng (range 0 (inc len))]
+    [(map (fn [n] [(+ x n) (+ y n)]) rng)
+     (map (fn [n] [(- x n) (- y n)]) rng)
+     (map (fn [n] [(+ x n) (- y n)]) rng)
+     (map (fn [n] [(- x n) (+ y n)]) rng)]))
+
+(defn cross [[x y] len]
+  (let [rng (range 0 (inc len))]
+    [(map (fn [n] [(+ x n) y]) rng)
+     (map (fn [n] [(- x n) y]) rng)
+     (map (fn [n] [x (+ y n)]) rng)
+     (map (fn [n] [x (- y n)]) rng)]))
+
+(defn cross-and-x [coord len]
+  (concat (x coord len) (cross coord len)))
+
 (defn directions [[x y]]
   {:up   [x (dec y)]
    :down [x (inc y)]

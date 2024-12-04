@@ -1,25 +1,25 @@
-defmodule Aoc24.Day03Test do
+defmodule Aoc24.Day04Test do
   use ExUnit.Case, async: true
 
-  alias Aoc24.Day03
+  alias Aoc24.Day04
 
   describe "part1" do
     test "example" do
-      assert 161 == Day03.part1("./assets/day03/example.txt")
+      assert 18 == Day04.part1("./assets/day04/example.txt")
     end
 
     test "input" do
-      assert 179_571_322 == Day03.part1("./assets/day03/input.txt")
+      assert 2427 == Day04.part1("./assets/day04/input.txt")
     end
   end
 
   describe "part2" do
     test "example" do
-      assert 48 == Day03.part2("./assets/day03/example2.txt")
+      assert 9 == Day04.part2("./assets/day04/example.txt")
     end
 
     test "input" do
-      assert 103_811_193 == Day03.part2("./assets/day03/input.txt")
+      assert 1900 == Day04.part2("./assets/day04/input.txt")
     end
   end
 end
