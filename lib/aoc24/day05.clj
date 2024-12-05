@@ -33,13 +33,10 @@
 (defn part2 [file]
   (let [[rules pages] (parse-input file)]
     (->> pages
-         (keep (fn [page]
-                 (->> (ordered-page page rules)
-                      (c/then [ordered-page]
-                              (when (not= page ordered-page)
-                                (middle-of-page-num ordered-page))))))
+         (map #(ordered-page % rules))
+         (map vector pages)
+         (filter (fn [[unorder order]] (not= unorder order)))
+         (map second)
+         (map middle-of-page-num)
          (c/sum))))
-
-
-
 
