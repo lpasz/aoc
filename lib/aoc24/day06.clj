@@ -57,8 +57,8 @@
   (let [text (slurp file)
         mtx (c/to-matrix text)
         guard-coord (guard-coord mtx)
-        mtx (assoc mtx guard-coord \.)
-        empty-spaces (guard-visited-spots mtx)]
+        empty-spaces (guard-visited-spots mtx)
+        mtx (assoc mtx guard-coord \.)]
     (->> empty-spaces
          (map #(assoc mtx % \O))
          (filter #(guard-looped? % guard-coord))
