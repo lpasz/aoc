@@ -7,12 +7,13 @@
     :down :<-
     :<- :up} direction))
 
-(defn part1 [file]
-  (let [text (slurp file)
-        mtx (c/to-matrix text)
-        guard-coord (->> mtx
-                         (filter #(= (second %) \^))
-                         (ffirst))
+(defn guard-coord [mtx]
+  (->> mtx
+       (filter #(= (second %) \^))
+       (ffirst)))
+
+(defn guard-visited-spots [mtx]
+  (let [guard-coord (guard-coord mtx)
         mtx (assoc mtx guard-coord \.)]
     (loop [guard-coord guard-coord
            visited #{guard-coord}
@@ -25,30 +26,40 @@
         (cond wall? (recur guard-coord
                            visited
                            (next-direction direction))
-              void? (count visited)
+              void? visited
               :else (recur next-coord
                            (conj visited next-coord)
                            direction))))))
+(defn part1 [file]
+  (->> (slurp file)
+       (c/to-matrix)
+       (guard-visited-spots)
+       (count)))
+
+(defn guard-looped? [mtx guard-coord]
+  (loop [guard-coord guard-coord
+         bounced-walls #{}
+         direction :up]
+    (let [next-coord (direction (c/directions guard-coord))
+          next-block (get mtx next-coord)
+          wall? (#{\O \#} next-block)
+          void? (nil? next-block)]
+      (cond void? false
+            (bounced-walls [direction next-coord]) true
+            wall? (recur guard-coord
+                         (conj bounced-walls [direction next-coord])
+                         (next-direction direction))
+            :else (recur next-coord
+                         bounced-walls
+                         direction)))))
 
 (defn part2 [file]
   (let [text (slurp file)
         mtx (c/to-matrix text)
-        guard-coord (->> mtx
-                         (filter #(= (second %) \^))
-                         (ffirst))
-        mtx (assoc mtx guard-coord \.)]
-    (loop [guard-coord guard-coord
-           visited #{guard-coord}
-           direction :up]
-      (let [next-coord (direction (c/directions guard-coord))
-            next-block (get mtx next-coord)
-            wall? (= next-block \#)
-            void? (nil? next-block)]
-        ;; (c/print-matrix (reduce (fn [mtx itm] (assoc mtx itm \X)) mtx visited))
-        (cond wall? (recur guard-coord
-                           visited
-                           (next-direction direction))
-              void? (count visited)
-              :else (recur next-coord
-                           (conj visited next-coord)
-                           direction))))))
+        guard-coord (guard-coord mtx)
+        mtx (assoc mtx guard-coord \.)
+        empty-spaces (guard-visited-spots mtx)]
+    (->> empty-spaces
+         (map #(assoc mtx % \O))
+         (filter #(guard-looped? % guard-coord))
+         (count))))
