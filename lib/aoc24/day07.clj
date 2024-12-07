@@ -2,23 +2,31 @@
   (:require [clojure.string :as s]
             [core :as c]))
 
-(def file "./assets/day07/example.txt")
-
-(defn recursive-find [target remaining acc]
+(defn recursive-find [target remaining acc operations]
   (if-let [curr (first remaining)]
-    (or (recursive-find target (rest remaining) (+ curr acc))
-        (recursive-find target (rest remaining) (* curr acc)))
+    (->> operations
+         (map #(recursive-find target
+                               (rest remaining)
+                               (% acc curr)
+                               operations))
+         (reduce #(or %1 %2)))
     (= target acc)))
 
-(defn part1 [file]
+(defn- part [file operations]
   (->> (s/split (slurp file) #"\n")
        (map #(re-seq #"\d+" %))
        (map #(map parse-long %))
-       (filter #(recursive-find (first %) (rest %) 0))
+       (filter #(recursive-find (first %) (rest %) 0 operations))
        (map first)
-       (c/sum)
-       ;;
-       ))
+       (c/sum)))
+
+(defn part1 [file] (part file [+ *]))
+
+(defn || [a b]
+  (parse-long (str a b)))
+
+(defn part2 [file]
+  (part file [+ * ||]))
 
 
 
