@@ -259,3 +259,10 @@
 (defn compute-point-for-x [[x1 y1] slope x]
   [x (+ (* slope (- x x1)) y1)])
 
+(defn unique-combinations [coll1 coll2]
+  (->> (for [a coll1
+             b coll2
+             :when (not= a b)]
+         #{a b})
+       (set)
+       (map #(into [] %))))
