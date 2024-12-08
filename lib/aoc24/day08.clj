@@ -34,27 +34,31 @@
         dx1 #(+ (max x1 x2) (* % dx))
         dx2 #(- (min x1 x2) (* % dx))]
     (map (fn [dx]
-     (->> (iterate inc 1)
-          (map dx)
-          (map #(c/compute-point-for-x p1 slope %))
-          (take-while #(contains? mtx %)))) [dx1 dx2])))
+           (->> (iterate inc 1)
+                (map dx)
+                (map #(c/compute-point-for-x p1 slope %))
+                (take-while #(contains? mtx %)))) [dx1 dx2])))
+
+(defn unique-combinations [coll1 coll2]
+  (->> (for [a coll1
+             b coll2
+             :when (not= a b)]
+         #{a b})
+       (set)
+       (map #(into [] %))))
 
 (defn part2 [file]
   (let [mtx (c/to-matrix (slurp file))
         all-antenas (->> mtx (filter #(not= \. (second %))))
-        antenas (group-by second all-antenas)
-        ;;
-        ]
+        antenas (group-by second all-antenas)]
     (->> antenas
          (mapcat (fn [[_antena antenas-with-positions]]
-                   (mapcat (fn [antena1]
-                             (mapcat (fn [antena2]
-                                       (when (not= antena1 antena2)
-                                         (antinodes-t antena1 antena2 mtx)))
-                                     antenas-with-positions))
-                           antenas-with-positions)))
+                   (unique-combinations  (map first antenas-with-positions) (map first antenas-with-positions))))
+         (mapcat (fn [[p1 p2]] (antinodes-t [p1 nil] [p2 nil] mtx)))
          (mapcat identity)
          (concat (map first all-antenas))
          (set)
          (count))))
+
+
 
