@@ -248,3 +248,14 @@
     (->> rng
          (map #(take cnt (drop % (cycle coll)))))))
 
+(defn compute-line
+  [[x1 y1] [x2 y2]]
+  (when-not (zero? (- x2 x1))
+    (let [m (/ (- y2 y1)
+               (- x2 x1))]
+      {:slope  m
+       :offset (- y1 (* m x1))})))
+
+(defn compute-point-for-x [[x1 y1] slope x]
+  [x (+ (* slope (- x x1)) y1)])
+
