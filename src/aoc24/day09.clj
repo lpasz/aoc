@@ -38,16 +38,16 @@
             acc (->> acc
                      (reduce (fn [[acc moved] [id used free]]
                                (cond
-                         ; if already been moved, just free the space
+                                 ; if already been moved, just free the space
                                  (and moved (= mv-id id))
                                  [(conj acc [\. 0 (+ free used)]) true]
-                         ; if has not moved so far, moves to the same space
+                                 ; if has not moved so far, moves to the same space
                                  (and (not moved) (= mv-id id))
                                  [(conj acc [id used free]) true]
-                         ; if not yet moved and found a valid space move to that space
+                                 ; if not yet moved and found a valid space move to that space
                                  (and (not moved) (not= id mv-id) (>= free mv-used))
                                  [(conj acc [id used 0] [mv-id mv-used (- free mv-used)]) true]
-                         ; otherwise just keep going
+                                 ; otherwise just keep going
                                  :else
                                  [(conj acc [id used free]) moved]))
                              [[] false])
