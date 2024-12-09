@@ -1,4 +1,4 @@
-{:paths ["lib"]
+{:paths ["src"]
  :deps
  {org.clojure/core.async {:mvn/version "1.3.610"}}
 
