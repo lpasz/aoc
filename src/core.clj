@@ -87,15 +87,6 @@
   ([v] (pp/pprint v) v)
   ([id v] (pp/pprint {id v}) v))
 
-(defmacro get-input [file]
-  `(str "./assets/"
-        (-> ~*ns*
-            (ns-name)
-            (str)
-            (str/replace "aoc24." "")
-            (str/replace "-test" ""))
-        "/"
-        ~file))
 
 (defn to-matrix
   ([inp] (to-matrix inp identity identity))
