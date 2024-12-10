@@ -11,24 +11,19 @@
                                         (= (inc n) nn))))
          (map #(all-peaks-starting-from % (conj path coord) mtx)))))
 
-(defn part1 [file]
+(defn- unique-peaks-by [file kind]
   (let [mtx (c/to-matrix (slurp file) #(re-seq #"." %) parse-long)
         trailheads (filter (fn [[_coord n]] (and (number? n) (zero? n))) mtx)]
     (->> trailheads
          (map #(all-peaks-starting-from % #{} mtx))
          (map flatten)
-         (map #(map :peak-coord %))
+         (map #(map kind %))
          (map set)
          (map count)
          (c/sum))))
 
+(defn part1 [file]
+  (->> file (unique-peaks-by :peak-coord)))
+
 (defn part2 [file]
-  (let [mtx (c/to-matrix (slurp file) #(re-seq #"." %) parse-long)
-        trailheads (filter (fn [[_coord n]] (and (number? n) (zero? n))) mtx)]
-    (->> trailheads
-         (map #(all-peaks-starting-from % #{} mtx))
-         (map flatten)
-         (map #(map :peak-path %))
-         (map set)
-         (map count)
-         (c/sum))))
+  (->> file (unique-peaks-by :peak-path)))
