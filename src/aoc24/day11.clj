@@ -15,32 +15,29 @@
           (even? (count str-stone)) (split-even-stone str-stone str-stone-cnt)
           :else [(* 2024 stone)])))
 
-(defn zip-stones [stones]
-  (reduce (fn [acc stone]
-            (update
-             acc
-             stone
-             #(inc (or % 0))))
+(defn change-stones [stones]
+  (reduce (fn [acc [old-stone cnt]]
+            (reduce (fn [acc new-stone]
+                      (update acc new-stone #(+ cnt (or % 0))))
+                    acc
+                    (change-stone old-stone)))
+          {}
+          stones))
 
-          {} stones))
-(defn apply-blinks [file blinks]
+(defn after-blinks [file blinks]
   (let [input (->> (re-seq #"\d+" (slurp file))
                    (map parse-long)
-                   (zip-stones))]
+                   (reduce (fn [acc stone]
+                             (update acc stone #(inc (or % 0))))
+                           {}))]
     (loop [blinks blinks stones input]
       (if (zero? blinks)
         (c/sum (vals stones))
-        (recur (dec blinks)
-               (reduce (fn [acc [old-stone cnt]]
-                         (reduce (fn [acc new-stone]
-                                   (update acc new-stone #(+ cnt (or % 0))))
-                                 acc
-                                 (change-stone old-stone)))
-                       {}
-                       stones))))))
+        (recur (dec blinks) (change-stones stones))))))
+
 (defn part1 [file]
-  (apply-blinks file 25))
+  (after-blinks file 25))
 
 (defn part2 [file]
-  (apply-blinks file 75))
+  (after-blinks file 75))
 
