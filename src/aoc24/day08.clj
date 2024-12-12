@@ -14,7 +14,7 @@
 (defn part1 [file]
   (let [mtx (c/to-matrix (slurp file))
         antenas (->> mtx
-                     (filter #(not= \. (second %)))
+                     (c/filter-by-value #(not= \. %))
                      (group-by second)
                      (map (fn [[k v]] [k (map first v)]))
                      (into {}))]
@@ -40,11 +40,10 @@
 
 (defn part2 [file]
   (let [mtx (c/to-matrix (slurp file))
-        all-antenas (->> mtx (filter #(not= \. (second %))))
-        antenas (->> all-antenas
-                     (group-by second)
-                     (map (fn [[k v]] [k (map first v)]))
-                     (into {}))]
+        all-antenas (c/filter-by-value #(not= \. %) mtx)
+        antenas (reduce (fn [acc [coord antena]]
+                          (update acc antena #(conj (or % []) coord)))
+                        {} all-antenas)]
     (->> (vals antenas)
          (mapcat #(c/unique-combinations % %))
          (mapcat (fn [[p1 p2]] (antinodes-t p1 p2 mtx)))

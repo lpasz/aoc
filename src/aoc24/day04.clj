@@ -14,7 +14,7 @@
 (defn part2 [file]
   (let [mtx (c/to-matrix (slurp file))]
     (->> mtx
-         (filter #(= \A (second %)))
+         (c/filter-by-value #(= \A %))
          (map #(->> (first %) (c/diagonals) (map mtx)))
          (filter (set (c/rotations [\M \M \S \S])))
          (count))))

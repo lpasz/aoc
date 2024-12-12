@@ -9,7 +9,7 @@
 
 (defn guard-coord [mtx]
   (->> mtx
-       (filter #(= (second %) \^))
+       (c/filter-by-value #(= % \^))
        (ffirst)))
 
 (defn guard-visited-spots [mtx]
