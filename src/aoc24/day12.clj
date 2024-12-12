@@ -16,31 +16,67 @@
 
 (defn find-perimeter [area-coords garden mtx]
   (->> area-coords
-       (mapcat c/up-down-left-right)
-       (map mtx)
-       (c/reject #(= garden %))
-       (count)))
+       (mapcat #(map (fn [[d c]] [d c %]) (c/directions %)))
+       (c/reject #(= garden (mtx (second %))))
+       (map (fn [[dir _ org]] [dir org]))
+       ;;
+       ))
 
-(c/sum (map #(* (:area %) (:perimeter %)) (let [mtx (c/to-matrix (slurp "./assets/day12/input.txt"))]
-  (loop [coords mtx
-         visited #{}
-         result []]
-    (if (empty? coords)
-      result
-      (let [[coord garden :as head] (first coords)
-            tail (rest coords)]
-        (if (visited coord)
-          (recur tail visited result)
-          (let [area (find-area head mtx)
-                perimeter (find-perimeter area garden mtx)]
-            (recur tail
-                   (apply conj visited area)
-                   (conj result
-                         {:garden (second head)
-                          :area (count area)
-                          :perimeter perimeter}))))))))))
+(defn find-garden-info [file]
+  (let [mtx (c/to-matrix (slurp file))]
+    (loop [coords mtx
+           visited #{}
+           result []]
+      (if (empty? coords)
+        result
+        (let [[coord garden :as head] (first coords)
+              tail (rest coords)]
+          (if (visited coord)
+            (recur tail visited result)
+            (let [area (find-area head mtx)
+                  perimeter (find-perimeter area garden mtx)]
+              (recur tail
+                     (apply conj visited area)
+                     (conj result
+                           {:garden (second head)
+                            :area (count area)
+                            :perimeter (count perimeter)
+                            :discount-perimeter perimeter})))))))))
+(defn part1 [file]
+  (->> (find-garden-info file)
+       (map #(* (:area %) (:perimeter %)))
+       (c/sum)))
 
+(defn by-direction-sorter [dir]
+  (fn [[x1 y1] [x2 y2]]
+    (if (#{:up :down} dir)
+      (if (= y1 y2)
+        (compare x1 x2)
+        (compare y1 y2))
+      (if (= x1 x2)
+        (compare y1 y2)
+        (compare x1 x2)))))
 
-
-
+(defn part2 [file]
+  (let [garden-infos (find-garden-info file)]
+    (->> (for [info garden-infos]
+           (->> info
+                (:discount-perimeter)
+                (group-by first)
+                (map (fn [[dir itms]]
+                       [dir (->> itms
+                                 (map second)
+                                 (sort (by-direction-sorter dir)))]))
+                (map (fn [[_dir ls]]
+                       (loop [i 0 itms ls]
+                         (if (empty? itms)
+                           i
+                           (let [head (first itms)
+                                 tail (rest itms)]
+                             (if ((set (c/up-down-left-right head)) (first tail))
+                               (recur i tail)
+                               (recur (inc i) tail)))))))
+                (c/sum)
+                (* (:area info))))
+         (c/sum))))
 
