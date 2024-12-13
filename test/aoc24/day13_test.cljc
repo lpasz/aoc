@@ -7,6 +7,6 @@
   (t/testing "example" (t/is (= (day13/part1 "./assets/day13/example.txt") 480))))
 
 (t/deftest part2
-  (t/testing "input" (t/is (= (day13/part2 "./assets/day13/input.txt") nil)))
-  (t/testing "example" (t/is (= (day13/part2 "./assets/day13/example.txt") nil))))
+  (t/testing "input" (t/is (= (day13/part2 "./assets/day13/input.txt") 85644161121698N)))
+  (t/testing "example" (t/is (= (day13/part2 "./assets/day13/example.txt") 875318608908N))))
 
