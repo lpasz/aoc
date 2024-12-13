@@ -109,6 +109,8 @@
 
 (defn one? [n] (= 1 n))
 
+(defn third [coll] (nth coll 2))
+
 (defn transpose [matrix]
   (apply map vector matrix))
 

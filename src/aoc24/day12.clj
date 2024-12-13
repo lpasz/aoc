@@ -9,8 +9,7 @@
       (let [head (first ncoords)
             tail (rest ncoords)
             next-pos (c/up-down-left-right head)
-            next-coord (->> next-pos
-                            (filter #(= garden (get mtx % :not-found))))]
+            next-coord (filter #(= garden (mtx %)) next-pos)]
         (recur (concat tail (c/reject area next-coord))
                (apply conj area next-coord))))))
 
@@ -18,9 +17,7 @@
   (->> area-coords
        (mapcat #(map (fn [[d c]] [d c %]) (c/directions %)))
        (c/reject #(= garden (mtx (second %))))
-       (map (fn [[dir _ org]] [dir org]))
-       ;;
-       ))
+       (map (fn [[dir _ org]] [dir org]))))
 
 (defn find-garden-info [file]
   (let [mtx (c/to-matrix (slurp file))]
@@ -74,13 +71,13 @@
 
 (defn part2 [file]
   (let [garden-infos (find-garden-info file)]
-    (->> (for [info garden-infos]
-           (->> info
-                (:discount-perimeter)
-                (group-by first)
-                (map sort-fences-by-direction)
-                (map join-straight-fences)
-                (c/sum)
-                (* (:area info))))
+    (->> garden-infos
+         (map (fn [{:keys [discount-perimeter area]}]
+                (->> discount-perimeter
+                     (group-by first)
+                     (map sort-fences-by-direction)
+                     (map join-straight-fences)
+                     (c/sum)
+                     (* area))))
          (c/sum))))
 
