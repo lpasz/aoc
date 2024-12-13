@@ -3,8 +3,8 @@
             [aoc24.day13 :as day13]))
 
 (t/deftest part1
-  (t/testing "input" (t/is (= (day13/part1 "./assets/day13/input.txt") nil)))
-  (t/testing "example" (t/is (= (day13/part1 "./assets/day13/example.txt") nil))))
+  (t/testing "input" (t/is (= (day13/part1 "./assets/day13/input.txt") 34787)))
+  (t/testing "example" (t/is (= (day13/part1 "./assets/day13/example.txt") 480))))
 
 (t/deftest part2
   (t/testing "input" (t/is (= (day13/part2 "./assets/day13/input.txt") nil)))

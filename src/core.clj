@@ -241,6 +241,15 @@
     (->> rng
          (map #(take cnt (drop % (cycle coll)))))))
 
+(defn intersect [line1 line2]
+  (let [div (- (:slope  line2) (:slope  line1))]
+    (if (zero? div)
+      nil
+      (let [x (/ (- (:offset line1) (:offset line2)) div)
+            y (+ (* (:slope line1) x)
+                 (:offset line1))]
+        [x y]))))
+
 (defn compute-line
   [[x1 y1] [x2 y2]]
   (when-not (zero? (- x2 x1))
@@ -259,3 +268,88 @@
          #{a b})
        (set)
        (map #(into [] %))))
+
+(defn rows-to-columns
+  [rows]
+  (apply mapv vector rows))
+
+(def columns-to-rows rows-to-columns)
+
+
+(defn ensure-nth-pivot-not-zero
+  "Ensures the pivot element in column in is not zero.
+  If there is currently a 0, will switch a column on the left
+  which doesn't have a 0 in the potential pivot space."
+  [rows n]
+  (if-not (zero? (get-in rows [(inc n) n]))
+    rows
+    (let [columns (rows-to-columns rows)]
+      (loop [i (- (count columns) 2)]
+        (cond
+          (= i n) (println "Couldn't invert matrix")
+          (zero? (get-in columns [i (inc n)])) (recur (inc i))
+          :else (let [switched-columns (assoc-in
+                                         (assoc-in columns
+                                                   [n] (nth columns i))
+                                         [i] (nth columns n))]
+                  (columns-to-rows switched-columns)))))))
+
+(defn pivot
+  "Applies a pivot with the pivot element in column n"
+  [rows n]
+  (vec (concat
+         (subvec rows 0 (+ 2 n))
+         (map
+           #(let [qoutient (/ (get-in rows [% n])
+                              (get-in rows [(inc n) n]))]
+              (mapv -
+                    (nth rows %)
+                    (map (partial * qoutient)
+                         (nth rows (inc n)))))
+           (range (+ 2 n) (count rows))))))
+
+
+(defn gauss-elimination
+  "Pivots through the matrix"
+  [rows]
+  (let [triangular-matrix (reduce
+                            (fn [matrix n] (pivot
+                                             (ensure-nth-pivot-not-zero matrix n)
+                                             n))
+                            rows
+                            (range (- (count (first rows)) 2)))]
+    triangular-matrix))
+
+(defn back-substitute
+  "Back substitutes a matrix in upper triangular form"
+  [matrix]
+  (let [n-columns (dec (count (first matrix)))]
+    (loop [i n-columns
+           values []]
+      (if (zero? i)
+        (mapv second
+              (sort-by first
+                       (map vector
+                            (first matrix)
+                            values)))
+        (let [y (get-in matrix [i n-columns])
+              x (get-in matrix [i (dec i)])
+              row (subvec (nth matrix i) i n-columns)
+              known-sum (reduce + (map *
+                                       values
+                                       row))
+              quotient (/ (- y known-sum)
+                          x)]
+          (recur (dec i)
+                 (cons quotient values)))))))
+
+
+(defn invert-matrix
+  "Inverts a matrix using gaussian elimination"
+  [matrix]
+  {:pre [(>= (count matrix) (dec (count (first matrix))))]}
+  (back-substitute
+    (gauss-elimination
+      (let [n-columns (count (first matrix))]
+        (mapv vec (cons (range n-columns)
+                        (take (dec n-columns) matrix)))))))
