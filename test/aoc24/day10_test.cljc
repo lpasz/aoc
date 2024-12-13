@@ -4,7 +4,7 @@
 
 (t/deftest part1
   (t/testing "input" (t/is (= (day10/part1 "./assets/day10/input.txt") 538)))
-  (t/testing "example" (t/is (= (day10/part1 "./assets/day10/example.txt") 36))))
+  (t/testing "example" (t/is (= (day10/part1 "./assets/day10/example") 36))))
 
 (t/deftest part2
   (t/testing "input" (t/is (= (day10/part2 "./assets/day10/input.txt") 1110)))

@@ -23,7 +23,7 @@
          (c/sum))))
 
 (defn part1 [file]
-  (->> file (unique-peaks-by :peak-coord)))
+  (-> file (unique-peaks-by :peak-coord)))
 
 (defn part2 [file]
-  (->> file (unique-peaks-by :peak-path)))
+  (-> file (unique-peaks-by :peak-path)))
