@@ -10,11 +10,36 @@
 
 (defn fnvec [& funs]
   "create a function that receives a coll/vector and
-   returns a vector with first fn applied to first elem, second to second
+  returns a vector with first fn applied to first elem, second to second
 
    example:
    ((fnvec inc dec core/parse-int) [0 3 \"3\"]) #=> [1 2 3]"
   (fn [args] (mapv (fn [fun args] (fun args)) funs args)))
+
+(defn next-position
+  "Given x y points, and it's velocities vx vy gives the next position.
+   It will wrap if hit the borders of size-x and size-y"
+  [[x y vx vy] [size-x size-y]]
+  (let [[nx ny] [(+ x vx) (+ y vy)]
+        nx (cond (< nx 0) (+ nx size-x)
+                 (> nx (dec size-x)) (rem nx size-x)
+                 :else nx)
+        ny (cond (< ny 0) (+ ny size-y)
+                 (> ny (dec size-y)) (rem ny size-y)
+                 :else ny)]
+    [nx ny]))
+
+(defn create-matrix [x y value]
+  (into (sorted-map)
+        (for [x (range 0 x) y (range 0 y)]
+          [[x y] value])))
+
+(defn add-to-matrix
+  ([mtx points value]
+   (add-to-matrix mtx (map #(vector % value) points)))
+  ([mtx points-and-values]
+   (reduce (fn [acc [[x y] value]]
+             (assoc acc [x y] value)) mtx points-and-values)))
 
 (defn map-key [fun coll]
   (map (fn [[key value]] [(fun key) value]) coll))
@@ -275,7 +300,6 @@
 
 (def columns-to-rows rows-to-columns)
 
-
 (defn ensure-nth-pivot-not-zero
   "Ensures the pivot element in column in is not zero.
   If there is currently a 0, will switch a column on the left
@@ -289,35 +313,34 @@
           (= i n) (println "Couldn't invert matrix")
           (zero? (get-in columns [i (inc n)])) (recur (inc i))
           :else (let [switched-columns (assoc-in
-                                         (assoc-in columns
-                                                   [n] (nth columns i))
-                                         [i] (nth columns n))]
+                                        (assoc-in columns
+                                                  [n] (nth columns i))
+                                        [i] (nth columns n))]
                   (columns-to-rows switched-columns)))))))
 
 (defn pivot
   "Applies a pivot with the pivot element in column n"
   [rows n]
   (vec (concat
-         (subvec rows 0 (+ 2 n))
-         (map
-           #(let [qoutient (/ (get-in rows [% n])
-                              (get-in rows [(inc n) n]))]
-              (mapv -
-                    (nth rows %)
-                    (map (partial * qoutient)
-                         (nth rows (inc n)))))
-           (range (+ 2 n) (count rows))))))
-
+        (subvec rows 0 (+ 2 n))
+        (map
+         #(let [qoutient (/ (get-in rows [% n])
+                            (get-in rows [(inc n) n]))]
+            (mapv -
+                  (nth rows %)
+                  (map (partial * qoutient)
+                       (nth rows (inc n)))))
+         (range (+ 2 n) (count rows))))))
 
 (defn gauss-elimination
   "Pivots through the matrix"
   [rows]
   (let [triangular-matrix (reduce
-                            (fn [matrix n] (pivot
-                                             (ensure-nth-pivot-not-zero matrix n)
-                                             n))
-                            rows
-                            (range (- (count (first rows)) 2)))]
+                           (fn [matrix n] (pivot
+                                           (ensure-nth-pivot-not-zero matrix n)
+                                           n))
+                           rows
+                           (range (- (count (first rows)) 2)))]
     triangular-matrix))
 
 (defn back-substitute
@@ -343,13 +366,12 @@
           (recur (dec i)
                  (cons quotient values)))))))
 
-
 (defn invert-matrix
   "Inverts a matrix using gaussian elimination"
   [matrix]
   {:pre [(>= (count matrix) (dec (count (first matrix))))]}
   (back-substitute
-    (gauss-elimination
-      (let [n-columns (count (first matrix))]
-        (mapv vec (cons (range n-columns)
-                        (take (dec n-columns) matrix)))))))
+   (gauss-elimination
+    (let [n-columns (count (first matrix))]
+      (mapv vec (cons (range n-columns)
+                      (take (dec n-columns) matrix)))))))
