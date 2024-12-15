@@ -8,7 +8,7 @@
     (case next-itm
       \. true
       \# false
-      \O (can-move? mtx dir next-coord))))
+      (can-move? mtx dir next-coord))))
 
 (defn attempt-move [mtx dir curr-coord prev-itm]
   (if (not (can-move? mtx dir curr-coord))
@@ -20,30 +20,35 @@
         \. (-> mtx
                (assoc curr-coord prev-itm)
                (assoc next-coord curr-itm))
-        \O (-> mtx
-               (assoc curr-coord prev-itm)
-               (attempt-move dir next-coord curr-itm))))))
+        (-> mtx
+            (assoc curr-coord prev-itm)
+            (attempt-move dir next-coord curr-itm))))))
+
+(defn calculate-box-distance-idx [mtx]
+  (->> mtx
+       (c/filter-by-value #{\[ \O})
+       (map (fn [[[x y] _]] (+ (* 100 y) x)))
+       (c/sum)))
+
+(defn apply-moves [mtx moves robot-coord move-fn]
+  (if (empty? moves)
+    mtx
+    (let [mtx (move-fn mtx
+                       (first moves)
+                       robot-coord
+                       \.)]
+      (recur mtx
+             (rest moves)
+             (c/find-matrix-coord-of mtx \@)
+             move-fn))))
 
 (defn part1 [file]
   (let [[board moves] (s/split (slurp file) #"\n\n")
         board (c/to-matrix board)
         moves (c/movements moves)
         robot-coord (c/find-matrix-coord-of board \@)]
-    (->> (loop [moves moves
-                mtx board
-                robot-coord robot-coord]
-           (if (empty? moves)
-             mtx
-             (let [mtx (attempt-move mtx
-                                     (first moves)
-                                     robot-coord
-                                     \.)]
-               (recur (rest moves)
-                      mtx
-                      (c/find-matrix-coord-of mtx \@)))))
-         (c/filter-by-value #(= \O %))
-         (map (fn [[[x y] _]] (+ (* 100 y) x)))
-         (c/sum))))
+    (->> (apply-moves board moves robot-coord attempt-move)
+         (calculate-box-distance-idx))))
 
 (defn upscale [board]
   (->> board
@@ -61,11 +66,7 @@
   (let [next-coord (dir (c/directions coord))
         next-itm (mtx next-coord)]
     (if (#{:<- :->} dir)
-      (case next-itm
-        \. true
-        \# false
-        \[ (wide-can-move? mtx dir next-coord)
-        \] (wide-can-move? mtx dir next-coord))
+      (can-move? mtx dir coord)
       (case next-itm
         \. true
         \# false
@@ -81,16 +82,7 @@
           next-coord (dir (c/directions curr-coord))
           next-itm (mtx next-coord)]
       (if (#{:<- :->} dir)
-        (case next-itm
-          \. (-> mtx
-                 (assoc curr-coord prev-itm)
-                 (assoc next-coord curr-itm))
-          \[ (-> mtx
-                 (assoc curr-coord prev-itm)
-                 (wide-attempt-move dir next-coord curr-itm))
-          \] (-> mtx
-                 (assoc curr-coord prev-itm)
-                 (wide-attempt-move dir next-coord curr-itm)))
+        (attempt-move mtx dir curr-coord prev-itm)
         (case next-itm
           \. (-> mtx
                  (assoc curr-coord prev-itm)
@@ -114,20 +106,6 @@
         board (c/to-matrix board)
         robot-coord (c/find-matrix-coord-of board \@)
         moves (c/movements moves)]
-    (->> (loop [moves moves
-                mtx board
-                robot-coord robot-coord]
-           (if (empty? moves)
-             mtx
-             (let [mtx (wide-attempt-move mtx
-                                          (first moves)
-                                          robot-coord
-                                          \.)]
-               (recur (rest moves)
-                      mtx
-                      (c/find-matrix-coord-of mtx \@)))))
-
-         (c/filter-by-value #(= \[ %))
-         (map (fn [[[x y] _]] (+ (* 100 y) x)))
-         (c/sum))))
+    (->> (apply-moves board moves robot-coord wide-attempt-move)
+         (calculate-box-distance-idx))))
 
