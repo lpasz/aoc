@@ -11,7 +11,7 @@
 (defn calculate-token-cost [eqs]
   (->> eqs
        (map c/transpose)
-       (map c/invert-matrix)
+       (map c/inverse-matrix)
        (filter #(every? integer? %))
        (map (fn [[a b]] (+ (* a 3) b)))
        (c/sum)))
