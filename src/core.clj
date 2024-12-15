@@ -102,6 +102,14 @@
 (defn cross-and-x [coord len]
   (concat (x coord len) (cross coord len)))
 
+(defn movements [moves]
+  (->> (re-seq #"[<>^v]" moves)
+       (map #(case %
+               \^ :up "^" :up
+               \v :down "v" :down
+               \< :<- "<" :<-
+               \> :-> ">" :->))))
+
 (defn directions [[x y]]
   {:up   [x (dec y)]
    :down [x (inc y)]
@@ -111,6 +119,11 @@
 (defn insp
   ([v] (pp/pprint v) v)
   ([id v] (pp/pprint {id v}) v))
+
+(defn find-matrix-coord-of [mtx value]
+  (->> mtx
+       (filter-by-value #(= % value))
+       (ffirst)))
 
 (defn to-matrix
   ([inp] (to-matrix inp identity identity))
@@ -294,7 +307,7 @@
        (set)
        (map #(into [] %))))
 
-(defn- pivot-matrix 
+(defn- pivot-matrix
   "Make matrix diagonal only with 1"
   [mtx]
   (let [size (count mtx)]
@@ -305,7 +318,7 @@
                      (assoc acc i (mapv #(/ % value) row))))
                  mtx))))
 
-(defn gaussian-elimination 
+(defn gaussian-elimination
   "Make the gaussian elimination proccess"
   [mtx]
   (let [size (count mtx)]
@@ -327,7 +340,7 @@
                                 acc)))
                  mtx))))
 
-(defn back-substitute-triangule 
+(defn back-substitute-triangule
   "Back solve the triangule with the newly found values"
   [mtx]
   (let [size (count mtx)]

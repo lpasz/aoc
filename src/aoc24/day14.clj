@@ -49,7 +49,7 @@
 
 (defn xmas-tree?
   "It form a box outside of the xmas tree, we are looking for that straight line
-   We are looking for a line of 10 points in sequence.
+   We are looking for a line of 31 points in sequence.
     ###############################
     #.............................#
     #.............................#
