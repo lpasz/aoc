@@ -1,10 +1,6 @@
 (ns aoc24.day16
   (:require [core :as c]))
 
-(defn part1 [file] :not-implemented)
-
-(defn part2 [file] :not-implemented)
-
 (def example "./assets/day16/example.txt")
 (def example2 "./assets/day16/example2.txt")
 (def input "./assets/day16/input.txt")
@@ -38,12 +34,58 @@
                            paths-to-end)]
         (recur stack visited paths-to-end)))))
 
-(let [text (slurp input)
-      mtx (c/to-matrix text)
-      start-at (c/find-matrix-coord-of mtx \S)
-      ends-at (c/find-matrix-coord-of mtx \E)]
-  (->> (shortest-path mtx start-at ends-at)
-       (apply min)))
+(defn part1 [file]
+  (let [text (slurp file)
+        mtx (c/to-matrix text)
+        start-at (c/find-matrix-coord-of mtx \S)
+        ends-at (c/find-matrix-coord-of mtx \E)]
+    (->> (shortest-path mtx start-at ends-at)
+         (apply min))))
 
+(defn next-coord-with-cost2 [[curr-coord curr-dir visited curr-cost] mtx]
+  (let [dirs (c/directions curr-coord)]
+    (->> (rotations curr-dir)
+         (map (fn [[dir cost]] [(dir dirs)
+                                dir
+                                (conj visited curr-coord)
+                                (+ cost curr-cost)]))
+         (c/reject (fn [[dir _ visited _]] (visited dir)))
+         (c/reject #(= \# (mtx (first %)))))))
+
+(defn shortest-path2 [mtx start end best]
+  (loop [stack [[start :-> #{start} 0]]
+         paths-to-end []]
+    (if (empty? stack)
+      paths-to-end
+      (let [[curr-coord :as curr] (first stack)
+            stack (rest stack)
+            stack (->> (next-coord-with-cost2 curr mtx)
+                       (c/reject #(> (last %) best))
+                       (concat stack)
+                       (sort-by last))
+            paths-to-end (if (= end curr-coord)
+                           (conj paths-to-end curr)
+                           paths-to-end)]
+        (recur stack paths-to-end)))))
+
+(defn part2 [file]
+  (let [text (slurp file)
+        mtx (c/to-matrix text)
+        start-at (c/find-matrix-coord-of mtx \S)
+        ends-at (c/find-matrix-coord-of mtx \E)
+        best (part1 file)]
+    (->> (shortest-path2 mtx start-at ends-at best)
+         (group-by last)
+         (sort-by first)
+         (first)
+         (second)
+         (map (fn [[_ _ visited _]] visited))
+         (reduce #(apply conj %1 %2))
+         (count)
+         (inc))))
+
+(part2 example)
+(part2 example2)
+(part2 input)
 
 
