@@ -213,7 +213,7 @@
             (pred-prev-curr previous (first coll)) (recur (rest coll) (first coll) (conj c (first coll)) result)
             :else (recur (rest coll) (first coll) [(first coll)] (conj result c))))))
 
-(def ^:private neg-inf Double/NEGATIVE_INFINITY)
+(def neg-inf Double/NEGATIVE_INFINITY)
 
 (defn update-costs-longest [g costs unvisited curr]
   (let [curr-cost (get costs curr)]
@@ -241,7 +241,7 @@
                    next-node (apply max-key next-costs unvisited)]
                (recur next-costs next-node (disj unvisited next-node)))))))
 
-(def ^:private inf Double/POSITIVE_INFINITY)
+(def inf Double/POSITIVE_INFINITY)
 
 (defn update-costs-shortest
   [g costs unvisited curr]
