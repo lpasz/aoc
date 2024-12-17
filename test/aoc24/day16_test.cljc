@@ -11,4 +11,4 @@
   (t/testing "input" (t/is (= (day16/part2 "./assets/day16/input.txt") 561)))
   (t/testing "example" (t/is (= (day16/part2 "./assets/day16/example.txt") 45)))
   (t/testing "example" (t/is (= (day16/part2 "./assets/day16/example2.txt") 64))))
-
+ 

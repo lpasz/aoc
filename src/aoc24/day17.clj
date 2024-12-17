@@ -1,111 +1,93 @@
 (ns aoc24.day17
   (:require
    [clojure.string :as s]
-   [clojure.math :as m]
    [core :as c]))
 
-(defn operand [operand regs]
+(defn operand [operand [r1 r2 r3]]
   (case operand
     0 0
     1 1
     2 2
     3 3
-    4 (:rega regs)
-    5 (:regb regs)
-    6 (:regc regs)
-    7 :invalid))
+    4 r1
+    5 r2
+    6 r3))
 
-(defn apply-instructions [instruction-pointer regs instructions out]
-  (if (>= (inc instruction-pointer) (count instructions))
-    {:regs regs :out out}
-    (let [opcode (get instructions instruction-pointer)
-          literal-operand (get instructions (inc instruction-pointer))
-          combo (operand literal-operand regs)
-          ;;
-          ]
+(defn apply-ins [ip [r1 r2 r3 :as regs] ins out]
+  (if (>= (inc ip) (count ins))
+    out
+    (let [opcode (get ins ip)
+          literal (get ins (inc ip))
+          combo (operand literal regs)
+          nip (+ 2 ip)]
       (case opcode
-        0 (recur (+ 2 instruction-pointer)
-                 (assoc regs :rega (m/round (quot (:rega regs) (m/pow 2 combo))))
-                 instructions
-                 out)
-        1 (recur (+ 2 instruction-pointer)
-                 (assoc regs :regb (bit-xor (:regb regs) literal-operand))
-                 instructions
-                 out)
-        2 (recur (+ 2 instruction-pointer)
-                 (assoc regs :regb (mod combo 8))
-                 instructions
-                 out)
-        3 (if (zero? (:rega regs))
-            (recur (+ 2 instruction-pointer)
-                   regs
-                   instructions
-                   out)
-            (recur literal-operand
-                   regs
-                   instructions
-                   out))
-        4 (recur (+ 2 instruction-pointer)
-                 (assoc regs :regb (bit-xor (:regb regs) (:regc regs)))
-                 instructions
-                 out)
-        5 (recur (+ 2 instruction-pointer)
-                 regs
-                 instructions
-                 (conj out (mod combo 8)))
-        6 (recur (+ 2 instruction-pointer)
-                 (assoc regs :regb (m/round (quot (:rega regs) (m/pow 2 combo))))
-                 instructions
-                 out)
-        7 (recur (+ 2 instruction-pointer)
-                 (assoc regs :regc (m/round (quot (:rega regs) (m/pow 2 combo))))
-                 instructions
-                 out)))))
+        0 (recur nip [(bit-shift-right r1 combo) r2 r3] ins out)
+        1 (recur nip [r1 (bit-xor r2 literal) r3] ins out)
+        2 (recur nip [r1 (mod combo 8) r3] ins out)
+        3 (if (zero? r1)
+            (recur nip regs ins out)
+            (recur literal regs ins out))
+        4 (recur nip [r1 (bit-xor r2 r3) r3] ins out)
+        5 (recur nip regs ins (conj out (mod combo 8)))
+        6 (recur nip [r1 (bit-shift-right r1 combo) r3] ins out)
+        7 (recur nip [r1 r2 (bit-shift-right r1 combo)] ins out)))))
 
-(loop [i 11111111111111]
-  (let [expected [2,4,1,5,7,5,1,6,0,3,4,2,5,5,3,0]
-        actual (:out (apply-instructions 0 {:rega 11111111111111 :regb 0 :regc 0} [2,4,1,5,7,5,1,6,0,3,4,2,5,5,3,0] []))]
-    (c/insp i)
-    (if (= expected actual)
-      i
-      (if (> i 99999999999999)
-        :error
-        (recur (inc i))))))
+(defn parse-input [file]
+  (let [[regs ins] (s/split (slurp file) #"\n\n")
+        regs (c/extract-numbers regs)
+        ins (into [] (c/extract-numbers ins))]
+    [regs ins]))
 
-(comment
-  (= 1 (:regb (:regs (apply-instructions 0 {:regc 9} [2 6] []))))
+(defn part1 [file]
+  (let [[regs ins] (parse-input file)]
+    (apply-ins 0 regs ins [])))
 
-  (= [0 1 2] (:out (apply-instructions 0 {:rega 10} [5,0 5,1 5,4] [])))
-
-  (let [{:keys [regs out]} (apply-instructions 0 {:rega 2024} [0,1,5,4,3,0] [])]
-    [(= 0 (:rega regs))
-     (= [4,2,5,6,7,7,7,7,3,1,0] out)])
-
-  (= 26 (:regb (:regs (apply-instructions 0 {:regb 29} [1,7] []))))
-
-  (= 44354 (:regb (:regs (apply-instructions 0 {:regb 2024 :regc 43690} [4,0] []))))
-
-  (let [text (slurp "./assets/day17/example.txt")
-        [registers instructions] (s/split text #"\n\n")
-        [rega regb regc] (c/extract-numbers registers)
-        instructions (vec (c/extract-numbers instructions))
-      ;;
+;; this is the same as before, but only for my input.
+(defn my-input-machine
+  "Example of a specific solution for the machine given in input.txt"
+  [a ins out]
+  (let [b (mod a 8) ;; 2, 4
+        b (bit-xor b 5) ;; 1 5
+        c (bit-shift-right a b) ;; 7 5
+        b (bit-xor b 6) ;; 1 6
+        a (bit-shift-right a 3) ;; 0 3
+        b (bit-xor b c) ;; 4 2
+        out (conj out (mod b 8)) ;; 5 5
         ]
-    (s/join "," (:out (apply-instructions 0 {:rega rega :regb regb :regc regc} instructions []))))
-  ;;
+    (if (zero? a)
+      out
+      (recur a (rest ins) out))))
 
-  (let [text (slurp "./assets/day17/example.txt")
-        [registers instructions] (s/split text #"\n\n")
-        [_ regb regc] (c/extract-numbers registers)
-        instructions (vec (c/extract-numbers instructions))
-      ;;
-        ]
-    [instructions  (:out (apply-instructions 0 {:rega 117440 :regb 0 :regc regc} instructions []))])
-    ;;
-  )
 
-;;Register A: 44348299
-;;Register B: 0
-;;Register C: 0
+(defn reverse-machine
+  "ins is our instruction list, and ans the answer up to that point"
+  [ins ans]
+  (if (empty? ins) [ans]
+      (->> (range 8)
+           (mapcat (fn [t]
+                    ;; we need to work our a back from the start of previous example
+                    ;; round one we have a an A that results in a b % 8 == 0
+                    ;; in the next recur we need to do recreate our previous A as well
+                    ;; this is what the first line is doing.
+                    ;; We recreate A and check if that A would produce a B % 8 == expected answer
+                     (let [;; This solution assumes that A is always an octane
+                           a (bit-shift-left ans 3) ;; reverse the operation 0 3 to get A at the very start of the cycle
+                           a (+ t a) ;; this create the possible values it can have  
+                           b (mod a 8) ;; 2, 4
+                           b (bit-xor b 5) ;; 1 5
+                           c (bit-shift-right a b) ;; 7 5
+                           b (bit-xor b 6) ;; 1 6
+                           b (bit-xor b c) ;; 4 2
+                           out (mod b 8) ;; 5 5
+                           ]
+                       (when (= out (peek ins))
+                         (reverse-machine (pop ins) a))))))))
 
-;;Program: 2,4,1,5,7,5,1,6,0,3,4,2,5,5,3,0
+(defn part2 []
+  ;; it only works for this input
+  (-> (parse-input "./assets/day17/input.txt")
+      (second)
+      (reverse-machine 0)
+      (sort)
+      (first)))
+
