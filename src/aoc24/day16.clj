@@ -71,6 +71,7 @@
          (second)
          (mapcat #(second (best-cost-to-coord %)))
          (c/flatten-once)
+         ;; add the ends-at so we don't get a one off error 
          (concat [ends-at])
          (set)
          (count))))
