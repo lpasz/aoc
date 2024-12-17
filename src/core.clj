@@ -373,4 +373,7 @@
        (transpose)
        (last)))
 
-
+(defn extract-numbers [text]
+  (->> (re-seq #"-?\d+" text)
+       (map parse-long)
+       ))
