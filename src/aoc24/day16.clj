@@ -11,14 +11,9 @@
   (let [dirs (c/directions curr-coord)]
     (->> (rotations curr-dir)
          (map (fn [[dir cost]]
-                (let [cost (+ cost curr-cost)
-                      coord (dir dirs)]
-                  [cost
-                   (inc curr-idx)
-                   coord
-                   dir
-                   (conj curr-visited curr-coord)])))
-         (c/reject #(= \# (mtx (nth % 2)))))))
+                [(+ cost curr-cost) (inc curr-idx) (dir dirs)
+                 dir (conj curr-visited curr-coord)]))
+         (c/reject #(= \# (mtx (c/third %)))))))
 
 (defn update-best-cost-to-coord
   [best-cost-to-coord [curr-cost _ curr-coord _ curr-visited]]
