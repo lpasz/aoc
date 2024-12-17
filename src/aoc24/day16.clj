@@ -1,38 +1,54 @@
 (ns aoc24.day16
   (:require [core :as c]))
 
-(def example "./assets/day16/example.txt")
-(def example2 "./assets/day16/example2.txt")
-(def input "./assets/day16/input.txt")
-
 (def rotations
   {:->   [[:-> 1]   [:up 1001] [:down 1001]]
    :<-   [[:<- 1]   [:up 1001] [:down 1001]]
    :up   [[:up 1]   [:<- 1001] [:-> 1001]]
    :down [[:down 1] [:<- 1001] [:-> 1001]]})
 
-(defn next-coord-with-cost [[curr-coord curr-dir curr-cost] mtx]
+(defn next-coord-with-cost [[curr-cost curr-idx curr-coord curr-dir curr-visited] mtx]
   (let [dirs (c/directions curr-coord)]
     (->> (rotations curr-dir)
-         (map (fn [[dir cost]] [(dir dirs) dir (+ cost curr-cost)]))
-         (c/reject #(= \# (mtx (first %)))))))
+         (map (fn [[dir cost]]
+                (let [cost (+ cost curr-cost)
+                      coord (dir dirs)]
+                  [cost
+                   (inc curr-idx)
+                   coord
+                   dir
+                   (conj curr-visited curr-coord)])))
+         (c/reject #(= \# (mtx (nth % 2)))))))
+
+(defn update-best-cost-to-coord
+  [best-cost-to-coord [curr-cost _ curr-coord _ curr-visited]]
+  (update best-cost-to-coord
+          curr-coord
+          (fn [v]
+            (let [[lowest-cost paths] v]
+              (cond (nil? v) [curr-cost [curr-visited]]
+                    (= lowest-cost  curr-cost) [lowest-cost (conj paths curr-visited)]
+                    (> lowest-cost curr-cost) [curr-cost [curr-visited]]
+                    (< lowest-cost curr-cost) v)))))
 
 (defn shortest-path [mtx start end]
-  (loop [stack [[start :-> 0]]
+  (loop [stack (sorted-set [0 0 start :-> []])
+         best-cost-to-coord {}
          prev-visited #{}
          paths-to-end []]
     (if (empty? stack)
-      paths-to-end
-      (let [[curr-coord _curr-dir curr-cost :as curr] (first stack)
-            stack (rest stack)
-            visited (conj prev-visited curr-coord)
-            stack (if (not (prev-visited curr-coord))
-                    (sort-by last (concat stack (next-coord-with-cost curr mtx)))
+      [paths-to-end best-cost-to-coord]
+      (let [[curr-cost _ curr-coord curr-dir curr-visited :as curr] (first stack)
+            stack (disj stack curr)
+            best-cost-to-coord (update-best-cost-to-coord best-cost-to-coord curr)
+            visited (conj prev-visited [curr-coord curr-dir])
+            stack (if (not (prev-visited [curr-coord curr-dir]))
+                    (reduce #(conj %1 %2) stack (next-coord-with-cost curr mtx))
                     stack)
             paths-to-end (if (= end curr-coord)
-                           (conj paths-to-end curr-cost)
+                           (conj paths-to-end [curr-cost (conj curr-visited end)])
                            paths-to-end)]
-        (recur stack visited paths-to-end)))))
+        (recur stack best-cost-to-coord visited paths-to-end)))))
 
 (defn part1 [file]
   (let [text (slurp file)
@@ -40,52 +56,22 @@
         start-at (c/find-matrix-coord-of mtx \S)
         ends-at (c/find-matrix-coord-of mtx \E)]
     (->> (shortest-path mtx start-at ends-at)
-         (apply min))))
-
-(defn next-coord-with-cost2 [[curr-coord curr-dir visited curr-cost] mtx]
-  (let [dirs (c/directions curr-coord)]
-    (->> (rotations curr-dir)
-         (map (fn [[dir cost]] [(dir dirs)
-                                dir
-                                (conj visited curr-coord)
-                                (+ cost curr-cost)]))
-         (c/reject (fn [[dir _ visited _]] (visited dir)))
-         (c/reject #(= \# (mtx (first %)))))))
-
-(defn shortest-path2 [mtx start end best]
-  (loop [stack [[start :-> #{start} 0]]
-         paths-to-end []]
-    (if (empty? stack)
-      paths-to-end
-      (let [[curr-coord :as curr] (first stack)
-            stack (rest stack)
-            stack (->> (next-coord-with-cost2 curr mtx)
-                       (c/reject #(> (last %) best))
-                       (concat stack)
-                       (sort-by last))
-            paths-to-end (if (= end curr-coord)
-                           (conj paths-to-end curr)
-                           paths-to-end)]
-        (recur stack paths-to-end)))))
+         (first)
+         (sort-by first)
+         (ffirst))))
 
 (defn part2 [file]
   (let [text (slurp file)
         mtx (c/to-matrix text)
         start-at (c/find-matrix-coord-of mtx \S)
         ends-at (c/find-matrix-coord-of mtx \E)
-        best (part1 file)]
-    (->> (shortest-path2 mtx start-at ends-at best)
-         (group-by last)
-         (sort-by first)
+        [paths-to-end best-cost-to-coord] (shortest-path mtx start-at ends-at)]
+    (->> (sort-by first paths-to-end)
          (first)
          (second)
-         (map (fn [[_ _ visited _]] visited))
-         (reduce #(apply conj %1 %2))
-         (count)
-         (inc))))
-
-(part2 example)
-(part2 example2)
-(part2 input)
-
+         (mapcat #(second (best-cost-to-coord %)))
+         (c/flatten-once)
+         (concat [ends-at])
+         (set)
+         (count))))
 
