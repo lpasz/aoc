@@ -4,14 +4,7 @@
    [core :as c]))
 
 (defn operand [operand [r1 r2 r3]]
-  (case operand
-    0 0
-    1 1
-    2 2
-    3 3
-    4 r1
-    5 r2
-    6 r3))
+  (get {4 r1 5 r2 6 r3} operand operand))
 
 (defn apply-ins [ip [r1 r2 r3 :as regs] ins out]
   (if (>= (inc ip) (count ins))
@@ -24,9 +17,7 @@
         0 (recur nip [(bit-shift-right r1 combo) r2 r3] ins out)
         1 (recur nip [r1 (bit-xor r2 literal) r3] ins out)
         2 (recur nip [r1 (mod combo 8) r3] ins out)
-        3 (if (zero? r1)
-            (recur nip regs ins out)
-            (recur literal regs ins out))
+        3 (if (zero? r1) (recur nip regs ins out) (recur literal regs ins out))
         4 (recur nip [r1 (bit-xor r2 r3) r3] ins out)
         5 (recur nip regs ins (conj out (mod combo 8)))
         6 (recur nip [r1 (bit-shift-right r1 combo) r3] ins out)
@@ -57,7 +48,6 @@
     (if (zero? a)
       out
       (recur a (rest ins) out))))
-
 
 (defn reverse-machine
   "ins is our instruction list, and ans the answer up to that point"
