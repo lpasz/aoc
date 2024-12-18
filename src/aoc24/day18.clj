@@ -1,31 +1,25 @@
 (ns aoc24.day18
   (:require [core :as c]))
 
-(defn part1 [file] :not-implemented)
+(defn after-n-bytes-shortest-path [n-bytes]
+  (let [nums (c/extract-numbers (slurp "./assets/day18/input.txt"))
+        pairs (take n-bytes (partition 2 nums))
+        max-x (->> pairs (sort-by first >) (ffirst))
+        max-y (->> pairs (sort-by second >) (first) (second))
+        mtx (c/create-matrix 71 71 \.)
+        mtx (c/add-to-matrix mtx pairs \#)
+        graph (c/matrix-to-graph mtx)
+        dijk   (c/dijkstra-shortest graph [0 0] [max-x max-y])]
+    [(last pairs) (get dijk [max-x max-y])]))
 
-(defn part2 [file] :not-implemented)
+(defn part1 []
+  (second (after-n-bytes-shortest-path 1024)))
 
-(defn matrix-to-graph [mtx]
-  (->> mtx
-       (keys)
-       (map (fn [coord] [coord (c/up-down-left-right coord)]))
-       (map (fn [[coord ncoords]] [coord (filter #(= \. (mtx %)) ncoords)]))
-       (map (fn [[coord ncoords]] [coord (map (fn [coord] [coord 1]) ncoords)]))
-       (map (fn [[coord ncoords]] [coord (into (sorted-map) ncoords)]))
-       (into (sorted-map))))
-
-(let [nums (c/extract-numbers (slurp "./assets/day18/input.txt"))
-      pairs (take 1024 (partition 2 nums))
-      max-x (->> pairs (sort-by first >) (ffirst))
-      max-y (->> pairs (sort-by second >) (first) (second))
-      mtx (c/create-matrix 71 71 \.)
-      mtx (c/add-to-matrix mtx pairs \#)
-      graph (matrix-to-graph mtx)
-      dijk   (c/dijkstra-shortest graph [0 0] [max-x max-y])
-      ]
-
-  (get dijk [max-x max-y])
-  ;;
-  )
-
-
+(defn part2 []
+  ;; reduced via binary search manually done.
+  (->> (range 2950 3000)
+       (keep (fn [n] (let [[pair dist] (after-n-bytes-shortest-path n)]
+                       (when (infinite? dist)
+                         [n pair]))))
+       (first)
+       (second)))

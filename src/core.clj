@@ -29,17 +29,6 @@
                  :else ny)]
     [nx ny]))
 
-(defn create-matrix [x y value]
-  (into (sorted-map)
-        (for [x (range 0 x) y (range 0 y)]
-          [[x y] value])))
-
-(defn add-to-matrix
-  ([mtx points value]
-   (add-to-matrix mtx (map #(vector % value) points)))
-  ([mtx points-and-values]
-   (reduce (fn [acc [[x y] value]]
-             (assoc acc [x y] value)) mtx points-and-values)))
 
 (defn map-key [fun coll]
   (map (fn [[key value]] [(fun key) value]) coll))
@@ -375,5 +364,26 @@
 
 (defn extract-numbers [text]
   (->> (re-seq #"-?\d+" text)
-       (map parse-long)
-       ))
+       (map parse-long)))
+
+(defn matrix-to-graph [mtx]
+  (->> mtx
+       (keys)
+       (map (fn [coord] [coord (up-down-left-right coord)]))
+       (map (fn [[coord ncoords]] [coord (filter #(= \. (mtx %)) ncoords)]))
+       (map (fn [[coord ncoords]] [coord (map (fn [coord] [coord 1]) ncoords)]))
+       (map (fn [[coord ncoords]] [coord (into (sorted-map) ncoords)]))
+       (into (sorted-map))))
+
+(defn create-matrix [x y value]
+  (into (sorted-map)
+        (for [x (range 0 x) y (range 0 y)]
+          [[x y] value])))
+
+(defn add-to-matrix
+  ([mtx points value]
+   (add-to-matrix mtx (map #(vector % value) points)))
+  ([mtx points-and-values]
+   (reduce (fn [acc [[x y] value]]
+             (assoc acc [x y] value)) mtx points-and-values)))
+
