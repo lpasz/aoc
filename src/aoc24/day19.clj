@@ -22,21 +22,20 @@
          (filter true?)
          (count))))
 
-(def possible-towels
-  (memoize (fn [acc pattern towels]
-             (cond (= acc pattern) [1]
-                   (>= (count acc) (count pattern)) [0]
-                   :else
-                   (->> towels
-                        (map #(str acc %))
-                        (filter #(s/starts-with? pattern %))
-                        (mapcat #(possible-towels % pattern towels)))))))
+(def cnt-variants
+  ;; simplify the return value
+  (memoize (fn [w ts]
+             (if (empty? w) [1]
+                 (->> ts
+                      (filter #(s/starts-with? w %))
+                      (mapcat #(cnt-variants (subs w (count %)) ts))
+                      (c/sum)
+                      (list))))))
 
 (let [[towels wanted-patterns] (s/split (slurp "./assets/day19/input.txt") #"\n\n")
-      ts (re-seq #"\w+" towels)
+      ts (set (re-seq #"\w+" towels))
       wp (re-seq #"\w+" wanted-patterns)]
   (->> wp
-       (take 2)
-       (map (fn [wp] (possible-towels "" wp (filter #(s/index-of wp %) ts))))
-       (flatten)
+       (map (fn [w] [w (filter #(s/index-of w %) ts)]))
+       (mapcat #(cnt-variants (first %) (second %)))
        (c/sum)))
