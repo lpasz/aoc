@@ -23,14 +23,17 @@
          (count))))
 
 (def cnt-variants
-  ;; simplify the return value
+  ;; it took a long time for me to get this right, basically because the return value of the memoize was a list of things
+  ;; make the return value simple so you can trully benefit from memoize
   (memoize (fn [w ts]
              (if (empty? w) 1
                  (->> ts
                       (filter #(s/starts-with? w %))
                       (map count)
-                      (reduce (fn [acc i]
-                                (+ acc (cnt-variants (subs w i) ts))) 0))))))
+                      ;; if we keep the one below if fails because of heap space,
+                      ;; (mapcat #(cnt-variants (subs w %) ts))))))) ;; fails spetacular if we return this
+                      ;; so we need the reduce to make it a simple number
+                      (reduce #(+ %1 (cnt-variants (subs w %2) ts)) 0))))))
 
 (defn in-pattern [pattern towels]
   (filter #(s/index-of pattern %) towels))
