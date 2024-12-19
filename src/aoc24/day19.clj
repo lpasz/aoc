@@ -25,17 +25,22 @@
 (def cnt-variants
   ;; simplify the return value
   (memoize (fn [w ts]
-             (if (empty? w) [1]
+             (if (empty? w) 1
                  (->> ts
                       (filter #(s/starts-with? w %))
-                      (mapcat #(cnt-variants (subs w (count %)) ts))
-                      (c/sum)
-                      (list))))))
+                      (map count)
+                      (reduce (fn [acc i]
+                                (+ acc (cnt-variants (subs w i) ts))) 0))))))
 
-(let [[towels wanted-patterns] (s/split (slurp "./assets/day19/input.txt") #"\n\n")
-      ts (set (re-seq #"\w+" towels))
-      wp (re-seq #"\w+" wanted-patterns)]
-  (->> wp
-       (map (fn [w] [w (filter #(s/index-of w %) ts)]))
-       (mapcat #(cnt-variants (first %) (second %)))
-       (c/sum)))
+(defn in-pattern [pattern towels]
+  (filter #(s/index-of pattern %) towels))
+
+(defn part2 [file]
+  (let [[towels wanted-patterns] (s/split (slurp file) #"\n\n")
+        towels (set (re-seq #"\w+" towels))
+        patterns (re-seq #"\w+" wanted-patterns)]
+    (->> patterns
+         (map #(cnt-variants % (in-pattern % towels)))
+         (c/sum))))
+
+(time (part2 "./assets/day19/input.txt"))
