@@ -29,7 +29,6 @@
                  :else ny)]
     [nx ny]))
 
-
 (defn map-key [fun coll]
   (map (fn [[key value]] [(fun key) value]) coll))
 
@@ -262,6 +261,49 @@
              next-node (apply min-key next-costs unvisited)]
          (recur next-costs next-node (disj unvisited next-node)))))))
 
+(defn update-costs-shortest
+  [g costs unvisited curr]
+  (let [curr-cost (get costs curr)]
+    (reduce-kv
+     (fn [c nbr nbr-cost]
+       (if (unvisited nbr)
+         (update-in c [nbr] min (+ curr-cost nbr-cost))
+         c))
+     costs
+     (get g curr))))
+
+(defn dijkstra-all-shortest
+  ([g src]
+   (dijkstra-all-shortest g src nil))
+  ([g src dst]
+   (loop [costs (assoc (zipmap (keys g) (repeat inf)) src 0)
+          curr src
+          unvisited (disj (apply hash-set (keys g)) src)]
+     (cond
+       (or (empty? unvisited) (= inf (get costs curr)))
+       costs
+
+       :else
+       (let [next-costs (update-costs-shortest g costs unvisited curr)
+             next-node (apply min-key next-costs unvisited)]
+         (recur next-costs next-node (disj unvisited next-node)))))))
+
+(dijkstra-shortest {1 {2 1 3 1}
+                    2 {4 1}
+                    3 {5 1}
+                    4 {6 2}
+                    5 {7 1}
+                    7 {6 1}
+                    6 {7 1 4 2}} 1 6)
+
+(dijkstra-all-shortest {1 {2 1 3 1}
+                        2 {4 1}
+                        3 {5 1}
+                        4 {6 2}
+                        5 {7 1}
+                        7 {6 1}
+                        6 {7 1 4 2}} 1 6)
+
 (defn rotations [coll]
   (let [cnt (count coll)
         rng (range 0 cnt)]
@@ -387,3 +429,91 @@
    (reduce (fn [acc [[x y] value]]
              (assoc acc [x y] value)) mtx points-and-values)))
 
+(defn unseen? [path node]
+  (not-any? #{node} path))
+
+(defn step-factory [parent last-insertion cost heur dest]
+  (fn [insertion-idx node]
+    {:parent parent
+     :node node
+     :entered (+ last-insertion (inc insertion-idx))
+     :cost (+ (:cost parent) (cost (:node parent) node) (heur node dest))}))
+
+(defn rpath [{:keys [node parent]}]
+  (lazy-seq
+   (cons node (when parent (rpath parent)))))
+
+(defn cmp-step [step-a step-b]
+  (let [cmp (compare (:cost step-a) (:cost step-b))]
+    (if (zero? cmp)
+      (compare (:entered step-a) (:entered step-b))
+      cmp)))
+
+(defn next-a*-path [graph dest adjacent f-cost f-heur]
+  (when-let [{:keys [node] :as current} (first adjacent)]
+    (let [path (rpath current)
+          adjacent' (disj adjacent current)] ;; "pop" the current node
+      (if (= node dest)
+        [(reverse path), adjacent']
+        (let [last-idx (or (:entered (last adjacent')) 0)
+              factory (step-factory current last-idx f-cost f-heur dest)
+              xform (comp (filter (partial unseen? path)) (map-indexed factory))
+              adjacent'' (into adjacent' xform (get graph node))]
+          (recur graph dest adjacent'' f-cost f-heur))))))
+(defn a*-seq
+  "Construct a lazy sequence of calls to `next-a*-path`, returning the shortest path first."
+  [graph dest adjacent distance heuristic]
+  (lazy-seq
+   (when-let [[path, adjacent'] (next-a*-path graph dest adjacent distance heuristic)]
+     (cons path (a*-seq graph dest adjacent' distance heuristic)))))
+
+(defn cost-to-graph [cost]
+  (->> cost
+       (map (fn [[k v]] [k (set (keys v))]))
+       (into {})))
+
+(defn a*
+  "A sequence of paths from `src` to `dest`, shortest first, within the supplied `graph`.
+  If the graph is weighted, supply a `distance` function. To make use of A*, supply a 
+  heuristic function. Otherwise performs like Dijkstra's algorithm."
+  [graph src dest & {:keys [distance heuristic]}]
+  (let [init-adjacent (sorted-set-by cmp-step {:node src :cost 0 :entered 0})]
+    (a*-seq graph dest init-adjacent
+            (or distance (constantly 1))
+            (or heuristic (constantly 0)))))
+
+(defn a**
+  "A sequence of paths from `src` to `dest`, shortest first, within the supplied `graph`.
+  If the graph is weighted, supply a `distance` function. To make use of A*, supply a 
+  heuristic function. Otherwise performs like Dijkstra's algorithm."
+  [graph src dest & {:keys [distance heuristic]}]
+  (let [cost graph
+        graph (cost-to-graph cost)
+        init-adjacent (sorted-set-by cmp-step {:node src :cost 0 :entered 0})]
+    (a*-seq graph dest init-adjacent
+            (or distance (constantly 1))
+            (or heuristic (constantly 0)))))
+
+(comment
+  (def graph
+    "Map of node => set of adjacent nodes."
+    {"A" #{"B", "E"}
+     "B" #{"A", "C", "D"}
+     "C" #{"B", "D"}
+     "D" #{"B", "C", "E"}
+     "E" #{"A", "D"}})
+
+  (def costs
+    "Map of node => adjacent node => cost. This could
+  be replaced with any cost function of the shape
+  (node, node') => cost."
+    {"A" {"B" 2, "E" 10}
+     "B" {"A" 2, "C" 3, "D" 4}
+     "C" {"B" 3, "D" 2}
+     "D" {"B" 4, "C" 3, "E" 10}
+     "E" {"A" 10, "D" 10}})
+
+  (a* graph "A" "D")
+  (a* graph "A" "D" costs)
+;;
+  )
