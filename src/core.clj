@@ -67,6 +67,12 @@
    [(dec x) y]
    [(inc x) y]])
 
+(defn- euclidean-distance [[x1 y1] [x2 y2]]
+  (+ (abs (- x2 x1)) (abs (- y2 y1))))
+
+(defn manhattan-distance [[x1 y1] [x2 y2]]
+  (+ (abs (- x1 x2)) (abs (- y1 y2))))
+
 (defn diagonals [[x y]]
   [[(inc x) (dec y)]
    [(inc x) (inc y)]
