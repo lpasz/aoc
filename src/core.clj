@@ -251,7 +251,8 @@
           unvisited (disj (apply hash-set (keys g)) src)]
      (cond
        (= curr dst)
-       (select-keys costs [dst])
+      ;; (select-keys costs [dst])
+       costs
 
        (or (empty? unvisited) (= inf (get costs curr)))
        costs
@@ -408,14 +409,17 @@
   (->> (re-seq #"-?\d+" text)
        (map parse-long)))
 
-(defn matrix-to-graph [mtx]
-  (->> mtx
-       (keys)
-       (map (fn [coord] [coord (up-down-left-right coord)]))
-       (map (fn [[coord ncoords]] [coord (filter #(= \. (mtx %)) ncoords)]))
-       (map (fn [[coord ncoords]] [coord (map (fn [coord] [coord 1]) ncoords)]))
-       (map (fn [[coord ncoords]] [coord (into (sorted-map) ncoords)]))
-       (into (sorted-map))))
+(defn matrix-to-graph
+  ([mtx] (matrix-to-graph mtx #{\.}))
+  ([mtx valid?]
+   (->> mtx
+        (filter #(valid? (second %)))
+        (keys)
+        (map (fn [coord] [coord (up-down-left-right coord)]))
+        (map (fn [[coord ncoords]] [coord (filter #(valid? (mtx %)) ncoords)]))
+        (map (fn [[coord ncoords]] [coord (map (fn [coord] [coord 1]) ncoords)]))
+        (map (fn [[coord ncoords]] [coord (into (sorted-map) ncoords)]))
+        (into (sorted-map)))))
 
 (defn create-matrix [x y value]
   (into (sorted-map)

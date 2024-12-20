@@ -20,9 +20,12 @@
     (->> wanted-patterns
          (map #(possible-towel? [""] % towels))
          (filter true?)
+         ;; if we reuse the part2 solution
+         ;; (map #(count-towel-combinations % (in-pattern % towels)))
+         ;; (c/reject zero?)
          (count))))
 
-(def cnt-variants
+(def count-towel-combinations
   ;; it took a long time for me to get this right, basically because the return value of the memoize was a list of things
   ;; make the return value simple so you can trully benefit from memoize
   (memoize (fn [w ts]
@@ -31,9 +34,9 @@
                       (filter #(s/starts-with? w %))
                       (map count)
                       ;; if we keep the one below if fails because of heap space,
-                      ;; (mapcat #(cnt-variants (subs w %) ts))))))) ;; fails spetacular if we return this
+                      ;; (mapcat #(count-towel-combinations (subs w %) ts))))))) ;; fails spetacular if we return this
                       ;; so we need the reduce to make it a simple number
-                      (reduce #(+ %1 (cnt-variants (subs w %2) ts)) 0))))))
+                      (reduce #(+ %1 (count-towel-combinations (subs w %2) ts)) 0))))))
 
 (defn in-pattern [pattern towels]
   (filter #(s/index-of pattern %) towels))
@@ -43,7 +46,9 @@
         towels (set (re-seq #"\w+" towels))
         patterns (re-seq #"\w+" wanted-patterns)]
     (->> patterns
-         (map #(cnt-variants % (in-pattern % towels)))
+         (map #(count-towel-combinations % (in-pattern % towels)))
          (c/sum))))
 
-(time (part2 "./assets/day19/input.txt"))
+
+
+
