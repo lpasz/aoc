@@ -8,7 +8,7 @@
   ([k ks]
    (->> ks
         (filter #(not= k %))
-        (keep #(let [md (c/manhattan-distance k %)]
+        (keep #(let [md (c/euclidean-distance  k %)]
                  (when (<= md 20)
                    [k md %]))))))
 
@@ -53,7 +53,7 @@
 (defn part2 [file]
   (let [input (parse-input file)
         possible-cheats-fn #(possible-cheats % (:coords input))]
-    (apply-cheating input possible-cheats-fn )))
+    (apply-cheating input possible-cheats-fn)))
 
 
 

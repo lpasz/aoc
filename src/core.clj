@@ -67,11 +67,8 @@
    [(dec x) y]
    [(inc x) y]])
 
-(defn- euclidean-distance [[x1 y1] [x2 y2]]
+(defn euclidean-distance [[x1 y1] [x2 y2]]
   (+ (abs (- x2 x1)) (abs (- y2 y1))))
-
-(defn manhattan-distance [[x1 y1] [x2 y2]]
-  (+ (abs (- x1 x2)) (abs (- y1 y2))))
 
 (defn diagonals [[x y]]
   [[(inc x) (dec y)]
@@ -128,6 +125,13 @@
         (map-indexed (fn [idy line] (->> line line-parse (map-indexed (fn [idx c] [[idx idy] (item-parse c)])))))
         (flatten-once)
         (into (sorted-map)))))
+
+(defn cartesian-product [parts]
+    (if (= (count parts) 1)
+      parts
+      (let [[a b & tail] parts]
+        (for [a a b b]
+          [a b]))))
 
 (defn print-matrix [mtx]
   (println "")
@@ -257,8 +261,7 @@
           unvisited (disj (apply hash-set (keys g)) src)]
      (cond
        (= curr dst)
-      ;; (select-keys costs [dst])
-       costs
+       (costs dst)
 
        (or (empty? unvisited) (= inf (get costs curr)))
        costs
@@ -426,6 +429,18 @@
         (map (fn [[coord ncoords]] [coord (map (fn [coord] [coord 1]) ncoords)]))
         (map (fn [[coord ncoords]] [coord (into (sorted-map) ncoords)]))
         (into (sorted-map)))))
+
+(defn matrix-values-to-graph
+  [mtx valid?]
+  (->> mtx
+       (filter #(valid? (second %)))
+       (keys)
+       (map (fn [coord] [(mtx coord) (filter valid? (map mtx (up-down-left-right coord)))]))
+       (map (fn [[coord ncoords]] [coord (map (fn [coord] [coord 1]) ncoords)]))
+       (map (fn [[coord ncoords]] [coord (into (sorted-map) ncoords)]))
+       (into (sorted-map))))
+
+;; (matrix-values-to-graph (to-matrix "789\n456\n123\n#0A") #{\0 \1 \2 \3\ \4 \5 \6 \7 \8 \9 \A})
 
 (defn create-matrix [x y value]
   (into (sorted-map)
