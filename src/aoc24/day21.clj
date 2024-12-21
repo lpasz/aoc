@@ -1,8 +1,6 @@
 (ns aoc24.day21
   (:require [core :as c]))
 
-(defn part2 [file] :not-implemented)
-
 (def numpad (c/to-matrix "789\n456\n123\n#0A"))
 
 (def directional-keypad (c/to-matrix "#^A\n<v>" identity {\# \# \^ :up \v :down \< :<- \> :-> \A :a}))
@@ -63,53 +61,45 @@
        (map vec)
        (map dirpad-results)))
 
-(->> '((((:down :a)) ((:<- :up :a) (:up :<- :a)) ((:-> :a)))
-       (((:<- :a)) ((:-> :down :a) (:down :-> :a)) ((:up :a))))
-     (map #(c/sum (map count %))))
+(def rr (memoize (fn [n p]
+                   (cond (c/one? n) (->> (find-paths p)
+                                        (map (fn [p]
+                                               (->> p
+                                                    (map count)
+                                                    (apply min))))
+                                        (c/sum))
+                         :else (->> (find-paths p)
+                                    (map (fn [p]
+                                           (->> p
+                                                (map #(rr (dec n) %))
+                                                (apply min))))
+                                    (c/sum))))))
 
-(->> (find-paths '(:<- :a))
-     (map (fn [rs]
-            (->> rs
-                 (map find-paths)
-                 (map #(c/sum (map count %)))
-                 (apply min))))
-     (c/sum))
-
-(defn find-best-path [number]
+(defn find-best-path [number robots-in-the-way]
   (->>  (str "A" number)
         (partition 2 1)
         (map vec)
-        (map numpad-results)
-        (map (fn [parts]
-               (->> parts
-                    (map (fn [part]
-                           (->> (find-paths part)
-                                (map (fn [rs]
-                                       (->> rs
-                                            (map find-paths)
-                                            (map (fn [out-path]
-                                                   (->> out-path
-                                                        (map #(->> %
-                                                                   (map count)
-                                                                   (apply min)))
-                                                        (c/sum))))
-                                            (apply min))))
-                                (c/sum))))
+        (map (fn [p]
+               (->> p
+                    ;; num robot
+                    (numpad-results)
+                    (map #(rr robots-in-the-way %))
                     (apply min))))
         (c/sum)))
 
-(find-best-path "029A")
-
-(defn part1 [file]
+(defn complexities-of-robots [file n]
   (let [txt (slurp file)
         nums (c/extract-numbers txt)
         steps (re-seq #"\d+\w" txt)]
     (->> steps
-         (map find-best-path)
+         (map #(find-best-path % n))
          (map * nums)
          (c/sum))))
 
-(part1 "./assets/day21/input.txt")
-(part1 "./assets/day21/example.txt")
+(defn part1 [file]
+  (complexities-of-robots file 2))
+
+(defn part2 [file]
+  (complexities-of-robots file 25))
 
 
