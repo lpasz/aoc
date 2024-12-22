@@ -3,7 +3,7 @@
             [clojure.string :as string]))
 
 (def ex (c/get-input "example.txt"))
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (def free \L)
 (def occupied \#)

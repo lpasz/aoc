@@ -16,7 +16,7 @@
        (into (sorted-map))))
 
 (defn- parse-input [inp]
-  (let [[left-right rest] (str/split inp #"\n\n")
+  (let [[left-right rest] (str/split input #"\n\n")
         left-right (cycle (seq left-right))
         symbol-to-left-right-map (symbol-to-left-right rest)]
     [left-right symbol-to-left-right-map]))

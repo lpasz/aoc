@@ -28,7 +28,7 @@
 (def elf-steps 26501365)
 (def max-visited-gardens (quot 26501365 131))
 
-(defn part [inp n]
+(defn part [input n]
   (let [mtx (c/to-matrix inp)
         nmax (inc (reduce max (map first (keys mtx))))
         start-at (ffirst (filter (fn [[_key v]] (#{\S} v)) mtx))
@@ -53,7 +53,7 @@
   (+ a (* n (+ (- b a) (quot (* (dec n) (+ a (- c b b))) 2)))))
 
 (defn part1 [inp]
-  (first (part inp 64)))
+  (first (part input 64)))
 
 (defn part2 []
   (let [[a b c] abc]

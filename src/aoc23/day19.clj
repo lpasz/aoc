@@ -23,7 +23,7 @@
        (into {})))
 
 (defn parse-input [inp]
-  (let [[workflows items] (str/split inp  #"\n\n")]
+  (let [[workflows items] (str/split input  #"\n\n")]
     [(parse-workflows workflows) (parse-items items)]))
 
 (defn find-valid-paths [root rng path]

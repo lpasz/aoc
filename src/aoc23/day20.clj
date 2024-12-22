@@ -30,7 +30,7 @@
          (into {}))))
 
 
-(defn- parse-inp [inp]
+(defn- parse-input [inp]
   (->> (re-seq #"(?m)(.*) -> (.*)" inp)
        (map rest)
        (parse)))
@@ -99,14 +99,14 @@
 
 (defn part1 [inp]
   (->> (range 1 (inc 1000))
-       (reduce press-button [(parse-inp inp) {:high 0 :low 0} {}])
+       (reduce press-button [(parse-input inp) {:high 0 :low 0} {}])
        (second)
        (vals)
        (c/product)))
 
 (defn part2 [inp]
   (->> (range 1 (inc 4000))
-       (reduce press-button [(parse-inp inp) {:high 0 :low 0} {}])
+       (reduce press-button [(parse-input inp) {:high 0 :low 0} {}])
        (last)
        (vals)
        (reduce math/lcm)))

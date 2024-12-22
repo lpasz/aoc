@@ -31,7 +31,7 @@
          water-to-light
          light-to-temperature
          temperature-to-humidity
-         humidity-to-location] (->> (str/split inp #"\n\n")
+         humidity-to-location] (->> (str/split input #"\n\n")
                                     (map #(str/split-lines %)))
         seeds (->> seeds (re-seq #"\d+") (map biginteger))]
     {:seeds seeds
@@ -113,8 +113,8 @@
             #(closest-spot (:seeds %) %)))
 
 (defn part2
-  ([inp] (part2 inp 1))
-  ([inp steps]
+  ([inp] (part2 input 1))
+  ([input steps]
    (let [almanaque (parse-input inp)
          seeds (seeds-with-steps almanaque steps)
          close-location (closest-spot seeds almanaque)

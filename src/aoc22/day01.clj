@@ -1,6 +1,6 @@
 (ns aoc22.day01 (:require [clojure.string :as s]))
 
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- elf-total-calories [text]
   (->> (s/split text #"\n\n")

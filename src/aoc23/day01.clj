@@ -44,7 +44,7 @@
        (str/reverse)))
 
 (defn part1 [inp]
-  (->> (str/split inp #"\n")
+  (->> (str/split input #"\n")
        (map #(re-seq #"\d" %))
        (map #(str/join [(first %) (last %)]))
        (map c/parse-int)

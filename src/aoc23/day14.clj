@@ -75,7 +75,7 @@
     (+ (- 1000000000 last-apper) fturn)))
 
 
-(defn- generate-small-store [inp n]
+(defn- generate-small-store [input n]
   (->> (c/to-matrix inp)
        (tilt-cycle [:north :west :south :east] n)))
 
@@ -85,7 +85,7 @@
        (calculate-load-on-north)))
 
 (defn part2 [inp]
-  (generate-small-store inp 130)
+  (generate-small-store input 130)
   (->> (calc-from-stored)
        (generate-small-store inp)
        (calculate-load-on-north)))

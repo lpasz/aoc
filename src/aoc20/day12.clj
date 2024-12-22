@@ -2,7 +2,7 @@
   (:require [clojure.string :as s]))
 
 (def ex (c/get-input "example.txt"))
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (def dir {:F :facing
           :R :right

@@ -7,15 +7,15 @@
 (def inp-txt (c/get-input "input.txt"))
 
 (defn draw-board [inp]
-  (let [min-x (->> inp (map first) (map first) (apply min))
-        max-x (->> inp (map first) (map first) (apply max))
-        min-y (->> inp (map first) (map second) (apply min))
-        max-y (->> inp (map first) (map second) (apply max))]
+  (let [min-x (->> input (map first) (map first) (apply min))
+        max-x (->> input (map first) (map first) (apply max))
+        min-y (->> input (map first) (map second) (apply min))
+        max-y (->> input (map first) (map second) (apply max))]
     (->> (range min-y (inc max-y))
          (map (fn [y]
                 (->> (range min-x (inc max-x))
                      (map (fn [x]
-                            (if-let [s (get inp [x y])]
+                            (if-let [s (get input [x y])]
                               s
                               \.)))
                      (apply str))))

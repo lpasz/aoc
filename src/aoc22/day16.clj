@@ -2,10 +2,10 @@
   (:require [clojure.string :as s]
             [clojure.core.reducers :as r]))
 
-(def inp (c/get-input "input.txt"))
-(def ex-inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
 
-(defn parse-inp [text]
+(defn parse-input [text]
   (->> (s/split-lines text)
        (mapcat #(s/split % #"(Valve | has flow rate=|; tunnels lead to valves |; tunnel leads to valve )"))
        (filter not-empty)
@@ -21,8 +21,8 @@
        (into (sorted-map))))
 
 
-(def exvalves (parse-inp ex-inp))
-(def valves (parse-inp inp))
+(def exvalves (parse-input ex-inp))
+(def valves (parse-input inp))
 
 (defn shortest-path  [graph start end]
   (loop [stack [[0 start]]

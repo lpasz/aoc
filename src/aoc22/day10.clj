@@ -1,8 +1,8 @@
 (ns aoc22.day10
   (:require [clojure.string :as s]))
 
-(def inp (c/get-input "input.txt"))
-(def ex-inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
 
 (defn to-instruction [line]
   (if (= "noop" line)
@@ -12,7 +12,7 @@
           (last)
           (Integer/parseInt))]))
 
-(defn parse-inp [text]
+(defn parse-input [text]
   (->> (s/split-lines text)
        (mapcat to-instruction)
        (reductions (fn [[cycle reg] instruction]
@@ -25,7 +25,7 @@
 (def cycles [20 60 100 140 180 220])
 
 (defn ex1 [text]
-  (let [ci (parse-inp text)]
+  (let [ci (parse-input text)]
     (reduce #(+ %1 (* %2 (ci %2))) 0 cycles)))
 
 (defn bit-on? [cycle reg]
@@ -34,7 +34,7 @@
 (defn p [text] (do (print text) text))
 
 (defn ex2 [text]
-  (->> (parse-inp text)
+  (->> (parse-input text)
        (map (fn [[cycle reg]] (if (bit-on? cycle reg) \# \space)))
        (partition 40)
        (map #(apply str %))

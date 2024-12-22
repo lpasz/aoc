@@ -1,8 +1,8 @@
 (ns aoc22.day11
   (:require [clojure.string :as s]))
 
-(def inp (c/get-input "input.txt"))
-(def ex-inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
 
 (defn to-int [i] (Integer/parseInt i))
 
@@ -31,7 +31,7 @@
             :inspected 0}
            (parse-test test))))
 
-(defn parse-inp [text]
+(defn parse-input [text]
   (->> (s/split text #"\n\n")
        (map parse-line)
        (into [])))
@@ -61,7 +61,7 @@
        (reduce #(do-monkey-turn %1 %2 relief denominator) monkeys)))
 
 (defn do-turns [text turns relief]
-  (let [monkeys (parse-inp text)
+  (let [monkeys (parse-input text)
         denominator (->> monkeys (map :divisible-for) (reduce *))]
     (->> (range turns)
          (reduce #(do-turn %1 %2 relief denominator) monkeys)

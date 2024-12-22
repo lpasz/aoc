@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [core :as c]))
 
-(def ex-inp "30373\n25512\n65332\n33549\n35390")
-(def inp (c/get-input "input.txt"))
+(def ex-input "30373\n25512\n65332\n33549\n35390")
+(def input (c/get-input "input.txt"))
 
 (defn tree-pos-and-height [lines]
   (->>  lines

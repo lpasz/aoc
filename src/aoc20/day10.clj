@@ -3,7 +3,7 @@
 
 (def ex (c/get-input "example.txt"))
 (def ex2 (c/get-input "example2.txt"))
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn to-int-seq [text] (->> (s/split text #"\n") (map read-string)))
 

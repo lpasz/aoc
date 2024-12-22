@@ -1,7 +1,7 @@
 (ns aoc20.day17
   (:require [clojure.string :as s]))
 
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 (def ex1 (c/get-input "./src/advent-of-code-2020/day-17/ex1.txt"))
 
 (defn distance [x]
@@ -70,8 +70,8 @@
 
 ;; part 1
 (active-after-n-cycles 6 ex1 3) ;; 112
-(active-after-n-cycles 6 inp 3) ;; 218
+(active-after-n-cycles 6 input 3) ;; 218
 
 ;; part 2
 (active-after-n-cycles 6 ex1 4) ;; 848
-(active-after-n-cycles 6 inp 4) ;; 1908
+(active-after-n-cycles 6 input 4) ;; 1908

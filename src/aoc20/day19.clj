@@ -1,7 +1,7 @@
 (ns aoc20.day19
   (:require [clojure.string :as s]))
 
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 (def ex1 (c/get-input "19/ex1.txt"))
 (def ex2 (c/get-input "example2.txt"))
 
@@ -22,8 +22,8 @@
 (def ex1-rules (message-validator (first (s/split ex1 #"\n\n"))))
 (def ex2-messages (s/split-lines (second (s/split ex2 #"\n\n"))))
 (def ex2-rules (message-validator (first (s/split ex2 #"\n\n"))))
-(def inp-messages (s/split-lines (second (s/split inp #"\n\n"))))
-(def inp-rules (message-validator (first (s/split inp #"\n\n"))))
+(def inp-messages (s/split-lines (second (s/split input #"\n\n"))))
+(def inp-rules (message-validator (first (s/split input #"\n\n"))))
 
 (defn consume-msgs [msgs start paths]
   (let [next-paths (paths start)]

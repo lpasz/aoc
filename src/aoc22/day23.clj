@@ -20,8 +20,8 @@
        (map first)
        (set)))
 
-(def ex-inp (parse ex-txt))
-(def inp (parse inp-txt))
+(def ex-input (parse ex-txt))
+(def input (parse inp-txt))
 
 (def surrounding {:nw [-1 -1] :n [0 -1] :ne [+1 -1]
                    :w [-1 0]            :e  [+1 0]
@@ -34,7 +34,7 @@
 (defn around [[x y] inp]
   (->> surrounding
        (map (fn [[d [xs ys]]] [d [(+ xs x) (+ ys y)]]))
-       (filter #(get inp (second %)))
+       (filter #(get input (second %)))
        (into {})))
 
 (def directions {:n [:nw :n :ne]
@@ -60,7 +60,7 @@
                  [xy (go-to xy dir)])))
        (first-or [xy xy])))
 
-(defn propose-move [[inp order]]
+(defn propose-move [[input order]]
   (->> inp
        (map (fn [xy]
               (let [around (around xy inp)]
@@ -78,25 +78,25 @@
        (into #{})))
 
 
-(defn move [[inp order]]
-  [(remove-move-with-same-target (propose-move [inp order])) (rotate order)])
+(defn move [[input order]]
+  [(remove-move-with-same-target (propose-move [input order])) (rotate order)])
 
 
-(defn calc-board-empty-squares [[inp _]]
-  (let [min-x (->> inp (map first) (apply min))
-        max-x (->> inp (map first) (apply max))
-        min-y (->> inp (map second) (apply min))
-        max-y (->> inp (map second) (apply max))]
+(defn calc-board-empty-squares [[input _]]
+  (let [min-x (->> input (map first) (apply min))
+        max-x (->> input (map first) (apply max))
+        min-y (->> input (map second) (apply min))
+        max-y (->> input (map second) (apply max))]
     (->> (range min-y (inc max-y))
          (mapcat (fn [y]
                    (->> (range min-x (inc max-x))
-                        (keep (fn [x] (when (nil? (get inp [x y])) :empty))))))
+                        (keep (fn [x] (when (nil? (get input [x y])) :empty))))))
          (count))))
 
-(defn do-n-moves [[inp n-m]]
-  (reduce (fn [acc _] (move acc)) [inp n-m] (range 10)))
+(defn do-n-moves [[input n-m]]
+  (reduce (fn [acc _] (move acc)) [input n-m] (range 10)))
 
-(defn do-until-no-moves [[inp order]]
+(defn do-until-no-moves [[input order]]
   (loop [curr inp
          order order
          count 1]
@@ -105,9 +105,9 @@
         count
         (recur new order (inc count))))))
 
-(->> [inp order]
+(->> [input order]
      do-n-moves
      calc-board-empty-squares)
 
-(time (do-until-no-moves [inp order]))
+(time (do-until-no-moves [input order]))
 

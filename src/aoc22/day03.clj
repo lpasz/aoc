@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.set :as set]))
 
-(def ex-inp (c/get-input "input.txt"))
-(def inp (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (def priorities (into {} (mapcat (fn [i] [[(char (+ i (int \a))) (+ i 1)]
                                           [(char (+ i (int \A))) (+ i 27)]])

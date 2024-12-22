@@ -4,17 +4,17 @@
             [clojure.pprint :as pp]
             [clojure.set :as set]))
 
-(def ex-inp (c/get-input "input.txt"))
-(def inp (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
-(defn parse-inp [text]
+(defn parse-input [text]
   (->> (s/split-lines text)
        (mapv (fn [line] (->> (s/split line #",")
                              (mapv #(Integer/parseInt %1)))))
        (into #{})))
 
-(def ex-cubes (parse-inp ex-inp))
-(def cubes (parse-inp inp))
+(def ex-cubes (parse-input ex-inp))
+(def cubes (parse-input inp))
 
 (defn count-sides-touching [cubes]
   (->> (for [cube cubes

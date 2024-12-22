@@ -46,13 +46,13 @@
       acc)))
 
 (defn part1 [inp]
-  (->> (str/split inp #"\n|,")
+  (->> (str/split input #"\n|,")
        (map hash-str)
        (c/sum)))
 
 
 (defn part2 [inp]
-  (->> (str/split inp #"\n|,")
+  (->> (str/split input #"\n|,")
        (hashmap)
        ;; only the vals matter, we have the box value inside vals too
        (vals)

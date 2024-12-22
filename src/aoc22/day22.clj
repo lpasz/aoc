@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.pprint :as pp]))
 
-(def ex-inp (c/get-input "input.txt"))
-(def inp (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn y-boundaries [mmap]
   (->> (group-by ffirst mmap)
@@ -198,6 +198,6 @@
 
 (def faces-borders (into (sorted-map) (map (fn [[k v]] [k (border v)]) sides)))
 
-(ex1 inp [51 1]) ;; 67390
-(ex2 inp [51 1] faces-borders) ;; 95291
+(ex1 input [51 1]) ;; 67390
+(ex2 input [51 1] faces-borders) ;; 95291
 

@@ -4,7 +4,7 @@
 (def ex (c/get-input "example.txt"))
 (def ex2 (c/get-input "example2.txt"))
 ex2
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn str-int->str-bin [s]
   (-> (Integer/parseInt s)
@@ -59,7 +59,7 @@ ex2
   (apply + (map second state)))
 
 (state-sum (state ex exec-v1)) ;; 165
-(state-sum (state inp exec-v1))  ;; 11926135976176
+(state-sum (state input exec-v1))  ;; 11926135976176
 
 ;; v2
 
@@ -89,7 +89,7 @@ ex2
     (->> (get-addresses-from-mask cmd (:mask state))
          (reduce #(assoc %1 %2 (Long/parseLong value 2)) state))))
 
-(state-sum (state inp exec-v2))
+(state-sum (state input exec-v2))
 
 
 

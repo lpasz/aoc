@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]))
 
 (def ex (c/get-input "example.txt"))
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn to-code [text]
   (->> (str/split text #"\n")
@@ -25,7 +25,7 @@
        (= op :jmp) (recur (+ i val) acc code (conj prevs i) cnt)))))
 
 (-> ex to-code exec) ;; 5
-(-> inp to-code exec) ;; 2080
+(-> input to-code exec) ;; 2080
 
 
 (def change-op {:nop :jmp :jmp :nop :acc :acc})

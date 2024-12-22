@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]))
 
 (def ex (c/get-input "example.txt"))
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn to-inf [text]
   (let [[start-at buses] (str/split text #"\n")]

@@ -53,7 +53,7 @@
        (c/transpose)
        (c/flatten-once)))
 
-(defn- sum-galaxy-distances [inp space-expansion-coef]
+(defn- sum-galaxy-distances [input space-expansion-coef]
   (->> (parse-input inp)
        (to-mtx-with-coords)
        (expand-space space-expansion-coef)
@@ -63,10 +63,10 @@
        (c/sum)))
 
 (defn part1 [inp]
-  (sum-galaxy-distances inp 2))
+  (sum-galaxy-distances input 2))
 
 (defn part2 [inp]
-  (sum-galaxy-distances inp 1000000))
+  (sum-galaxy-distances input 1000000))
 
 (comment
   (assert (= 374 (part1 example)))

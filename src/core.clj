@@ -127,8 +127,8 @@
        (ffirst)))
 
 (defn to-matrix
-  ([inp] (to-matrix inp identity identity))
-  ([inp line-parse item-parse]
+  ([inp] (to-matrix input identity identity))
+  ([input line-parse item-parse]
    (->> (if (string? inp)
           (str/split-lines inp)
           inp)

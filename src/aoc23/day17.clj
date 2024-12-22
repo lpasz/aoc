@@ -42,12 +42,12 @@ example
             :else (recur (reduce conj (disj queue args) (recalc args min max mtx))
                          (conj seen [x y dir]))))))
 
-(defn part1 [inp end-at]
-  (->> (c/to-matrix inp #(re-seq #"\d" %) c/parse-int)
+(defn part1 [input end-at]
+  (->> (c/to-matrix input #(re-seq #"\d" %) c/parse-int)
        (dijkstra 1 3 end-at)))
 
-(defn part2 [inp end-at]
-  (->> (c/to-matrix inp #(re-seq #"\d" %) c/parse-int)
+(defn part2 [input end-at]
+  (->> (c/to-matrix input #(re-seq #"\d" %) c/parse-int)
        (dijkstra 4 10 end-at)))
 
 (comment

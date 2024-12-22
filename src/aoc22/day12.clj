@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.set :as set]))
 
-(def inp (c/get-input "input.txt"))
-(def ex-inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
 
 (defn assoc-start-end [graph]
   (let [start (:start graph)
@@ -17,17 +17,17 @@
                        :else [[idx idy] itm]))
                itms))
 
-(defn parse-inp [text]
+(defn parse-input [text]
   (->> (s/split-lines text)
        (map-indexed parse-items)
        (reduce concat)
        (into {})
        (assoc-start-end)))
 
-(def ex-graph (parse-inp ex-inp))
-(def graph (parse-inp inp))
+(def ex-graph (parse-input ex-inp))
+(def graph (parse-input inp))
 
-(parse-inp ex-inp)
+(parse-input ex-inp)
 
 (defn possible-paths [curr-pos]
   (let [[curr-x curr-y] curr-pos
@@ -98,11 +98,11 @@
        (ffirst)))
 
 (defn ex1 [text]
-  (let [graph (parse-inp text)]
+  (let [graph (parse-input text)]
     (ffirst (shortest-path graph (:start graph) (:end graph)))))
 
 (defn ex2 [text]
-  (->> (parse-inp text)
+  (->> (parse-input text)
        (shortest-starting-point)))
 
 (ex1 ex-inp) ;; 31

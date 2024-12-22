@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]))
 
 (def ex (c/get-input "example.txt"))
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn to-int-seq [text] (map read-string (str/split text #"\n")))
 
@@ -21,7 +21,7 @@
        first))
 
 (= [14 127] (-> ex to-int-seq (not-preamble 5)))
-(second (-> inp to-int-seq (not-preamble 25)))
+(second (-> input to-int-seq (not-preamble 25)))
 
 (defn drop-until-sum-lower [coll val]
   (if (<= (apply + coll) val)
@@ -41,4 +41,4 @@
     (+ (apply max range) (apply min range))))
 
 (= 62 (-> ex to-int-seq (encryption-weakness 127)))
-(= 2942387 (-> inp to-int-seq (encryption-weakness 22406676)))
+(= 2942387 (-> input to-int-seq (encryption-weakness 22406676)))

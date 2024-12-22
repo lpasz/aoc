@@ -3,7 +3,7 @@
             [clojure.pprint :as pp]))
 
 (def ex1 (c/get-input "./src/advent-of-code-2020/day-20/ex1.txt"))
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn transpose [m]
   (apply map vector m))
@@ -213,7 +213,7 @@ ex1-tiles
 
 (map concat [[1 2 3] [4 5 6] [7 8 9]] [[1 2 3] [4 5 6] [7 8 9]])
 
-(->> (assembly-tiles inp 2287 12)
+(->> (assembly-tiles input 2287 12)
      (first))
 
 (:info ((tiles ex1) 2971))

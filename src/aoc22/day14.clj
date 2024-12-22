@@ -1,8 +1,8 @@
 (ns aoc22.day14
   (:require [clojure.string :as s]))
 
-(def inp (c/get-input "input.txt"))
-(def ex-inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
 
 (defn rrange [r1 r2]
   (if (< r1 r2)
@@ -29,7 +29,7 @@
        (partition 2 1)
        (reduce add-rock-edge acc)))
 
-(defn parse-inp [text]
+(defn parse-input [text]
   (->> (s/split-lines text)
        (reduce parse-line {})))
 
@@ -67,12 +67,12 @@
         (recur next-acc)))))
 
 (defn ex1 [text]
-  (let [rocks (parse-inp text)
+  (let [rocks (parse-input text)
         free-fall (apply max (map second (keys rocks)))]
     (sand-max-capacity rocks {:free-fall free-fall})))
 
 (defn ex2 [text]
-  (let [rocks (parse-inp text)
+  (let [rocks (parse-input text)
         infinity-floor (+ 2 (apply max (map second (keys rocks))))]
     (sand-max-capacity rocks {:infinity-floor infinity-floor})))
 

@@ -1,7 +1,7 @@
 (ns aoc22.day09
   (:require [clojure.string :as s]))
 
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn move-tail [[hx hy] [tx ty]]
   (let [diff [(- hx tx) (- hy ty)]
@@ -65,7 +65,7 @@
 
 (move-long (repeat 9 [1 1]) ["R" 5])
 
-(def ex-inp (str "R 4\n"
+(def ex-input (str "R 4\n"
                  "U 4\n"
                  "L 3\n"
                  "D 1\n"
@@ -84,14 +84,14 @@
                   "U 20"))
 
 
-(defn parse-inp [text]
+(defn parse-input [text]
   (->> (s/split-lines text)
        (map #(->> (s/split % #" ")
                   ((fn [[dir steps]]
                      [dir (Integer/parseInt steps)]))))))
 
 (defn ex1 [text]
-  (->> (parse-inp text)
+  (->> (parse-input text)
        (reduce (fn [[h-pos t-pos visited] next-h-move]
                  (let [[next-h next-t next-visited] (move h-pos t-pos next-h-move)]
                    [next-h next-t (into #{} (concat visited next-visited))]))
@@ -103,7 +103,7 @@
 (ex1 inp)
 
 (defn ex2 [text]
-  (->> (parse-inp text)
+  (->> (parse-input text)
        (reduce (fn [[curr-pos visited] next-h-move]
                  (let [[new-pos next-visited] (move-long curr-pos next-h-move)]
                    [new-pos (into #{} (concat visited next-visited))]))

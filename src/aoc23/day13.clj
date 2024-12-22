@@ -55,15 +55,15 @@
   (cond (nil? lines) columns
         (nil? columns) (* 100 lines)))
 
-(defn- part [inp pred]
-  (->> (str/split inp #"\n\n")
+(defn- part [input pred]
+  (->> (str/split input #"\n\n")
        (map #(map seq (str/split-lines %)))
        (map #(find-reflections % pred))
        (map calc-reflections)
        (c/sum)))
 
-(defn part1 [inp] (part inp reflection?))
-(defn part2 [inp] (part inp reflection-diff?))
+(defn part1 [inp] (part input reflection?))
+(defn part2 [inp] (part input reflection-diff?))
 
 (comment
   (assert (= 405 (part1 example)))

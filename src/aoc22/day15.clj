@@ -1,10 +1,10 @@
 (ns aoc22.day15
   (:require [clojure.string :as s]))
 
-(def inp (c/get-input "input.txt"))
-(def ex-inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
 
-(defn parse-inp [text]
+(defn parse-input [text]
   (->> (s/split-lines text)
        (mapcat #(s/split % #"(Sensor at x=|, y=|: closest beacon is at x=|, y=)"))
        (filter not-empty)
@@ -68,7 +68,7 @@
 (defn ppeek [coll] (peek (peek coll)))
 
 (defn ex1 [text row]
-  (let [sensors-and-beacons (parse-inp text)
+  (let [sensors-and-beacons (parse-input text)
         sensors-and-radius (map find-radius sensors-and-beacons)
         scanned (sensors-scan-ranges-in-row sensors-and-radius row)
         start-of-continuous-range (ffirst scanned)
@@ -78,7 +78,7 @@
 
 
 (defn ex2 [text max-val]
-  (let [sensors-and-beacons (parse-inp text)
+  (let [sensors-and-beacons (parse-input text)
         sensors-and-radius (map find-radius sensors-and-beacons)]
     (loop [y max-val]
       (let [edges (sensors-scan-ranges-in-row sensors-and-radius y)
@@ -88,7 +88,7 @@
           (recur (dec y)))))))
 
 
-(ex1 ex-inp 10) ;; 26
-(ex1 inp 2000000) ;; 5525847
-(ex2 ex-inp 20) ;; 56000011
-(ex2 inp 4000000) ;; 13340867187704
+(ex1 ex-input 10) ;; 26
+(ex1 input 2000000) ;; 5525847
+(ex2 ex-input 20) ;; 56000011
+(ex2 input 4000000) ;; 13340867187704

@@ -19,12 +19,12 @@
 (defn will-be-said-in-nth [star-nums nth] (take-turn {} star-nums [] 1 nth))
 
 (def ex [0 3 6]) ;; 436
-(def inp [12 1 16 3 11 0]) ;; 1696
+(def input [12 1 16 3 11 0]) ;; 1696
 
 ;;part 1
 (will-be-said-in-nth ex 2020)
-(will-be-said-in-nth inp 2020)
+(will-be-said-in-nth input 2020)
 
 ;; part 2
 (will-be-said-in-nth ex 30000000) ;; 175594
-(will-be-said-in-nth inp 30000000) ;; 37385
+(will-be-said-in-nth input 30000000) ;; 37385

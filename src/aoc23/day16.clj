@@ -66,8 +66,8 @@
                             (generate-borders-left-right n)))))
 
 (defn part1
-  ([inp] (part1 inp start-coords-and-dir))
-  ([inp coords-and-dir]
+  ([inp] (part1 input start-coords-and-dir))
+  ([input coords-and-dir]
    (->> (c/to-matrix inp)
         (move coords-and-dir)
         (count)
@@ -75,7 +75,7 @@
 
 (defn part2 [inp]
   (->> (edges inp)
-       (map #(part1 inp %))
+       (map #(part1 input %))
        (reduce max)))
 
 (comment

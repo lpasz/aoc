@@ -85,11 +85,11 @@
                                 (conj acc [ncoord (+ ncost cost) visited])) rcurrs))
                  max-cost))))))
 
-(defn part1 [inp start-at ends-at]
+(defn part1 [input start-at ends-at]
   (-> (parse inp)
       (longest-path #{ends-at} start-at icy-valid-moves)))
 
-(defn part2 [inp start-at ends-at]
+(defn part2 [input start-at ends-at]
   (-> (nodes inp)
       (distance-between-nodes start-at ends-at (parse inp) valid-moves)
       (longest-path-nodes start-at ends-at)))

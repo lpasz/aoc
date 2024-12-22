@@ -1,8 +1,8 @@
 (ns aoc22.day05
   (:require [clojure.string :as s]))
 
-(def ex-inp (c/get-input "input.txt"))
-(def inp (c/get-input "input.txt"))
+(def ex-input (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn transpose [matrix] (apply map vector matrix))
 

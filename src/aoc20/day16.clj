@@ -2,7 +2,7 @@
   (:require [clojure.string :as s]
             [core :as c]))
 
-(def inp (c/get-input "input.txt"))
+(def input (c/get-input "input.txt"))
 (def ex1 (c/get-input "example.txt"))
 (def ex2 (c/get-input "example2.txt"))
 
@@ -101,4 +101,4 @@
          (apply *))))
 
 (discover-vals ex2 #"(class|row|seat)") ;; 1716
-(discover-vals inp #"departure")
+(discover-vals input #"departure")

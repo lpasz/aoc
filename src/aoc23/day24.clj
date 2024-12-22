@@ -127,7 +127,7 @@
 (defn part1
   "Compare every line to each other, if line intersects and that 
    intersection happen after the starting point of both lines and inside the predetermine zone we count that."
-  [inp rng]
+  [input rng]
   (->> (parse inp)
        (combinations)
        (keep (fn [[line1 line2]]
