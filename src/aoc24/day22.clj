@@ -76,5 +76,5 @@
        (get-price-after-4-changes)
        (find-most-bananas-across-all-vendors)))
 
-(time (part1 "./assets/day22/input.txt"))
-(time (part2 "./assets/day22/input.txt"))
+(time (part1 "./assets/aoc24/day22/input.txt"))
+(time (part2 "./assets/aoc24/day22/input.txt"))
