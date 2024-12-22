@@ -3,8 +3,8 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- in-between-range [[start range-size]]
   #(or (= start %) (< start % (+ start range-size))))
@@ -125,7 +125,7 @@
           (sort)
           (first)))))
 
-(assert (= 35 (part1 exp1-input)))
-(assert (= 323142486 (part1 part1-input)))
-(assert (= 46 (part2 exp1-input 1)))
-(assert (= 79874951 (part2 part1-input 5000)))
+(assert (= 35 (part1 example)))
+(assert (= 323142486 (part1 input)))
+(assert (= 46 (part2 example 1)))
+(assert (= 79874951 (part2 input 5000)))

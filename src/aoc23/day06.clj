@@ -3,8 +3,8 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- hold-better-than-record [time record-distance hold]
   (let [distance (* hold (- time hold))]
@@ -60,12 +60,12 @@
 
 (comment
   ;; example 1
-  (assert (= 288 (part1 exp1-input)))
+  (assert (= 288 (part1 example)))
   ;; part 1
-  (assert (= 1195150 (part1 part1-input)))
+  (assert (= 1195150 (part1 input)))
   ;; example 2
-  (assert (= 71503 (part2 exp1-input)))
+  (assert (= 71503 (part2 example)))
   ;; part 2
-  (assert (= 42550411 (part2 part1-input)))
+  (assert (= 42550411 (part2 input)))
   ;;
   )

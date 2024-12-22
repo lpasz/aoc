@@ -3,8 +3,8 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- hash-calc [char hash-acc]
   (rem (* 17 (+ hash-acc (long char))) 256))
@@ -63,10 +63,10 @@
        (c/sum)))
 
 (comment
-  (assert (= 1320 (part1 exp1-input)))
-  (assert (= 517965 (part1 part1-input)))
-  (assert (= 145 (part2 exp1-input)))
-  (assert (= 267372 (part2 part1-input)))
+  (assert (= 1320 (part1 example)))
+  (assert (= 517965 (part1 input)))
+  (assert (= 145 (part2 example)))
+  (assert (= 267372 (part2 input)))
   ;;
   )
 

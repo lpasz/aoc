@@ -3,8 +3,8 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 (def card-to-int
   {\2 2
    \3 3
@@ -128,7 +128,7 @@
        (map #(* (:bid %) (:rank %)))
        (apply +)))
 
-(assert (= 6440 (part1 exp1-input)))
-(assert (= 250453939 (part1 part1-input)))
-(assert (= 5905 (part2 exp1-input)))
-(assert (= 248652697 (part2 part1-input)))
+(assert (= 6440 (part1 example)))
+(assert (= 250453939 (part1 input)))
+(assert (= 5905 (part2 example)))
+(assert (= 248652697 (part2 input)))

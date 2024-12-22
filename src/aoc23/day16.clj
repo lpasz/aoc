@@ -3,8 +3,8 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (def start-coords-and-dir [[-1 0] "➡️"])
 
@@ -79,10 +79,10 @@
        (reduce max)))
 
 (comment
-  (assert (= 46 (part1 exp1-input)))
-  (assert (= 7034 (part1 part1-input)))
-  (assert (= 51 (part2 exp1-input)))
+  (assert (= 46 (part1 example)))
+  (assert (= 7034 (part1 input)))
+  (assert (= 51 (part2 example)))
   ;; a bit slow
-  (assert (= 7759 (part2 part1-input)))
+  (assert (= 7759 (part2 input)))
   ;;
   )

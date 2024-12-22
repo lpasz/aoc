@@ -3,8 +3,8 @@
   (:require [core :as c]))
 
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (def directions
   {:north (fn [[x y]] [x (dec y)])
@@ -91,10 +91,10 @@
        (calculate-load-on-north)))
 
 (comment
-  (assert (= 136 (part1 exp1-input)))
-  (assert (= 109665 (part1 part1-input)))
-  (assert (= 64 (part2 exp1-input)))
+  (assert (= 136 (part1 example)))
+  (assert (= 109665 (part1 input)))
+  (assert (= 64 (part2 example)))
   ;; super slow
-  (assert (= 96061 (part2 part1-input)))
+  (assert (= 96061 (part2 input)))
   ;;
   )

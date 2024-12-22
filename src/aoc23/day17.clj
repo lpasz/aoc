@@ -2,9 +2,9 @@
   "Clumsy Crucible"
   (:require [core :as c]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
-exp1-input
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
+example
 (def directions {:up #{:-> :<-}
                  :down #{:-> :<-}
                  :-> #{:up :down}
@@ -51,10 +51,10 @@ exp1-input
        (dijkstra 4 10 end-at)))
 
 (comment
-  (assert (= 102 (part1 exp1-input [12 12])))
-  (assert (= 742 (part1 part1-input [140 140])))
-  (assert (= 94 (part2 exp1-input [12 12])))
-  (assert (= 918 (part2 part1-input [140 140])))
+  (assert (= 102 (part1 example [12 12])))
+  (assert (= 742 (part1 input [140 140])))
+  (assert (= 94 (part2 example [12 12])))
+  (assert (= 918 (part2 input [140 140])))
   ;;
   )
 

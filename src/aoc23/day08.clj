@@ -3,10 +3,10 @@
   (:require [clojure.string :as str]
             [clojure.math.numeric-tower :as math]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def exp2-input (c/get-input "example2.txt"))
-(def exp3-input (c/get-input "example3.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def example2 (c/get-input "example2.txt"))
+(def example3 (c/get-input "example3.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- symbol-to-left-right [inp]
   (->> (str/split-lines inp)
@@ -55,14 +55,14 @@
 
 (comment
   ;; Example 1 - Part1
-  (assert (= 2 (part1 exp1-input)))
+  (assert (= 2 (part1 example)))
   ;; Example 2 - Part 1
-  (assert (= 6 (part1 exp2-input)))
+  (assert (= 6 (part1 example2)))
   ;; Part 1
-  (assert (= 17621 (part1 part1-input)))
+  (assert (= 17621 (part1 input)))
   ;; Example 3 - Part 2
-  (assert (= 6 (part2 exp3-input)))
+  (assert (= 6 (part2 example3)))
   ;; Part 2
-  (assert (= 20685524831999 (part2 part1-input)))
+  (assert (= 20685524831999 (part2 input)))
   ;;
   )

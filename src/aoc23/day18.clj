@@ -3,8 +3,8 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- move [[x y] n dir]
   (case dir
@@ -57,10 +57,10 @@
        (calc-lava-area)))
 
 (comment
-  (assert (= 62 (part1 exp1-input)))
-  (assert (= 62573 (part1 part1-input)))
-  (assert (= 952408144115 (part2 exp1-input)))
-  (assert (= 54662804037719 (part2 part1-input)))
+  (assert (= 62 (part1 example)))
+  (assert (= 62573 (part1 input)))
+  (assert (= 952408144115 (part2 example)))
+  (assert (= 54662804037719 (part2 input)))
   ;;
   )
 

@@ -3,8 +3,8 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- reflection? [idx-mtx idx1 line1 idx2 line2]
   (cond
@@ -66,9 +66,9 @@
 (defn part2 [inp] (part inp reflection-diff?))
 
 (comment
-  (assert (= 405 (part1 exp1-input)))
-  (assert (= 29846 (part1 part1-input)))
-  (assert (= 400 (part2 exp1-input)))
-  (assert (= 25401 (part2 part1-input)))
+  (assert (= 405 (part1 example)))
+  (assert (= 29846 (part1 input)))
+  (assert (= 400 (part2 example)))
+  (assert (= 25401 (part2 input)))
   ;;
   )

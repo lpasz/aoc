@@ -2,11 +2,11 @@
   "Pipe Maze"
   (:require [core :as c]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def exp2-input (c/get-input "example2.txt"))
-(def part1-input (c/get-input "input.txt"))
-(def exp3-input (c/get-input "example3.txt"))
-(def exp4-input (c/get-input "example4.txt"))
+(def example (c/get-input "example.txt"))
+(def example2 (c/get-input "example2.txt"))
+(def input (c/get-input "input.txt"))
+(def example3 (c/get-input "example3.txt"))
+(def example4 (c/get-input "example4.txt"))
 
 (defn- find-start [mtx]
   (->> mtx
@@ -64,13 +64,13 @@
     points-inside-loop))
 
 (comment
-  (assert (= 4 (part1 exp1-input)))
-  (assert (= 8 (part1 exp2-input)))
-  (assert (= 7005 (part1 part1-input)))
-  (assert (c/one? (part2 exp1-input)))
-  (assert (c/one? (part2 exp2-input)))
-  (assert (= 4 (part2 exp3-input)))
-  (assert (= 8 (part2 exp4-input)))
-  (assert (= 417 (part2 part1-input)))
+  (assert (= 4 (part1 example)))
+  (assert (= 8 (part1 example2)))
+  (assert (= 7005 (part1 input)))
+  (assert (c/one? (part2 example)))
+  (assert (c/one? (part2 example2)))
+  (assert (= 4 (part2 example3)))
+  (assert (= 8 (part2 example4)))
+  (assert (= 417 (part2 input)))
   ;;
   )

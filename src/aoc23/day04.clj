@@ -4,8 +4,8 @@
             [clojure.set :as set]
             [core :as c]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- parse-digits [txt]
   (->> (re-seq #"\d+" txt)
@@ -62,7 +62,7 @@
        (map :scratchcard/number-of-copies)
        (apply +)))
 
-(assert (= 13 (part1 exp1-input)))
-(assert (= 17803 (part1 part1-input)))
-(assert (= 30 (part2 exp1-input)))
-(assert (= 5554894 (part2 part1-input)))
+(assert (= 13 (part1 example)))
+(assert (= 17803 (part1 input)))
+(assert (= 30 (part2 example)))
+(assert (= 5554894 (part2 input)))

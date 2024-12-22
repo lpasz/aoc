@@ -4,8 +4,8 @@
             [core :as c]
             [clojure.set :as set]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- symbols-xy [items]
   (->> items
@@ -90,13 +90,13 @@
 
 (comment
   ;; exp 1
-  (assert (= 4361 (part1 exp1-input)))
+  (assert (= 4361 (part1 example)))
   ;; part 1
-  (assert (= 533775 (part1 part1-input)))
+  (assert (= 533775 (part1 input)))
   ;; exp 2
-  (assert (= 467835 (part2 exp1-input)))
+  (assert (= 467835 (part2 example)))
   ;; part 2
-  (assert (= 78236071 (part2 part1-input)))
+  (assert (= 78236071 (part2 input)))
   ;;
   )
   

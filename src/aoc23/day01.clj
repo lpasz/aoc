@@ -4,9 +4,9 @@
             [core :refer [map-key]]
             [core :as c]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def exp2-input (c/get-input "example2.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def example2 (c/get-input "example2.txt"))
+(def input (c/get-input "input.txt"))
 
 (def digits
   "Map the text of digit to it's number"
@@ -60,13 +60,13 @@
 
 (comment
   ;; example 1
-  (assert (= 142 (part1 exp1-input)))
+  (assert (= 142 (part1 example)))
   ;; part 1
-  (assert (= 54450 (part1 part1-input)))
+  (assert (= 54450 (part1 input)))
   ;; example 2
-  (assert (= 281 (part2 exp2-input)))
+  (assert (= 281 (part2 example2)))
   ;; part 2
-  (assert (= 54265 (part2 part1-input)))
+  (assert (= 54265 (part2 input)))
   ;;
   )
 

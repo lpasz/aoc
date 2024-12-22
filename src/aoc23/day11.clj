@@ -3,8 +3,8 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- parse-input [inp]
   (->> (str/split-lines inp)
@@ -69,10 +69,10 @@
   (sum-galaxy-distances inp 1000000))
 
 (comment
-  (assert (= 374 (part1 exp1-input)))
-  (assert (= 9648398 (part1 part1-input)))
-  (assert (= 1030 (sum-galaxy-distances exp1-input 10)))
-  (assert (= 8410 (sum-galaxy-distances exp1-input 100)))
-  (assert (= 618800410814 (part2 part1-input)))
+  (assert (= 374 (part1 example)))
+  (assert (= 9648398 (part1 input)))
+  (assert (= 1030 (sum-galaxy-distances example 10)))
+  (assert (= 8410 (sum-galaxy-distances example 100)))
+  (assert (= 618800410814 (part2 input)))
 ;;
   )

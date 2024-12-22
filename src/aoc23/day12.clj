@@ -3,8 +3,8 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- parse-input [inp]
   (->> (str/split-lines inp)
@@ -56,9 +56,9 @@
        (c/sum)))
 
 (comment
-  (assert (= 21 (part1 exp1-input)))
-  (assert (= 7939 (part1 part1-input)))
-  (assert (= 525152 (part2 exp1-input)))
-  (assert (= 850504257483930 (part2 part1-input)))
+  (assert (= 21 (part1 example)))
+  (assert (= 7939 (part1 input)))
+  (assert (= 525152 (part2 example)))
+  (assert (= 850504257483930 (part2 input)))
   ;;
   )

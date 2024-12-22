@@ -2,8 +2,8 @@
   "Sand Slabs"
   (:require [core :as c]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn- rangex [p1 p2]
   (range (min p1 p2) (inc (max p1 p2))))
@@ -110,9 +110,9 @@
          (c/sum))))
 
 (comment
-  (assert (= 5 (part1 exp1-input)))
-  (assert (= 393 (part1 part1-input)))
-  (assert (= 7 (part2 exp1-input)))
-  (assert (= 58440 (part2 part1-input)))
+  (assert (= 5 (part1 example)))
+  (assert (= 393 (part1 input)))
+  (assert (= 7 (part2 example)))
+  (assert (= 58440 (part2 input)))
   ;;
   )

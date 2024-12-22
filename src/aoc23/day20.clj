@@ -3,9 +3,9 @@
   (:require [core :as c]
             [clojure.math.numeric-tower :as math]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def exp2-input (c/get-input "example2.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def example2 (c/get-input "example2.txt"))
+(def input (c/get-input "input.txt"))
 
 (def high-pulse? true?)
 (def low-pulse? false?)
@@ -112,9 +112,9 @@
        (reduce math/lcm)))
 
 (comment
-  (assert (= 32000000 (part1 exp1-input)))
-  (assert (= 11687500 (part1 exp2-input)))
-  (assert (= 787056720 (part1 part1-input)))
-  (assert (= 212986464842911 (part2 part1-input)))
+  (assert (= 32000000 (part1 example)))
+  (assert (= 11687500 (part1 example2)))
+  (assert (= 787056720 (part1 input)))
+  (assert (= 212986464842911 (part2 input)))
   ;;
   )

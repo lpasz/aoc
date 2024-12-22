@@ -3,8 +3,8 @@
   (:require [core :as c]
             [clojure.string :as s]))
 
-(def exp1-input (c/get-input "example.txt"))
-(def part1-input (c/get-input "input.txt"))
+(def example (c/get-input "example.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn in-range [s f [x y]]
   (and (<= s x f) (<= s y f)))
@@ -153,10 +153,10 @@
     (+ x y z)))
 
 (comment
-  (assert (= 2 (part1 exp1-input exp1-rng)))
-  (assert (= 12740 (part1 part1-input part1-rng)))
-  (assert (= 47 (part2 exp1-input)))
-  (assert (= 741991571910536 (part2 part1-input)))
+  (assert (= 2 (part1 example exp1-rng)))
+  (assert (= 12740 (part1 input part1-rng)))
+  (assert (= 47 (part2 example)))
+  (assert (= 741991571910536 (part2 input)))
   ;;
   )
 
