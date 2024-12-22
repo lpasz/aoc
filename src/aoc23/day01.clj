@@ -4,10 +4,6 @@
             [core :refer [map-key]]
             [core :as c]))
 
-(def example (c/get-input "example.txt"))
-(def example2 (c/get-input "example2.txt"))
-(def input (c/get-input "input.txt"))
-
 (def digits
   "Map the text of digit to it's number"
   {"one" "1"
@@ -43,7 +39,7 @@
        (re-find reverse-re-digits)
        (str/reverse)))
 
-(defn part1 [inp]
+(defn part1 [input]
   (->> (str/split input #"\n")
        (map #(re-seq #"\d" %))
        (map #(str/join [(first %) (last %)]))
@@ -57,17 +53,4 @@
        (map #(str/join "" %))
        (map c/parse-int)
        (apply +)))
-
-(comment
-  ;; example 1
-  (assert (= 142 (part1 example)))
-  ;; part 1
-  (assert (= 54450 (part1 input)))
-  ;; example 2
-  (assert (= 281 (part2 example2)))
-  ;; part 2
-  (assert (= 54265 (part2 input)))
-  ;;
-  )
-
 

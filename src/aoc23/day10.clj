@@ -2,12 +2,6 @@
   "Pipe Maze"
   (:require [core :as c]))
 
-(def example (c/get-input "example.txt"))
-(def example2 (c/get-input "example2.txt"))
-(def input (c/get-input "input.txt"))
-(def example3 (c/get-input "example3.txt"))
-(def example4 (c/get-input "example4.txt"))
-
 (defn- find-start [mtx]
   (->> mtx
        (filter #(= \S (val %)))

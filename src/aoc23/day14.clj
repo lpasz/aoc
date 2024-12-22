@@ -2,10 +2,6 @@
   "Parabolic Reflector Dish"
   (:require [core :as c]))
 
-
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (def directions
   {:north (fn [[x y]] [x (dec y)])
    :south (fn [[x y]] [x (inc y)])
@@ -74,27 +70,17 @@
         last-apper (calc-last-appearance fturn (- sturn fturn))]
     (+ (- 1000000000 last-apper) fturn)))
 
-
 (defn- generate-small-store [input n]
-  (->> (c/to-matrix inp)
+  (->> (c/to-matrix input)
        (tilt-cycle [:north :west :south :east] n)))
 
-(defn part1 [inp]
-  (->> (c/to-matrix inp)
+(defn part1 [input]
+  (->> (c/to-matrix input)
        (tilt :north)
        (calculate-load-on-north)))
 
-(defn part2 [inp]
+(defn part2 [input]
   (generate-small-store input 130)
   (->> (calc-from-stored)
-       (generate-small-store inp)
+       (generate-small-store input)
        (calculate-load-on-north)))
-
-(comment
-  (assert (= 136 (part1 example)))
-  (assert (= 109665 (part1 input)))
-  (assert (= 64 (part2 example)))
-  ;; super slow
-  (assert (= 96061 (part2 input)))
-  ;;
-  )

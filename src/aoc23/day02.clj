@@ -3,8 +3,6 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
 (def can-possibly-contain-cubes {:red 12 :green 13 :blue 14})
 
 (defn- to-cube-color-and-count [cube-count-and-color]
@@ -52,18 +50,6 @@
        (map to-id-and-bag-turns)
        (map power-of-cubes)
        (apply +)))
-
-(comment
-  ;; example 1
-  (assert (= 8 (part1 example)))
-  ;; part 1
-  (assert (= 2317 (part1 input)))
-  ;; example 2
-  (assert (= 2286 (part2 example)))
-  ;; part 2
-  (assert (= 74804 (part2 input)))
-  ;;
-  )
 
 
 

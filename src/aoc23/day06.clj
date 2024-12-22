@@ -3,9 +3,6 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- hold-better-than-record [time record-distance hold]
   (let [distance (* hold (- time hold))]
     (when (> distance record-distance)
@@ -17,8 +14,6 @@
 (defn- keep-holds-better-than-record [{:keys [time record-distance]}]
   (->> (range 0 (inc time))
        (keep #(hold-better-than-record time record-distance %))))
-
-(slurp "htts://adventofcode.com/2024/day/22/input")
 
 (defn part1 [inp]
   (->> (str/split-lines inp)
@@ -58,14 +53,4 @@
                 :record-distance distance})
        (keep-holds-better-than-record-bigint)))
 
-(comment
-  ;; example 1
-  (assert (= 288 (part1 example)))
-  ;; part 1
-  (assert (= 1195150 (part1 input)))
-  ;; example 2
-  (assert (= 71503 (part2 example)))
-  ;; part 2
-  (assert (= 42550411 (part2 input)))
-  ;;
-  )
+

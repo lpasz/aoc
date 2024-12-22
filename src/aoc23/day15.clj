@@ -3,9 +3,6 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- hash-calc [char hash-acc]
   (rem (* 17 (+ hash-acc (long char))) 256))
 
@@ -45,13 +42,13 @@
                      (update acc (hash-str key) #(remove-lens-with-key % key)))))
       acc)))
 
-(defn part1 [inp]
+(defn part1 [input]
   (->> (str/split input #"\n|,")
        (map hash-str)
        (c/sum)))
 
 
-(defn part2 [inp]
+(defn part2 [input]
   (->> (str/split input #"\n|,")
        (hashmap)
        ;; only the vals matter, we have the box value inside vals too
@@ -62,12 +59,5 @@
        (mapcat #(map-indexed (fn [slot [_key box focal]]  (* (inc box) (inc slot) focal))  %))
        (c/sum)))
 
-(comment
-  (assert (= 1320 (part1 example)))
-  (assert (= 517965 (part1 input)))
-  (assert (= 145 (part2 example)))
-  (assert (= 267372 (part2 input)))
-  ;;
-  )
 
 

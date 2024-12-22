@@ -3,9 +3,6 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- in-between-range [[start range-size]]
   #(or (= start %) (< start % (+ start range-size))))
 
@@ -23,7 +20,7 @@
        (map (fn [nums] (map biginteger nums)))
        (map from-to-fn)))
 
-(defn- parse-input [inp]
+(defn- parse-input [input]
   (let [[[seeds]
          seed-to-soil
          soil-to-fertilizer
@@ -51,7 +48,6 @@
      :temperature-to-light (to-funcs light-to-temperature to-from)
      :humidity-to-temperature (to-funcs temperature-to-humidity to-from)
      :location-to-humidity (to-funcs humidity-to-location to-from)}))
-
 
 (defn- gets [coll-fn k dv]
   (or (->> coll-fn (keep #(% k)) (first)) dv))
@@ -108,14 +104,14 @@
        (flatten)
        (lazy-cat)))
 
-(defn part1 [inp]
-  (c/->then (parse-input inp)
-            #(closest-spot (:seeds %) %)))
+(defn part1 [input]
+  (->> (parse-input input)
+       (c/then [x] (closest-spot (:seeds x) x))))
 
 (defn part2
-  ([inp] (part2 input 1))
+  ([input] (part2 input 1))
   ([input steps]
-   (let [almanaque (parse-input inp)
+   (let [almanaque (parse-input input)
          seeds (seeds-with-steps almanaque steps)
          close-location (closest-spot seeds almanaque)
          close-seed (location-to-seed close-location almanaque)]
@@ -125,7 +121,3 @@
           (sort)
           (first)))))
 
-(assert (= 35 (part1 example)))
-(assert (= 323142486 (part1 input)))
-(assert (= 46 (part2 example 1)))
-(assert (= 79874951 (part2 input 5000)))

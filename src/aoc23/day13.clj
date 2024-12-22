@@ -3,9 +3,6 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- reflection? [idx-mtx idx1 line1 idx2 line2]
   (cond
     (or (nil? line1) (nil? line2)) true
@@ -62,13 +59,6 @@
        (map calc-reflections)
        (c/sum)))
 
-(defn part1 [inp] (part input reflection?))
-(defn part2 [inp] (part input reflection-diff?))
+(defn part1 [input] (part input reflection?))
+(defn part2 [input] (part input reflection-diff?))
 
-(comment
-  (assert (= 405 (part1 example)))
-  (assert (= 29846 (part1 input)))
-  (assert (= 400 (part2 example)))
-  (assert (= 25401 (part2 input)))
-  ;;
-  )

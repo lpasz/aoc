@@ -3,9 +3,6 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- parse-input [inp]
   (->> (str/split-lines inp)
        (map #(str/split % #" "))
@@ -34,12 +31,3 @@
        (map predict-next)
        (c/sum)))
 
-(comment
-  ;; example 1 - part 1
-  (assert (= 114 (part1 example)))
-  ;; part1
-  (assert (= 1974232246 (part1 input)))
-  ;; part 2
-  (assert (= 928 (part2 input)))
-  ;;
-  )

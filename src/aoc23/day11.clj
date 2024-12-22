@@ -3,9 +3,6 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- parse-input [inp]
   (->> (str/split-lines inp)
        (map seq)))
@@ -54,7 +51,7 @@
        (c/flatten-once)))
 
 (defn- sum-galaxy-distances [input space-expansion-coef]
-  (->> (parse-input inp)
+  (->> (parse-input input)
        (to-mtx-with-coords)
        (expand-space space-expansion-coef)
        (keep (fn [[coord itm]] (when (= \# itm) coord)))
@@ -62,17 +59,8 @@
        (vals)
        (c/sum)))
 
-(defn part1 [inp]
+(defn part1 [input]
   (sum-galaxy-distances input 2))
 
-(defn part2 [inp]
+(defn part2 [input]
   (sum-galaxy-distances input 1000000))
-
-(comment
-  (assert (= 374 (part1 example)))
-  (assert (= 9648398 (part1 input)))
-  (assert (= 1030 (sum-galaxy-distances example 10)))
-  (assert (= 8410 (sum-galaxy-distances example 100)))
-  (assert (= 618800410814 (part2 input)))
-;;
-  )

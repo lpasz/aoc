@@ -3,11 +3,6 @@
   (:require [clojure.string :as str]
             [clojure.math.numeric-tower :as math]))
 
-(def example (c/get-input "example.txt"))
-(def example2 (c/get-input "example2.txt"))
-(def example3 (c/get-input "example3.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- symbol-to-left-right [inp]
   (->> (str/split-lines inp)
        (map #(re-seq #"[A-Z|\d]+" %))
@@ -15,7 +10,7 @@
               [key {\L left \R right}]))
        (into (sorted-map))))
 
-(defn- parse-input [inp]
+(defn- parse-input [input]
   (let [[left-right rest] (str/split input #"\n\n")
         left-right (cycle (seq left-right))
         symbol-to-left-right-map (symbol-to-left-right rest)]
@@ -53,16 +48,3 @@
          (map #(steps-to-XXZ left-right symbol-to-left-right-map %))
          (reduce math/lcm))))
 
-(comment
-  ;; Example 1 - Part1
-  (assert (= 2 (part1 example)))
-  ;; Example 2 - Part 1
-  (assert (= 6 (part1 example2)))
-  ;; Part 1
-  (assert (= 17621 (part1 input)))
-  ;; Example 3 - Part 2
-  (assert (= 6 (part2 example3)))
-  ;; Part 2
-  (assert (= 20685524831999 (part2 input)))
-  ;;
-  )

@@ -88,15 +88,4 @@
        (keep-gears-that-multiply-2-numbers)
        (apply +)))
 
-(comment
-  ;; exp 1
-  (assert (= 4361 (part1 example)))
-  ;; part 1
-  (assert (= 533775 (part1 input)))
-  ;; exp 2
-  (assert (= 467835 (part2 example)))
-  ;; part 2
-  (assert (= 78236071 (part2 input)))
-  ;;
-  )
   

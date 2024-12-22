@@ -270,59 +270,14 @@
           curr src
           unvisited (disj (apply hash-set (keys g)) src)]
      (cond
-       (= curr dst)
-       (costs dst)
+       (= curr dst) costs
 
-       (or (empty? unvisited) (= inf (get costs curr)))
-       costs
+       (or (empty? unvisited) (= inf (get costs curr))) costs
 
        :else
        (let [next-costs (update-costs-shortest g costs unvisited curr)
              next-node (apply min-key next-costs unvisited)]
          (recur next-costs next-node (disj unvisited next-node)))))))
-
-(defn update-costs-shortest
-  [g costs unvisited curr]
-  (let [curr-cost (get costs curr)]
-    (reduce-kv
-     (fn [c nbr nbr-cost]
-       (if (unvisited nbr)
-         (update-in c [nbr] min (+ curr-cost nbr-cost))
-         c))
-     costs
-     (get g curr))))
-
-(defn dijkstra-all-shortest
-  ([g src]
-   (dijkstra-all-shortest g src nil))
-  ([g src dst]
-   (loop [costs (assoc (zipmap (keys g) (repeat inf)) src 0)
-          curr src
-          unvisited (disj (apply hash-set (keys g)) src)]
-     (cond
-       (or (empty? unvisited) (= inf (get costs curr)))
-       costs
-
-       :else
-       (let [next-costs (update-costs-shortest g costs unvisited curr)
-             next-node (apply min-key next-costs unvisited)]
-         (recur next-costs next-node (disj unvisited next-node)))))))
-
-(dijkstra-shortest {1 {2 1 3 1}
-                    2 {4 1}
-                    3 {5 1}
-                    4 {6 2}
-                    5 {7 1}
-                    7 {6 1}
-                    6 {7 1 4 2}} 1 6)
-
-(dijkstra-all-shortest {1 {2 1 3 1}
-                        2 {4 1}
-                        3 {5 1}
-                        4 {6 2}
-                        5 {7 1}
-                        7 {6 1}
-                        6 {7 1 4 2}} 1 6)
 
 (defn rotations [coll]
   (let [cnt (count coll)
