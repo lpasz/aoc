@@ -4,8 +4,8 @@
 
 
 
-(def ex-txt (slurp "input.txt"))
-(def inp-txt (slurp "input.txt"))
+(def ex-txt (c/get-input "input.txt"))
+(def inp-txt (c/get-input "input.txt"))
 
 (def order '(:n :s :w :e))
 

@@ -31,7 +31,7 @@
                            (conj visited next-coord)
                            direction))))))
 (defn part1 [file]
-  (->> (slurp file)
+  (->> (c/get-input file)
        (c/to-matrix)
        (guard-visited-spots)
        (count)))
@@ -54,7 +54,7 @@
                          direction)))))
 
 (defn part2 [file]
-  (let [text (slurp file)
+  (let [text (c/get-input file)
         mtx (c/to-matrix text)
         guard-coord (guard-coord mtx)
         empty-spaces (guard-visited-spots mtx)

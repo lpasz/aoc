@@ -43,7 +43,7 @@
              move-fn))))
 
 (defn part1 [file]
-  (let [[board moves] (s/split (slurp file) #"\n\n")
+  (let [[board moves] (s/split (c/get-input file) #"\n\n")
         board (c/to-matrix board)
         moves (c/movements moves)
         robot-coord (c/find-matrix-coord-of board \@)]
@@ -101,7 +101,7 @@
                                     \.)))))))
 
 (defn part2 [file]
-  (let [[board moves] (s/split (slurp file) #"\n\n")
+  (let [[board moves] (s/split (c/get-input file) #"\n\n")
         board (upscale board)
         board (c/to-matrix board)
         robot-coord (c/find-matrix-coord-of board \@)

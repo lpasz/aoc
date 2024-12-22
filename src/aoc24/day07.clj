@@ -13,7 +13,7 @@
     (= target acc)))
 
 (defn- part [file operations]
-  (->> (s/split (slurp file) #"\n")
+  (->> (s/split (c/get-input file) #"\n")
        (map #(re-seq #"\d+" %))
        (map #(map parse-long %))
        (filter #(recursive-find (first %) (rest %) 0 operations))

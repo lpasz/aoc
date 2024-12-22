@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.string :as string]))
 
-(def ex (slurp "example.txt"))
-(def inp (slurp "input.txt"))
+(def ex (c/get-input "example.txt"))
+(def inp (c/get-input "input.txt"))
 
 (def free \L)
 (def occupied \#)

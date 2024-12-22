@@ -9,7 +9,7 @@
          (every? true?))))
 
 (defn parse-input [file]
-  (->>  (s/split (slurp file) #"\n")
+  (->>  (s/split (c/get-input file) #"\n")
         (map #(re-seq #"\d+" %))
         (map #(map parse-long %))))
 

@@ -39,7 +39,7 @@
        (c/sum)))
 
 (defn parse-input [file]
-  (let [mtx (c/to-matrix (slurp file))
+  (let [mtx (c/to-matrix (c/get-input file))
         start (c/find-matrix-coord-of mtx \S)
         end (c/find-matrix-coord-of mtx \E)
         graph (c/matrix-to-graph mtx #{\S \E \.})

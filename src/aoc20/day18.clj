@@ -3,7 +3,7 @@
 
 (def ex1 "1 + 2 * 3 + 4 * 5 + 6")
 (def ex2 "1 + (2 * 3) + (4 * (5 + 6))")
-(def inp (slurp "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn formula [op n1 n2]
   (str (eval (read-string (str "(" op " " n1 " " n2 ")")))))

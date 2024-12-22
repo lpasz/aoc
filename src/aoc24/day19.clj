@@ -14,7 +14,7 @@
                        towels))))
 
 (defn part1 [file]
-  (let [[towels wanted-patterns] (s/split (slurp file) #"\n\n")
+  (let [[towels wanted-patterns] (s/split (c/get-input file) #"\n\n")
         towels (re-seq #"\w+" towels)
         wanted-patterns (re-seq #"\w+" wanted-patterns)]
     (->> wanted-patterns
@@ -42,7 +42,7 @@
   (filter #(s/index-of pattern %) towels))
 
 (defn part2 [file]
-  (let [[towels wanted-patterns] (s/split (slurp file) #"\n\n")
+  (let [[towels wanted-patterns] (s/split (c/get-input file) #"\n\n")
         towels (set (re-seq #"\w+" towels))
         patterns (re-seq #"\w+" wanted-patterns)]
     (->> patterns

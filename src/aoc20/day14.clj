@@ -1,10 +1,10 @@
 (ns aoc20.day14
   (:require [clojure.string :as str]))
 
-(def ex (slurp "example.txt"))
-(def ex2 (slurp "example2.txt"))
+(def ex (c/get-input "example.txt"))
+(def ex2 (c/get-input "example2.txt"))
 ex2
-(def inp (slurp "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn str-int->str-bin [s]
   (-> (Integer/parseInt s)

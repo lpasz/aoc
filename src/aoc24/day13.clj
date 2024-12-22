@@ -3,7 +3,7 @@
             [clojure.string :as s]))
 
 (defn parse-input [file]
-  (->> (s/split (slurp file) #"\n\n")
+  (->> (s/split (c/get-input file) #"\n\n")
        (map #(map parse-long (re-seq #"\d+" %)))
        (map #(partition 2 %))
        (map #(map vec %))))

@@ -1,9 +1,9 @@
 (ns aoc20.day10
   (:require [clojure.string :as s]))
 
-(def ex (slurp "example.txt"))
-(def ex2 (slurp "example2.txt"))
-(def inp (slurp "input.txt"))
+(def ex (c/get-input "example.txt"))
+(def ex2 (c/get-input "example2.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn to-int-seq [text] (->> (s/split text #"\n") (map read-string)))
 

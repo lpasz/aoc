@@ -20,7 +20,7 @@
        (map (fn [[dir _ org]] [dir org]))))
 
 (defn find-garden-info [file]
-  (let [mtx (c/to-matrix (slurp file))]
+  (let [mtx (c/to-matrix (c/get-input file))]
     (loop [coords mtx
            visited #{}
            result []]

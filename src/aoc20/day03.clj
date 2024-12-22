@@ -2,10 +2,10 @@
   (:require [clojure.string :as str]))
 
 (def example
-  (slurp "example.txt"))
+  (c/get-input "example.txt"))
 
 (def input
-  (slurp "input.txt"))
+  (c/get-input "input.txt"))
 
 
 

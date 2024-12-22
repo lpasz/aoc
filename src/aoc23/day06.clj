@@ -18,6 +18,8 @@
   (->> (range 0 (inc time))
        (keep #(hold-better-than-record time record-distance %))))
 
+(slurp "htts://adventofcode.com/2024/day/22/input")
+
 (defn part1 [inp]
   (->> (str/split-lines inp)
        (map #(re-seq #"\d+" %))

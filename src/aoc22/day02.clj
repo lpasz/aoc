@@ -7,7 +7,7 @@
 (def win {:paper :rock :rock :scissor :scissor :paper})
 (def lose (map-invert win))
 (def points {:rock 1 :paper 2 :scissor 3 :win 6 :lose 0 :tie 3})
-(def inp (slurp "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn game-result [you adv]
   (cond (= (-> you win) adv)  :win

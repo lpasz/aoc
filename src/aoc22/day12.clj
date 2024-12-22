@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.set :as set]))
 
-(def inp (slurp "input.txt"))
-(def ex-inp (slurp "input.txt"))
+(def inp (c/get-input "input.txt"))
+(def ex-inp (c/get-input "input.txt"))
 
 (defn assoc-start-end [graph]
   (let [start (:start graph)

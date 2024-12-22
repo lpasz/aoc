@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.pprint :as pp]))
 
-(def ex1 (slurp "./src/advent-of-code-2020/day-20/ex1.txt"))
-(def inp (slurp "input.txt"))
+(def ex1 (c/get-input "./src/advent-of-code-2020/day-20/ex1.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn transpose [m]
   (apply map vector m))

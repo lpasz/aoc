@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.pprint :as pp]))
 
-(def ex-inp (slurp "input.txt"))
-(def inp (slurp "input.txt"))
+(def ex-inp (c/get-input "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn y-boundaries [mmap]
   (->> (group-by ffirst mmap)

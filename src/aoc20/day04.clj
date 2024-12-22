@@ -1,9 +1,9 @@
 (ns aoc20.day04
   (:require [clojure.string :as str]))
 
-(def example (slurp "example.txt"))
+(def example (c/get-input "example.txt"))
 
-(def input (slurp "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn passport-entry-text->map [passport-entry]
   (->> (str/split passport-entry #"(\s|:)")

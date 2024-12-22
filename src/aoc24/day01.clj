@@ -1,7 +1,7 @@
 (ns aoc24.day01)
 
 (defn parse-input [file]
-  (->> (re-seq #"\d+" (slurp file))
+  (->> (re-seq #"\d+" (c/get-input file))
        (map parse-long)
        (partition 2)
        (apply map vector)))

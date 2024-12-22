@@ -3,7 +3,7 @@
             [clojure.string :as s]))
 
 (defn parse-input [file]
-  (let [text (slurp file)
+  (let [text (c/get-input file)
         [rules pages] (s/split text #"\n\n")
         rules (->> (s/split rules #"\n")
                    (map #(s/split % #"\|"))

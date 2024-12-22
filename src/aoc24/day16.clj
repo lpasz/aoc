@@ -46,7 +46,7 @@
         (recur stack best-cost-to-coord visited paths-to-end)))))
 
 (defn part1 [file]
-  (let [mtx (c/to-matrix (slurp file))
+  (let [mtx (c/to-matrix (c/get-input file))
         start-at (c/find-matrix-coord-of mtx \S)
         ends-at (c/find-matrix-coord-of mtx \E)]
     (->> (shortest-path mtx start-at ends-at)
@@ -55,7 +55,7 @@
          (ffirst))))
 
 (defn part2 [file]
-  (let [mtx (c/to-matrix (slurp file))
+  (let [mtx (c/to-matrix (c/get-input file))
         start-at (c/find-matrix-coord-of mtx \S)
         ends-at (c/find-matrix-coord-of mtx \E)
         [paths-to-end best-cost-to-coord] (shortest-path mtx start-at ends-at)]

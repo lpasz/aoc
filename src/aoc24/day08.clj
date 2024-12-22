@@ -12,7 +12,7 @@
      (c/compute-point-for-x p1 slope dx2)]))
 
 (defn part1 [file]
-  (let [mtx (c/to-matrix (slurp file))
+  (let [mtx (c/to-matrix (c/get-input file))
         antenas (->> mtx
                      (c/filter-by-value #(not= \. %))
                      (group-by second)
@@ -39,7 +39,7 @@
                 (take-while #(contains? mtx %)))) [dx1 dx2])))
 
 (defn part2 [file]
-  (let [mtx (c/to-matrix (slurp file))
+  (let [mtx (c/to-matrix (c/get-input file))
         all-antenas (c/filter-by-value #(not= \. %) mtx)
         antenas (reduce (fn [acc [coord antena]]
                           (update acc antena #(conj (or % []) coord)))

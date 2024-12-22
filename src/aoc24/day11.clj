@@ -25,7 +25,7 @@
           stones))
 
 (defn after-blinks [file blinks]
-  (let [input (->> (re-seq #"\d+" (slurp file))
+  (let [input (->> (re-seq #"\d+" (c/get-input file))
                    (map parse-long)
                    (reduce (fn [acc stone]
                              (update acc stone #(inc (or % 0))))

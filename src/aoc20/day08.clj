@@ -1,8 +1,8 @@
 (ns aoc20.day08
   (:require [clojure.string :as str]))
 
-(def ex (slurp "example.txt"))
-(def inp (slurp "input.txt"))
+(def ex (c/get-input "example.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn to-code [text]
   (->> (str/split text #"\n")

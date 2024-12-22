@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.core.reducers :as r]))
 
-(def inp (slurp "input.txt"))
-(def ex-inp (slurp "input.txt"))
+(def inp (c/get-input "input.txt"))
+(def ex-inp (c/get-input "input.txt"))
 
 (defn parse-inp [text]
   (->> (s/split-lines text)

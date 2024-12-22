@@ -2,9 +2,9 @@
   (:require [clojure.string :as s]
             [clojure.pprint :as pp]))
 
-(def ex-txt (slurp "input.txt"))
-(def mini-txt (slurp "../inputs/day-24/mini.txt"))
-(def inp-txt (slurp "input.txt"))
+(def ex-txt (c/get-input "input.txt"))
+(def mini-txt (c/get-input "../inputs/day-24/mini.txt"))
+(def inp-txt (c/get-input "input.txt"))
 
 (defn draw-board [inp]
   (let [min-x (->> inp (map first) (map first) (apply min))

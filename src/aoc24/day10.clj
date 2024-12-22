@@ -12,7 +12,7 @@
          (map #(all-peaks-starting-from % (conj path coord) mtx)))))
 
 (defn- unique-peaks-by [file kind]
-  (let [mtx (c/to-matrix (slurp file) #(re-seq #"." %) parse-long)
+  (let [mtx (c/to-matrix (c/get-input file) #(re-seq #"." %) parse-long)
         trailheads (filter (fn [[_coord n]] (and (number? n) (zero? n))) mtx)]
     (->> trailheads
          (map #(all-peaks-starting-from % #{} mtx))

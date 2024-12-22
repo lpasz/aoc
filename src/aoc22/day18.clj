@@ -4,8 +4,8 @@
             [clojure.pprint :as pp]
             [clojure.set :as set]))
 
-(def ex-inp (slurp "input.txt"))
-(def inp (slurp "input.txt"))
+(def ex-inp (c/get-input "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn parse-inp [text]
   (->> (s/split-lines text)

@@ -11,7 +11,7 @@
 (defn to-seat-id [text]
   (Integer/parseInt (to-binary-str text) 2))
 
-(def input (slurp "input.txt"))
+(def input (c/get-input "input.txt"))
 
 (defn ex1 [] (->> (str/split input #"\n")
                   (map to-seat-id)

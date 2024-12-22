@@ -97,7 +97,7 @@
         (c/sum)))
 
 (defn complexities-of-robots [file n]
-  (let [txt (slurp file)
+  (let [txt (c/get-input file)
         input (re-seq #"\d+\w" txt)
         nums (c/extract-numbers txt)]
     (->> input

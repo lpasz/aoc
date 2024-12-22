@@ -18,7 +18,7 @@
                  (assoc used-idx space))))))
 
 (defn part1 [file]
-  (->> (re-seq #"." (slurp file))
+  (->> (re-seq #"." (c/get-input file))
        (map parse-long)
        (partition 2 2 [0])
        (map-indexed (fn [idx [used free]] [(take used (repeat idx)) (take free (repeat \.))]))
@@ -55,7 +55,7 @@
         (recur (rest itms) acc)))))
 
 (defn part2 [file]
-  (->> (re-seq #"." (slurp file))
+  (->> (re-seq #"." (c/get-input file))
        (map parse-long)
        (partition 2 2 [0])
        (map-indexed (fn [idx [used free]] [idx used free]))

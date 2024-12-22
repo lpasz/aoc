@@ -1,7 +1,7 @@
 (ns aoc22.day02-small
   (:require [clojure.string :as s]))
 
-(def inp (slurp "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (def ex1-points {"A X" 4 "A Y" 8 "A Z" 3
                  "B X" 1 "B Y" 5 "B Z" 9

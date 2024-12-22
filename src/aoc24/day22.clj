@@ -38,7 +38,7 @@
         (recur (dec n) (next-secret-number secret-num) prices)))))
 
 (defn part1 [file]
-  (->> (slurp file)
+  (->> (c/get-input file)
        (c/extract-numbers)
        (pmap #(secret-number-after-nth 2000 %))
        (c/sum)))
@@ -69,7 +69,7 @@
        (apply max)))
 
 (defn part2 [file]
-  (->> (slurp file)
+  (->> (c/get-input file)
        (c/extract-numbers)
        (get-prices 2000)
        (get-price-changes)

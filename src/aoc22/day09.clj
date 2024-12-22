@@ -1,7 +1,7 @@
 (ns aoc22.day09
   (:require [clojure.string :as s]))
 
-(def inp (slurp "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn move-tail [[hx hy] [tx ty]]
   (let [diff [(- hx tx) (- hy ty)]

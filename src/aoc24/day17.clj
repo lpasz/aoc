@@ -24,7 +24,7 @@
         7 (recur nip [r1 r2 (bit-shift-right r1 combo)] ins out)))))
 
 (defn parse-input [file]
-  (let [[regs ins] (s/split (slurp file) #"\n\n")
+  (let [[regs ins] (s/split (c/get-input file) #"\n\n")
         regs (c/extract-numbers regs)
         ins (into [] (c/extract-numbers ins))]
     [regs ins]))

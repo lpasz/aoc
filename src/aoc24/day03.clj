@@ -7,12 +7,12 @@
        (reduce *)))
 
 (defn part1 [file]
-  (->> (re-seq #"mul\(\d{1,3},\d{1,3}\)" (slurp file))
+  (->> (re-seq #"mul\(\d{1,3},\d{1,3}\)" (c/get-input file))
        (map mul)
        (reduce +)))
 
 (defn part2 [file]
-  (->> (re-seq #"(mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\))" (slurp file))
+  (->> (re-seq #"(mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\))" (c/get-input file))
        (map first)
        (reduce
         (fn [[acc enabled?] itm]

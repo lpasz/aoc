@@ -34,7 +34,7 @@
             (count)))))
 
 (defn positions [file]
-  (->> (re-seq #"-?\d+" (slurp file))
+  (->> (re-seq #"-?\d+" (c/get-input file))
        (map parse-long)
        (partition 4)))
 
