@@ -4,8 +4,8 @@
             [clojure.set :as set]
             [core :as c]))
 
-(def exp1-input (c/get-input "exp1.txt"))
-(def part1-input (c/get-input "part1.txt"))
+(def exp1-input (c/get-input "example.txt"))
+(def part1-input (c/get-input "input.txt"))
 
 (defn- parse-digits [txt]
   (->> (re-seq #"\d+" txt)

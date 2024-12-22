@@ -3,7 +3,7 @@
             [clojure.pprint :as pp]))
 
 (def ex1 (slurp "./src/advent-of-code-2020/day-20/ex1.txt"))
-(def inp (slurp "./src/advent-of-code-2020/day-20/inp.txt"))
+(def inp (slurp "input.txt"))
 
 (defn transpose [m]
   (apply map vector m))

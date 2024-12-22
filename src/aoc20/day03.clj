@@ -2,10 +2,10 @@
   (:require [clojure.string :as str]))
 
 (def example
-  (slurp "src/advent-of-code-2020/day-03/day-03-ex.txt"))
+  (slurp "example.txt"))
 
 (def input
-  (slurp "src/advent-of-code-2020/day-03/day-03.txt"))
+  (slurp "input.txt"))
 
 
 

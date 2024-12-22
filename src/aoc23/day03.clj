@@ -4,8 +4,8 @@
             [core :as c]
             [clojure.set :as set]))
 
-(def exp1-input (c/get-input "exp1.txt"))
-(def part1-input (c/get-input "part1.txt"))
+(def exp1-input (c/get-input "example.txt"))
+(def part1-input (c/get-input "input.txt"))
 
 (defn- symbols-xy [items]
   (->> items

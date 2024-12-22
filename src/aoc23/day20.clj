@@ -3,9 +3,9 @@
   (:require [core :as c]
             [clojure.math.numeric-tower :as math]))
 
-(def exp1-input (c/get-input "exp1.txt"))
-(def exp2-input (c/get-input "exp2.txt"))
-(def part1-input (c/get-input "part1.txt"))
+(def exp1-input (c/get-input "example.txt"))
+(def exp2-input (c/get-input "example2.txt"))
+(def part1-input (c/get-input "input.txt"))
 
 (def high-pulse? true?)
 (def low-pulse? false?)

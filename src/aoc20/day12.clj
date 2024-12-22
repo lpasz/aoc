@@ -1,8 +1,8 @@
 (ns aoc20.day12
   (:require [clojure.string :as s]))
 
-(def ex (slurp "./src/advent-of-code-2020/day-12/day-12-ex.txt"))
-(def inp (slurp "./src/advent-of-code-2020/day-12/day-12.txt"))
+(def ex (slurp "example.txt"))
+(def inp (slurp "input.txt"))
 
 (def dir {:F :facing
           :R :right

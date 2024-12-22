@@ -1,10 +1,10 @@
 (ns aoc20.day14
   (:require [clojure.string :as str]))
 
-(def ex (slurp "./src/advent-of-code-2020/day-14/day-14-ex.txt"))
-(def ex2 (slurp "./src/advent-of-code-2020/day-14/day-14-ex2.txt"))
+(def ex (slurp "example.txt"))
+(def ex2 (slurp "example2.txt"))
 ex2
-(def inp (slurp "./src/advent-of-code-2020/day-14/day-14.txt"))
+(def inp (slurp "input.txt"))
 
 (defn str-int->str-bin [s]
   (-> (Integer/parseInt s)

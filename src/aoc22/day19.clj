@@ -3,8 +3,8 @@
             [clojure.pprint :refer [pprint]]))
 
 
-(defonce ex-inp (slurp "../inputs/day-19/ex-inp.txt"))
-(defonce inp (slurp "../inputs/day-19/inp.txt"))
+(defonce ex-inp (slurp "input.txt"))
+(defonce inp (slurp "input.txt"))
 
 (defn parse [text]
   (->>   (s/split text #"[^0-9]")

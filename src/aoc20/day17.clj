@@ -1,7 +1,7 @@
 (ns aoc20.day17
   (:require [clojure.string :as s]))
 
-(def inp (slurp "./src/advent-of-code-2020/day-17/inp.txt"))
+(def inp (slurp "input.txt"))
 (def ex1 (slurp "./src/advent-of-code-2020/day-17/ex1.txt"))
 
 (defn distance [x]

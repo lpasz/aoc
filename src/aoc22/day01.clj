@@ -1,6 +1,6 @@
 (ns aoc22.day01 (:require [clojure.string :as s]))
 
-(def inp (slurp "../aoc22/inputs/day-01/inp.txt"))
+(def inp (slurp "input.txt"))
 
 (defn- elf-total-calories [text]
   (->> (s/split text #"\n\n")

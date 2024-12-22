@@ -4,8 +4,8 @@
 
 
 
-(def ex-txt (slurp "../inputs/day-23/ex-inp.txt"))
-(def inp-txt (slurp "../inputs/day-23/inp.txt"))
+(def ex-txt (slurp "input.txt"))
+(def inp-txt (slurp "input.txt"))
 
 (def order '(:n :s :w :e))
 

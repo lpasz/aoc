@@ -1,9 +1,9 @@
 (ns aoc20.day19
   (:require [clojure.string :as s]))
 
-(def inp (c/get-input "19/inp.txt"))
+(def inp (c/get-input "input.txt"))
 (def ex1 (c/get-input "19/ex1.txt"))
-(def ex2 (c/get-input "19/ex2.txt"))
+(def ex2 (c/get-input "example2.txt"))
 
 (defn remap-val [val]
   (if (re-find #"[a-zA-Z]+" val)

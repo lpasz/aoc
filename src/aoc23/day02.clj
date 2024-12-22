@@ -3,8 +3,8 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def exp1-input (c/get-input "exp1.txt"))
-(def part1-input (c/get-input "part1.txt"))
+(def exp1-input (c/get-input "example.txt"))
+(def part1-input (c/get-input "input.txt"))
 (def can-possibly-contain-cubes {:red 12 :green 13 :blue 14})
 
 (defn- to-cube-color-and-count [cube-count-and-color]

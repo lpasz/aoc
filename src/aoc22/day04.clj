@@ -3,7 +3,7 @@
             [clojure.string :as s])
   (:gen-class))
 
-(def inp (slurp "../inputs/day-04/inp.txt"))
+(def inp (slurp "input.txt"))
 
 (defn count-schedule-overlap [text overlap?]
   (->> (s/split text #",|\n|-")

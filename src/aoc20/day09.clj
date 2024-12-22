@@ -1,8 +1,8 @@
 (ns aoc20.day09
   (:require [clojure.string :as str]))
 
-(def ex (c/get-input "09/day-09-ex.txt"))
-(def inp (c/get-input "09/day-09.txt"))
+(def ex (c/get-input "example.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn to-int-seq [text] (map read-string (str/split text #"\n")))
 

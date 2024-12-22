@@ -2,8 +2,8 @@
   (:require [clojure.string :as s]
             [clojure.string :as string]))
 
-(def ex (slurp "./src/advent-of-code-2020/day-11/day-11-ex.txt"))
-(def inp (slurp "./src/advent-of-code-2020/day-11/day-11.txt"))
+(def ex (slurp "example.txt"))
+(def inp (slurp "input.txt"))
 
 (def free \L)
 (def occupied \#)

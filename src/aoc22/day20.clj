@@ -1,8 +1,8 @@
 (ns aoc22.day20
   (:require [clojure.pprint :as pp]))
 
-(def ex-inp (slurp "lib/day-20/ex-inp.txt"))
-(def inp (slurp "../inputs/day-20/inp.txt"))
+(def ex-inp (slurp "input.txt"))
+(def inp (slurp "input.txt"))
 
 (def ex-inp-list (read-string (str "[ " ex-inp " ]")))
 (def inp-list (read-string (str "[ " inp " ]")))

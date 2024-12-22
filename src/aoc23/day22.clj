@@ -2,8 +2,8 @@
   "Sand Slabs"
   (:require [core :as c]))
 
-(def exp1-input (c/get-input "exp1.txt"))
-(def part1-input (c/get-input "part1.txt"))
+(def exp1-input (c/get-input "example.txt"))
+(def part1-input (c/get-input "input.txt"))
 
 (defn- rangex [p1 p2]
   (range (min p1 p2) (inc (max p1 p2))))

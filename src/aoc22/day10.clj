@@ -1,8 +1,8 @@
 (ns aoc22.day10
   (:require [clojure.string :as s]))
 
-(def inp (slurp "../inputs/day-10/inp.txt"))
-(def ex-inp (slurp "lib/day-10/ex-inp.txt"))
+(def inp (slurp "input.txt"))
+(def ex-inp (slurp "input.txt"))
 
 (defn to-instruction [line]
   (if (= "noop" line)

@@ -1,9 +1,9 @@
 (ns aoc20.day10
   (:require [clojure.string :as s]))
 
-(def ex (slurp "./src/advent-of-code-2020/day-10/day-10-ex.txt"))
-(def ex2 (slurp "./src/advent-of-code-2020/day-10/day-10-ex2.txt"))
-(def inp (slurp "./src/advent-of-code-2020/day-10/day-10.txt"))
+(def ex (slurp "example.txt"))
+(def ex2 (slurp "example2.txt"))
+(def inp (slurp "input.txt"))
 
 (defn to-int-seq [text] (->> (s/split text #"\n") (map read-string)))
 

@@ -6,7 +6,7 @@
       (+ i n)
       (recur (rest seq) (inc i)))))
 
-(def inp-path "../inputs/day-06/inp.txt")
+(def inp-path "input.txt")
 (def inp (slurp inp-path))
 (defn ex1 [text] (idx-first-distinct-seq 4 text))
 (defn ex2 [text] (idx-first-distinct-seq 14 text))

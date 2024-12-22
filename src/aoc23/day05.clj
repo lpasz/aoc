@@ -3,8 +3,8 @@
   (:require [clojure.string :as str]
             [core :as c]))
 
-(def exp1-input (c/get-input "exp1.txt"))
-(def part1-input (c/get-input "part1.txt"))
+(def exp1-input (c/get-input "example.txt"))
+(def part1-input (c/get-input "input.txt"))
 
 (defn- in-between-range [[start range-size]]
   #(or (= start %) (< start % (+ start range-size))))

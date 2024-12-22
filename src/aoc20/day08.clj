@@ -1,8 +1,8 @@
 (ns aoc20.day08
   (:require [clojure.string :as str]))
 
-(def ex (slurp "./src/advent-of-code-2020/day-08/day-08-ex.txt"))
-(def inp (slurp "./src/advent-of-code-2020/day-08/day-08.txt"))
+(def ex (slurp "example.txt"))
+(def inp (slurp "input.txt"))
 
 (defn to-code [text]
   (->> (str/split text #"\n")

@@ -11,7 +11,7 @@
 (defn to-seat-id [text]
   (Integer/parseInt (to-binary-str text) 2))
 
-(def input (slurp "src/advent-of-code-2020/day-05/day-05.txt"))
+(def input (slurp "input.txt"))
 
 (defn ex1 [] (->> (str/split input #"\n")
                   (map to-seat-id)

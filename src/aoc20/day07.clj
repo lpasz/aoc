@@ -1,10 +1,10 @@
 (ns aoc20.day07
   (:require [clojure.string :as s]))
 
-(def example (slurp "./src/advent-of-code-2020/day-07/day-07-ex.txt"))
-(def example2 (slurp "./src/advent-of-code-2020/day-07/day-07-ex2.txt"))
+(def example (slurp "example.txt"))
+(def example2 (slurp "example2.txt"))
 
-(def input (slurp "./src/advent-of-code-2020/day-07/day-07.txt"))
+(def input (slurp "input.txt"))
 
 (defn to-key [text]
   (-> (s/trim text) (s/replace "bags" "bag") (s/replace " " "-") (keyword)))

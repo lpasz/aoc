@@ -4,9 +4,9 @@
             [core :refer [map-key]]
             [core :as c]))
 
-(def exp1-input (c/get-input "exp1.txt"))
-(def exp2-input (c/get-input "exp2.txt"))
-(def part1-input (c/get-input "part1.txt"))
+(def exp1-input (c/get-input "example.txt"))
+(def exp2-input (c/get-input "example2.txt"))
+(def part1-input (c/get-input "input.txt"))
 
 (def digits
   "Map the text of digit to it's number"

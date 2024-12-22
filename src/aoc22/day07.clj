@@ -1,8 +1,8 @@
 (ns aoc22.day07
   (:require [clojure.string :as s]))
 
-(def ex-inp (slurp "lib/day-07/ex-inp.txt"))
-(def inp (slurp "../inputs/day-07/inp.txt"))
+(def ex-inp (slurp "input.txt"))
+(def inp (slurp "input.txt"))
 
 (defn parse [line]
   (cond (s/starts-with? line "cd") (s/replace line #"(cd.|\n)" "")

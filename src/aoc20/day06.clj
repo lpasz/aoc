@@ -1,8 +1,8 @@
 (ns aoc20.day06
   (:require [clojure.string :as str]))
 
-(def example (slurp "src/advent-of-code-2020/day-06/day-06-ex.txt"))
-(def input (slurp "src/advent-of-code-2020/day-06/day-06.txt"))
+(def example (slurp "example.txt"))
+(def input (slurp "input.txt"))
 
 (defn anyone-yes [text]
   (->> (str/split text #"\n\n")

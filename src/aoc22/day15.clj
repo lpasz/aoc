@@ -1,8 +1,8 @@
 (ns aoc22.day15
   (:require [clojure.string :as s]))
 
-(def inp (slurp "../inputs/day-15/inp.txt"))
-(def ex-inp (slurp "lib/day-15/ex-inp.txt"))
+(def inp (slurp "input.txt"))
+(def ex-inp (slurp "input.txt"))
 
 (defn parse-inp [text]
   (->> (s/split-lines text)

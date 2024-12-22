@@ -1,8 +1,8 @@
 (ns aoc22.day05
   (:require [clojure.string :as s]))
 
-(def ex-inp (slurp "../inputs/day-05/ex-inp.txt"))
-(def inp (slurp "../inputs/day-05/inp.txt"))
+(def ex-inp (slurp "input.txt"))
+(def inp (slurp "input.txt"))
 
 (defn transpose [matrix] (apply map vector matrix))
 

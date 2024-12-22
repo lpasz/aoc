@@ -2,11 +2,11 @@
   "Pipe Maze"
   (:require [core :as c]))
 
-(def exp1-input (c/get-input "exp1.txt"))
-(def exp2-input (c/get-input "exp2.txt"))
-(def part1-input (c/get-input "part1.txt"))
-(def exp3-input (c/get-input "exp3.txt"))
-(def exp4-input (c/get-input "exp4.txt"))
+(def exp1-input (c/get-input "example.txt"))
+(def exp2-input (c/get-input "example2.txt"))
+(def part1-input (c/get-input "input.txt"))
+(def exp3-input (c/get-input "example3.txt"))
+(def exp4-input (c/get-input "example4.txt"))
 
 (defn- find-start [mtx]
   (->> mtx
