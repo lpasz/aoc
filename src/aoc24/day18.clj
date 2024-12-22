@@ -2,7 +2,7 @@
   (:require [core :as c]))
 
 (defn after-n-bytes-shortest-path [file n-bytes [x y :as size]]
-  (let [nums (c/extract-numbers (c/get-input file))
+  (let [nums (c/extract-numbers (slurp file))
         pairs (take n-bytes (partition 2 nums))
         mtx (c/create-matrix (inc x) (inc y) \.)
         mtx (c/add-to-matrix mtx pairs \#)

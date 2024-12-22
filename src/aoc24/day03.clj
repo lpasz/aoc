@@ -1,4 +1,5 @@
-(ns aoc24.day03)
+(ns aoc24.day03
+  (:require [core :as c]))
 
 (defn mul [expr]
   (->> expr

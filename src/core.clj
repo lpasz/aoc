@@ -127,21 +127,21 @@
        (ffirst)))
 
 (defn to-matrix
-  ([inp] (to-matrix input identity identity))
+  ([input] (to-matrix input identity identity))
   ([input line-parse item-parse]
-   (->> (if (string? inp)
-          (str/split-lines inp)
-          inp)
+   (->> (if (string? input)
+          (str/split-lines input)
+          input)
         (map-indexed (fn [idy line] (->> line line-parse (map-indexed (fn [idx c] [[idx idy] (item-parse c)])))))
         (flatten-once)
         (into (sorted-map)))))
 
 (defn cartesian-product [parts]
-    (if (= (count parts) 1)
-      parts
-      (let [[a b & tail] parts]
-        (for [a a b b]
-          [a b]))))
+  (if (= (count parts) 1)
+    parts
+    (let [[a b & tail] parts]
+      (for [a a b b]
+        [a b]))))
 
 (defn print-matrix [mtx]
   (println "")

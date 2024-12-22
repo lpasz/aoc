@@ -1,5 +1,6 @@
 (ns aoc24.day02
-  (:require [clojure.string :as s]))
+  (:require [core :as c]
+            [clojure.string :as s]))
 
 (defn safe? [[n1 n2 :as nums]]
   (let [op (if (> n1 n2) > <)]

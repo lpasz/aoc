@@ -79,9 +79,6 @@
           (recur rslices (conj wfalling-rocks wslice))
           falling-rocks)))))
 
-
-
-
 (bit-shift-left 2r1111000 1)
 2r11110000
 ;; (blow [2r0010000] \>)
@@ -104,16 +101,13 @@
       bfalling-rocks
       falling-rocks)))
 
-
 (wind-flow '(2r0011110 0 0 0 0 0 0 0 0 0 0 0 0 0 0) '(0 0 0 0 6 6 4 20 20 124 28 8 30 127) \<)
-
 
 ;; cant move right keep the same way
 (= [2r0010000] (wind-flow [2r00010000] [2r0010000] \>))
 
 ;; can move left move one
 (= [2r0100000] (wind-flow [2r0010000] [2r0001000] \<))
-
 
 (defn fall [coll]
   (->> coll
@@ -129,7 +123,6 @@
     (if (= curr-count after-count)
       ffalling-rock
       falling-rocks)))
-
 
 (defn new-existing-rocks [falling-rocks existing-rocks]
   (->> (map bit-or falling-rocks  existing-rocks)
@@ -191,7 +184,6 @@
 
 (- (count pile-632) (count (second pile-h-3655)))
 
-
 (show-rocks pile-632)
 (show-rocks pile-5000)
 
@@ -205,10 +197,8 @@
 ;; 
 (+ (* (quot 1000000000000 1705) 2649) (count unrepeated-pile))
 
-
 ;; don't repeat until 1006
 ;; then repeats each 2649
 (- 3656 1007)
-
 
 (+ (- 7826 5177) 1006)

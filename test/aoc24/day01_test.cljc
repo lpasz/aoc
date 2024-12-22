@@ -4,13 +4,13 @@
 
 (t/deftest part1
   (t/testing "input"
-    (t/is (= (day01/part1 "./assets/aoc24/day01/input.txt") 2367773)))
+    (t/is (= (day01/part1 "input.txt") 2367773)))
   (t/testing "example"
-    (t/is (= (day01/part1 "./assets/aoc24/day01/example.txt") 11))))
+    (t/is (= (day01/part1 "example.txt") 11))))
 
 (t/deftest part2
   (t/testing "input"
-    (t/is (= (day01/part2 "./assets/aoc24/day01/input.txt") 21271939)))
+    (t/is (= (day01/part2 "input.txt") 21271939)))
   (t/testing "example"
-    (t/is (= (day01/part2 "./assets/aoc24/day01/example.txt") 31))))
+    (t/is (= (day01/part2 "example.txt") 31))))
 

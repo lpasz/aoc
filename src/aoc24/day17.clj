@@ -75,7 +75,7 @@
 
 (defn part2 []
   ;; it only works for this input
-  (-> (parse-input "./assets/aoc24/day17/input.txt")
+  (-> (parse-input "input.txt")
       (second)
       (reverse-machine 0)
       (sort)

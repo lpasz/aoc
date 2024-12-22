@@ -1,4 +1,5 @@
-(ns aoc24.day01)
+(ns aoc24.day01
+  (:require [core :as c]))
 
 (defn parse-input [file]
   (->> (re-seq #"\d+" (c/get-input file))
