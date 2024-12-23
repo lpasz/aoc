@@ -3,9 +3,6 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (def start-coords-and-dir [[-1 0] "➡️"])
 
 (defn- next-coord-by-dir [[[x y] dir]]
@@ -66,23 +63,15 @@
                             (generate-borders-left-right n)))))
 
 (defn part1
-  ([inp] (part1 input start-coords-and-dir))
+  ([input] (part1 input start-coords-and-dir))
   ([input coords-and-dir]
-   (->> (c/to-matrix inp)
+   (->> (c/to-matrix input)
         (move coords-and-dir)
         (count)
         (dec))))
 
 (defn part2 [inp]
   (->> (edges inp)
-       (map #(part1 input %))
+       (map #(part1 inp %))
        (reduce max)))
 
-(comment
-  (assert (= 46 (part1 example)))
-  (assert (= 7034 (part1 input)))
-  (assert (= 51 (part2 example)))
-  ;; a bit slow
-  (assert (= 7759 (part2 input)))
-  ;;
-  )

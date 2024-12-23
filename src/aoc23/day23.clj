@@ -2,9 +2,6 @@
   "A Long Walk"
   (:require [core :as c]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (def icy-valid-moves #{[:up \^] [:up \.]
                        [:down \v] [:down \.]
                        [:-> \>] [:-> \.]
@@ -86,19 +83,11 @@
                  max-cost))))))
 
 (defn part1 [input start-at ends-at]
-  (-> (parse inp)
+  (-> (parse input)
       (longest-path #{ends-at} start-at icy-valid-moves)))
 
 (defn part2 [input start-at ends-at]
-  (-> (nodes inp)
-      (distance-between-nodes start-at ends-at (parse inp) valid-moves)
+  (-> (nodes input)
+      (distance-between-nodes start-at ends-at (parse input) valid-moves)
       (longest-path-nodes start-at ends-at)))
 
-(comment
-  (assert (= 94 (time (part1 example [1 0] [21 22]))))
-  (assert (= 2394 (time (part1 input [1 0] [139 140]))))
-  (assert (= 154 (time (part2 example [1 0] [21 22]))))
-  ;; takes around 120s beware of running it
-  (assert (= 6554 (time (part2 input [1 0] [139 140]))))
-  ;;
-  )

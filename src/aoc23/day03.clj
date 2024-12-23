@@ -4,9 +4,6 @@
             [core :as c]
             [clojure.set :as set]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- symbols-xy [items]
   (->> items
        (c/filter-by-key string?)

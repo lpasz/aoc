@@ -3,9 +3,6 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn- parse [inp]
   (->> (str/split-lines inp)
        (map #(str/split % #"\:|\s"))
@@ -99,8 +96,3 @@
            (reduce *))
       (recur g))))
 
-(comment
-  (assert (= 54 (part1 example)))
-  (assert (= 543834 (time (part1 input))))
-  ;; there is no part 2 - it's done
-  )

@@ -1,7 +1,6 @@
 (ns aoc23.day01
   "Trebuchet?!"
   (:require [clojure.string :as str]
-            [core :refer [map-key]]
             [core :as c]))
 
 (def digits
@@ -24,7 +23,7 @@
 
 (def re-digits (create-digits-re digits))
 (def reverse-re-digits
-  (->> (map-key str/reverse digits)
+  (->> (c/map-key str/reverse digits)
        (into {})
        (create-digits-re)))
 

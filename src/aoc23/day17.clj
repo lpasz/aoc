@@ -2,9 +2,6 @@
   "Clumsy Crucible"
   (:require [core :as c]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-example
 (def directions {:up #{:-> :<-}
                  :down #{:-> :<-}
                  :-> #{:up :down}
@@ -49,12 +46,4 @@ example
 (defn part2 [input end-at]
   (->> (c/to-matrix input #(re-seq #"\d" %) c/parse-int)
        (dijkstra 4 10 end-at)))
-
-(comment
-  (assert (= 102 (part1 example [12 12])))
-  (assert (= 742 (part1 input [140 140])))
-  (assert (= 94 (part2 example [12 12])))
-  (assert (= 918 (part2 input [140 140])))
-  ;;
-  )
 

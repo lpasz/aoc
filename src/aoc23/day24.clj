@@ -1,10 +1,6 @@
 (ns aoc23.day24
   "Never Tell Me The Odds"
-  (:require [core :as c]
-            [clojure.string :as s]))
-
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
+  (:require [clojure.string :as s]))
 
 (defn in-range [s f [x y]]
   (and (<= s x f) (<= s y f)))
@@ -128,7 +124,7 @@
   "Compare every line to each other, if line intersects and that 
    intersection happen after the starting point of both lines and inside the predetermine zone we count that."
   [input rng]
-  (->> (parse inp)
+  (->> (parse input)
        (combinations)
        (keep (fn [[line1 line2]]
                (when-let [intersect (intersect line1 line2)]
@@ -136,7 +132,6 @@
                    intersect))))
        (filter rng)
        (count)))
-
 
 (defn part2
   "Uses a technique that presumes that the rock is a static point, and changes the velocities of the hailstones
@@ -152,11 +147,4 @@
         [_ z _ _] (relative-rock-finding raw-xz)]
     (+ x y z)))
 
-(comment
-  (assert (= 2 (part1 example exp1-rng)))
-  (assert (= 12740 (part1 input part1-rng)))
-  (assert (= 47 (part2 example)))
-  (assert (= 741991571910536 (part2 input)))
-  ;;
-  )
 

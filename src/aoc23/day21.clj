@@ -3,7 +3,6 @@
   (:require [core :as c]
             [clojure.set :as set]))
 
-(def example (c/get-input "example.txt"))
 (def input (c/get-input "input.txt"))
 
 (defn remap [n nmax]
@@ -29,7 +28,7 @@
 (def max-visited-gardens (quot 26501365 131))
 
 (defn part [input n]
-  (let [mtx (c/to-matrix inp)
+  (let [mtx (c/to-matrix input)
         nmax (inc (reduce max (map first (keys mtx))))
         start-at (ffirst (filter (fn [[_key v]] (#{\S} v)) mtx))
         mtx (assoc mtx start-at \.)]
@@ -52,18 +51,10 @@
 (defn calc [n a b c]
   (+ a (* n (+ (- b a) (quot (* (dec n) (+ a (- c b b))) 2)))))
 
-(defn part1 [inp]
+(defn part1 [input]
   (first (part input 64)))
 
 (defn part2 []
   (let [[a b c] abc]
     (calc max-visited-gardens a b c)))
 
-(assert (= 16 (first (part example 6))))
-(assert (= 3776 (part1 input)))
-(assert (= 625587097150084 (part2)))
-
-
-
-
-   

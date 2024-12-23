@@ -3,9 +3,6 @@
   (:require [core :as c]
             [clojure.string :as str]))
 
-(def example (c/get-input "example.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn parse-items [items]
   (->> (str/split-lines items)
        (map (fn [line] (str/replace line #"[x|m|a|s]\=" #(str ":" (first %1) " "))))
@@ -22,7 +19,7 @@
        (map (fn [[[_all key text]]] [key (left-right (str/split text #"\:|,"))]))
        (into {})))
 
-(defn parse-input [inp]
+(defn parse-input [input]
   (let [[workflows items] (str/split input  #"\n\n")]
     [(parse-workflows workflows) (parse-items items)]))
 
@@ -39,7 +36,6 @@
                                                (conj path [false (first root)])))
       (string? root)  (find-valid-paths (rng root) rng path))))
 
-
 (defn do-not-empty [fun val coll]
   (if (empty? coll)
     val
@@ -47,7 +43,6 @@
 
 (defn invert-right-operation [sig]
   ({"<" ">=" ">" "<="} sig))
-
 
 (defn calculate-valid-path-ranges [path]
   (->> path
@@ -72,7 +67,6 @@
                 [key (sort [lower-than greather-than])])))
        (into {:x '(1 4000) :m '(1 4000) :a '(1 4000) :s '(1 4000)})))
 
-
 (defn any-valid-path-in-rng [{:keys [x m a s]} valid-path-rng]
   (some (fn [[[xmn xmx] [mmn mmx] [amn amx] [smn smx]]]
           (and (<= xmn x xmx) (<= mmn m mmx) (<= amn a amx) (<= smn s smx)))
@@ -96,10 +90,3 @@
        (map #(reduce (fn [acc [lo hi]] (* acc (inc (- hi  lo)))) 1 %))
        (c/sum)))
 
-(comment
-  (assert (= 19114 (part1 example)))
-  (assert (= 575412 (part1 input)))
-  (assert (= 167409079868000 (part2 example)))
-  (assert (= 126107942006821 (part2 input)))
-  ;;
-  )
