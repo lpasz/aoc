@@ -1,9 +1,6 @@
 (ns aoc22.day11
   (:require [clojure.string :as s]))
 
-(def input (c/get-input "input.txt"))
-(def ex-input (c/get-input "input.txt"))
-
 (defn to-int [i] (Integer/parseInt i))
 
 (defn parse-starting-items [starting-items]
@@ -70,10 +67,6 @@
          (take 2)
          (apply *))))
 
-(defn ex1 [text] (do-turns text 20 3))
-(defn ex2 [text] (do-turns text 10000 1))
+(defn part1 [text] (do-turns text 20 3))
+(defn part2 [text] (do-turns text 10000 1))
 
-(ex1 ex-inp) ;; 10605
-(ex2 ex-inp) ;; 2713310158
-(ex1 inp)    ;; 55458
-(ex2 inp)    ;; 14508081294

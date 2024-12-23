@@ -2,9 +2,6 @@
   (:require [clojure.string :as s]
             [clojure.set :as set]))
 
-(def input (c/get-input "input.txt"))
-(def ex-input (c/get-input "input.txt"))
-
 (defn assoc-start-end [graph]
   (let [start (:start graph)
         ends (:end graph)]
@@ -97,15 +94,11 @@
        (sort)
        (ffirst)))
 
-(defn ex1 [text]
+(defn part1 [text]
   (let [graph (parse-input text)]
     (ffirst (shortest-path graph (:start graph) (:end graph)))))
 
-(defn ex2 [text]
+(defn part2 [text]
   (->> (parse-input text)
        (shortest-starting-point)))
 
-(ex1 ex-inp) ;; 31
-(ex1 inp) ;; 394
-(ex2 ex-inp) ;; 29
-(ex2 inp) ;; 388

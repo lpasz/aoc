@@ -2,9 +2,6 @@
   (:require [clojure.string :as s])
   (:use [clojure.pprint]))
 
-(def ex-input (c/get-input "input.txt"))
-(def input (c/get-input "input.txt"))
-
 (def ex-winds (cycle (keep #{\> \<} (seq ex-inp))))
 (def winds (cycle (keep #{\> \<} (seq inp))))
 

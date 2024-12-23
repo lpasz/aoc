@@ -1,9 +1,6 @@
 (ns aoc22.day07
   (:require [clojure.string :as s]))
 
-(def ex-input (c/get-input "input.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn parse [line]
   (cond (s/starts-with? line "cd") (s/replace line #"(cd.|\n)" "")
         (s/starts-with? line "ls") (reduce #(if (not-empty %2)
@@ -36,7 +33,7 @@
                [[] {}])
        (second)))
 
-(defn ex1 [text]
+(defn part1 [text]
   (->> (fs text)
        (vals)
        (filter number?)
@@ -46,7 +43,7 @@
 (def total-space 70000000)
 (def space-req 30000000)
 
-(defn ex2 [text]
+(defn part2 [text]
   (let [fs (fs text)
         used-space (fs "/")
         remaining-space (- total-space used-space)
@@ -57,9 +54,5 @@
          (sort)
          (first))))
 
-(ex1 ex-inp)  ;; 95437
-(ex1 inp)     ;; 1306611
-(ex2 ex-inp)  ;; 24933642
-(ex2 inp)     ;; 13210366
 
 

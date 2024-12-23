@@ -1,9 +1,6 @@
 (ns aoc22.day15
   (:require [clojure.string :as s]))
 
-(def input (c/get-input "input.txt"))
-(def ex-input (c/get-input "input.txt"))
-
 (defn parse-input [text]
   (->> (s/split-lines text)
        (mapcat #(s/split % #"(Sensor at x=|, y=|: closest beacon is at x=|, y=)"))
@@ -44,7 +41,6 @@
 ;;;; PRECALCULAR MAPA PARA CADADA LINHA PODE FAZER FICAR MAIS RAPIDO
 ;; APENAS LINHAS QUE ELE TOCA
 
-
 (defn sensor-scan-range-in-row [ranges [[sx sy] radius] row]
   (let [overlap-in-row (- radius (abs (- row sy)))]
     (if (sensor-overlap-with-row? overlap-in-row)
@@ -67,7 +63,7 @@
 
 (defn ppeek [coll] (peek (peek coll)))
 
-(defn ex1 [text row]
+(defn part1 [text row]
   (let [sensors-and-beacons (parse-input text)
         sensors-and-radius (map find-radius sensors-and-beacons)
         scanned (sensors-scan-ranges-in-row sensors-and-radius row)
@@ -76,8 +72,7 @@
     (- end-of-continuous-range
        start-of-continuous-range)))
 
-
-(defn ex2 [text max-val]
+(defn part2 [text max-val]
   (let [sensors-and-beacons (parse-input text)
         sensors-and-radius (map find-radius sensors-and-beacons)]
     (loop [y max-val]
@@ -88,7 +83,3 @@
           (recur (dec y)))))))
 
 
-(ex1 ex-input 10) ;; 26
-(ex1 input 2000000) ;; 5525847
-(ex2 ex-input 20) ;; 56000011
-(ex2 input 4000000) ;; 13340867187704

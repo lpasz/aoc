@@ -1,9 +1,5 @@
 (ns aoc22.day08
-  (:require [clojure.string :as s]
-            [core :as c]))
-
-(def ex-input "30373\n25512\n65332\n33549\n35390")
-(def input (c/get-input "input.txt"))
+  (:require [clojure.string :as s]))
 
 (defn tree-pos-and-height [lines]
   (->>  lines
@@ -38,7 +34,7 @@
        (filter (fn [[pos height]] (visible? pos height trees)))
        (count)))
 
-(defn ex1 [text]
+(defn part1 [text]
   (->> (parse-trees text)
        (count-visibles)))
 
@@ -52,11 +48,7 @@
        (map (fn [[pos height]] (scenic-score pos height trees)))
        (apply max)))
 
-(defn ex2 [text]
+(defn part2 [text]
   (->> (parse-trees text)
        (max-scenic-score)))
 
-(ex1 ex-inp) ;; 21
-(ex2 ex-inp) ;; 8
-(ex1 inp)    ;; 1679
-(ex2 inp)    ;; 536625

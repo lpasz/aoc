@@ -1,11 +1,11 @@
 (ns aoc22.day18
   (:require [clojure.string :as s]
             [clojure.core.reducers :as r]
-            [clojure.pprint :as pp]
+            [core :as c]
             [clojure.set :as set]))
 
-(def ex-input (c/get-input "input.txt"))
-(def input (c/get-input "input.txt"))
+(def ex-inp (c/get-input "example.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn parse-input [text]
   (->> (s/split-lines text)
@@ -30,11 +30,6 @@
 (defn unconnected-sides [cubes]
   (- (* 6 (count cubes)) (count-sides-touching cubes)))
 
-
-;; Part 1 
-(unconnected-sides ex-cubes) ;; 64
-(unconnected-sides cubes) ;; 3494
-
 (defn neighbors [[x y z]]
   [[(inc x) y z]
    [(dec x) y z]
@@ -46,7 +41,6 @@
 (defn flood-fill [cubes]
   (let [mmin (dec (apply min (flatten (vec cubes))))
         mmax (inc (apply max (flatten (vec cubes))))]
-    (pp/pprint [mmin mmax])
     (loop [queue [[mmin mmin mmin]]
            flood #{}]
       (if (not-empty queue)
@@ -61,7 +55,4 @@
        (mapcat neighbors)
        (filter cbs)
        (count)))
-
-(exterior ex-cubes) ;; 58
-(exterior cubes) ;; 2062
 

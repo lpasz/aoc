@@ -1,9 +1,6 @@
 (ns aoc22.day05
   (:require [clojure.string :as s]))
 
-(def ex-input (c/get-input "input.txt"))
-(def input (c/get-input "input.txt"))
-
 (defn transpose [matrix] (apply map vector matrix))
 
 (defn parse-stacks [stacks]
@@ -45,10 +42,6 @@
        (map first)
        (apply str)))
 
-(defn ex1 [text] (calc text #(reverse (take %1 %2))))
-(defn ex2 [text] (calc text take))
+(defn part1 [text] (calc text #(reverse (take %1 %2))))
+(defn part2 [text] (calc text take))
 
-(ex1 ex-inp) ;; "CMZ"
-(time (ex1 inp)) ;; "PSNRGBTFT"
-(ex2 ex-inp) ;; "MCD"
-(time (ex2 inp)) ;; "BNTZFPMMW"

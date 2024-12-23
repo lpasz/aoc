@@ -1,8 +1,6 @@
 (ns aoc22.day09
   (:require [clojure.string :as s]))
 
-(def input (c/get-input "input.txt"))
-
 (defn move-tail [[hx hy] [tx ty]]
   (let [diff [(- hx tx) (- hy ty)]
         diagonal? (some #(-> % abs (>= 2)) diff)]
@@ -90,7 +88,7 @@
                   ((fn [[dir steps]]
                      [dir (Integer/parseInt steps)]))))))
 
-(defn ex1 [text]
+(defn part1 [text]
   (->> (parse-input text)
        (reduce (fn [[h-pos t-pos visited] next-h-move]
                  (let [[next-h next-t next-visited] (move h-pos t-pos next-h-move)]
@@ -99,10 +97,7 @@
        (last)
        (count)))
 
-(ex1 ex-inp)
-(ex1 inp)
-
-(defn ex2 [text]
+(defn part2 [text]
   (->> (parse-input text)
        (reduce (fn [[curr-pos visited] next-h-move]
                  (let [[new-pos next-visited] (move-long curr-pos next-h-move)]
@@ -110,8 +105,5 @@
                [(repeat 10 [1 1]) #{[1 1]}])
        (last)
        (count)))
-
-(ex2 ex-inp2)
-(ex2 inp)
 
 

@@ -2,9 +2,6 @@
   (:require [clojure.string :as s]
             [clojure.set :as set]))
 
-(def ex-input (c/get-input "input.txt"))
-(def input (c/get-input "input.txt"))
-
 (def priorities (into {} (mapcat (fn [i] [[(char (+ i (int \a))) (+ i 1)]
                                           [(char (+ i (int \A))) (+ i 27)]])
                                  (range 0 26))))
@@ -21,17 +18,13 @@
        (first)
        (priorities)))
 
-(defn ex1 [text]
+(defn part1 [text]
   (->> (s/split-lines text)
        (reduce #(+ %1 (-> %2 split-in-half priority-of-intersection)) 0)))
 
-(defn ex2 [text]
+(defn part2 [text]
   (->> (s/split-lines text)
        (partition 3)
        (reduce #(+ %1 (priority-of-intersection %2)) 0)))
 
 
-(ex1 ex-inp)  ;; 157
-(ex1 inp)     ;; 7980
-(ex2 ex-inp)  ;; 70
-(ex2 inp)     ;; 2881

@@ -1,9 +1,6 @@
 (ns aoc22.day13
   (:require [clojure.string :as s]))
 
-(def input (c/get-input "input.txt"))
-(def ex-input (c/get-input "input.txt"))
-
 (defn wrap [n] (if (int? n) [n] n))
 
 (defn signal-compare [l1 l2]
@@ -34,7 +31,7 @@
 
 (def right-order -1)
 
-(defn ex1 [text]
+(defn part1 [text]
   (->>
    (parse-lists text)
    (partition 2)
@@ -44,7 +41,7 @@
 
 (def divider-packets #{[[2]] [[6]]})
 
-(defn ex2 [text]
+(defn part2 [text]
   (->> (parse-lists text)
        (concat (vec divider-packets))
        (sort signal-compare)
@@ -52,7 +49,3 @@
                         (inc %1)))
        (apply *)))
 
-(ex1 ex-inp) ;; 13
-(ex1 inp)    ;; 5390
-(ex2 ex-inp) ;; 140
-(ex2 inp)    ;; 19261

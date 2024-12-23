@@ -1,6 +1,5 @@
 (ns aoc22.day19
-  (:require [clojure.string :as s]
-            [clojure.pprint :refer [pprint]]))
+  (:require [clojure.string :as s]))
 
 
 (defonce ex-input (c/get-input "input.txt"))

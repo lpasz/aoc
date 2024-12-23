@@ -1,9 +1,6 @@
 (ns aoc22.day14
   (:require [clojure.string :as s]))
 
-(def input (c/get-input "input.txt"))
-(def ex-input (c/get-input "input.txt"))
-
 (defn rrange [r1 r2]
   (if (< r1 r2)
     (range r1 (inc r2))
@@ -66,19 +63,14 @@
         (count (filter #(= %1 :sand) (vals acc)))
         (recur next-acc)))))
 
-(defn ex1 [text]
+(defn part1 [text]
   (let [rocks (parse-input text)
         free-fall (apply max (map second (keys rocks)))]
     (sand-max-capacity rocks {:free-fall free-fall})))
 
-(defn ex2 [text]
+(defn part2 [text]
   (let [rocks (parse-input text)
         infinity-floor (+ 2 (apply max (map second (keys rocks))))]
     (sand-max-capacity rocks {:infinity-floor infinity-floor})))
 
-(ex1 ex-inp) ;; 24
-(ex1 inp) ;; 1003
-
-(ex2 ex-inp) ;; 93 
-(ex2 inp) ;; 25771
 

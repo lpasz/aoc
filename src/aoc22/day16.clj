@@ -1,5 +1,6 @@
 (ns aoc22.day16
   (:require [clojure.string :as s]
+            [core :as c]
             [clojure.core.reducers :as r]))
 
 (def input (c/get-input "input.txt"))
@@ -19,7 +20,6 @@
                     [(keyword (s/lower-case valve)) {:flow-rate (Integer/parseInt flow-rate)
                                                      :tunnels-to [(keyword valve)]}]])))
        (into (sorted-map))))
-
 
 (def exvalves (parse-input ex-inp))
 (def valves (parse-input inp))
@@ -117,23 +117,17 @@
                                    (concat rstack))]
                   (recur upstack paths)))))))
 
-(defn ex1 [vvs]  (most-steam vvs :AA 30))
-
-(time (ex1 exvalves)) ;; 1651
-;; (time (ex1 valves)) ;; 1595
+(defn part1 [vvs]  (most-steam vvs :AA 30))
 
 (def me-on-track-for-26 (most-steam-paths valves :AA #{} 26))
 me-on-track-for-26
 ;; don't work for example cause by time 26 all will be open by me
-(defn ex2 [my-possible-paths]
+(defn part2 [my-possible-paths]
   (apply max (for [[s path] (take 10 (sort-by first > my-possible-paths))]
                (->> (most-steam-paths valves :AA path 26)
                     (map first)
                     (apply max)
                     (+ s)))))
-
-(ex2 me-on-track-for-26) ;; 2189
-
 
 ;;0     2*     3    4*     6     7    8*    10    11    12    13    14    15    16*   18    19    20*   22    23*  (all valves that can be open are open after this point)
 ;;AA -> DD -> CC -> BB -> AA -> II -> JJ -> II -> AA -> DD -> EE -> FF -> GG -> HH -> GG -> FF -> EE -> DD -> CC
@@ -143,7 +137,6 @@ me-on-track-for-26
 ;;II  BB <-> CC <-> DD <-> EE <-> FF <-> GG <-> HH
 ;;|
 ;;JJ
-
 
 ;;Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
 ;;Valve BB has flow rate=13; tunnels lead to valves CC, AA
@@ -155,7 +148,6 @@ me-on-track-for-26
 ;;Valve HH has flow rate=22; tunnel leads to valve GG
 ;;Valve II has flow rate=0; tunnels lead to valves AA, JJ
 ;;Valve JJ has flow rate=21; tunnel leads to valve II
-
 
 ;;+------------------------+
 ;;|                        |

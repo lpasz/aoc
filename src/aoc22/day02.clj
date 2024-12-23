@@ -7,7 +7,6 @@
 (def win {:paper :rock :rock :scissor :scissor :paper})
 (def lose (map-invert win))
 (def points {:rock 1 :paper 2 :scissor 3 :win 6 :lose 0 :tie 3})
-(def input (c/get-input "input.txt"))
 
 (defn game-result [you adv]
   (cond (= (-> you win) adv)  :win
@@ -16,7 +15,7 @@
 
 (defn get-result-points [[adv you]] (+ (points you) (points (game-result you adv))))
 
-(defn ex1 [text]
+(defn part1 [text]
   (->> (s/split-lines text)
        (reduce (fn [acc line] (->> (seq line)
                                    ((juxt #(ex1-encrypt (first %))
@@ -29,7 +28,7 @@
         (= :win result) [adv (lose adv)]
         (= :lose result) [adv (win adv)]))
 
-(defn ex2 [text]
+(defn part2 [text]
   (->> (s/split-lines text)
        (reduce (fn [acc line] (->> (seq line)
                                    ((juxt #(ex1-encrypt (first %))
@@ -38,5 +37,3 @@
                                    get-result-points
                                    (+ acc))) 0)))
 
-(ex1 inp) ;; 14531
-(ex2 inp) ;; 11258
