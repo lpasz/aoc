@@ -1,8 +1,9 @@
 (ns aoc22.day21
-  (:require [clojure.string :as s]))
+  (:require [core :as c]
+            [clojure.string :as s]))
 
-(def ex-input (c/get-input "input.txt"))
-(def input (c/get-input "input.txt"))
+(def ex-inp (c/get-input "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn parse [text]
   (->> (s/split-lines text)
@@ -62,19 +63,13 @@
       (update :root (fn [[v1 _ v2]] [v1 '= v2]))
       (assoc :humn :humn)))
 
-(defn ex2 [mps]
+(defn part2 [mps]
   (let [up-map (ex2-monkey-update mps)]
     (->> (find-recur-monkey-math (:root up-map) up-map)
          (half-eval)
-         (reverse-apply)
-         )))
+         (reverse-apply))))
 
-
-(defn ex1 [mps]
+(defn part1 [mps]
   (eval (find-recur-monkey-math (:root mps) mps)))
 
 
-(ex1 ex-monkey-math-map) ;; 152
-(ex1 monkey-math-map)    ;; 51928383302238
-(ex2 ex-monkey-math-map) ;; 301
-(ex2 monkey-math-map)    ;; 3305669217840

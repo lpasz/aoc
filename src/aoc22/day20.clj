@@ -1,5 +1,6 @@
 (ns aoc22.day20
-  (:require [clojure.pprint :as pp]))
+  (:require [core :as c]
+            [clojure.pprint :as pp]))
 
 (def ex-input (c/get-input "input.txt"))
 (def input (c/get-input "input.txt"))
@@ -33,21 +34,18 @@
        (map #(nth (cycle coll) (+ (.indexOf coll 0) %)))
        (apply +)))
 
-(defn ex1 [coll]
+(defn part1 [coll]
   (let [idx-itms (indexed coll 1)]
     (->> (do-it idx-itms idx-itms)
-         (mapv second))))
+         (mapv second)
+         (calc))))
 
-(->> ex-inp-list (ex1) calc)
-(time (->> inp-list (ex1) calc))
-
-(defn ex2 [coll]
+(defn part2 [coll]
   (let [idx-coll (indexed coll 811589153)
         ddo-it #(do-it %1 idx-coll)]
-  (->> (range 0 10)
-       (reduce (fn [acc _] 
-                 (ddo-it acc)) idx-coll))))
-
-(->> ex-inp-list (ex2) (mapv second) (calc))
-(time (->> inp-list (ex2) (mapv second) calc))
+    (->> (range 0 10)
+         (reduce (fn [acc _]
+                   (ddo-it acc)) idx-coll)
+         (mapv second)
+         (calc))))
 

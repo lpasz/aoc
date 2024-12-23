@@ -3,8 +3,8 @@
             [core :as c]
             [clojure.core.reducers :as r]))
 
-(def input (c/get-input "input.txt"))
-(def ex-input (c/get-input "input.txt"))
+(def inp (c/get-input "input.txt"))
+(def ex-inp (c/get-input "input.txt"))
 
 (defn parse-input [text]
   (->> (s/split-lines text)

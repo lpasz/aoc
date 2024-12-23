@@ -1,9 +1,9 @@
 (ns aoc22.day19
-  (:require [clojure.string :as s]))
+  (:require [core :as c]
+            [clojure.string :as s]))
 
-
-(defonce ex-input (c/get-input "input.txt"))
-(defonce input (c/get-input "input.txt"))
+(defonce ex-inp (c/get-input "input.txt"))
+(defonce inp (c/get-input "input.txt"))
 
 (defn parse [text]
   (->>   (s/split text #"[^0-9]")
@@ -43,7 +43,6 @@
                                  curr-materials
                                  robots)))
 
-
 (def can-make-robot? (fn [robot blueprint available-mats]
                        (if-let [req-mat (get blueprint robot)]
                          (every? (fn [[mat n]]
@@ -61,8 +60,6 @@
                                (update materials mat - n))
                              mat
                              cost))))
-
-
 
 (def build-robots (fn [mat robots blueprint]
                     (->> [:geode-robot :obisidian-robot :clay-robot :ore-robot]
@@ -104,21 +101,17 @@
       (swap! self #(dissoc % n)))
     (get @self num)))
 
-
-
 (defn max-geodes [blueprint n t]
   (reduce #(max %1 ((comp :geode first) %2))
           0
           (make-with-blueprint blueprint n t)))
 
-
 (defn make-blueprints [blueprints n t]
   (reduce #(+ %1 (* (:number %2) (max-geodes %2 n t))) 0 blueprints))
 
+(defn part1 [bp]
+  (make-blueprints bp 24 500))
 
-(make-blueprints ex-blueprints 24 500) ;; 33
-(make-blueprints blueprints 24 500) ;; 1346
-
-
-(map #(max-geodes %1 32 100) ex-blueprints)
-(apply * (map #(max-geodes %1 32 100) (take 3 blueprints))) ;; 7644
+(defn part2 [bp]
+  (apply * (map #(max-geodes %1 32 100) (take 3 bp))) ;; 7644
+  )

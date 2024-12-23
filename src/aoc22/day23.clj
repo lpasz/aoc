@@ -1,8 +1,7 @@
 (ns aoc22.day23
   (:require [clojure.string :as s]
+            [core :as c]
             [clojure.pprint :as pp]))
-
-
 
 (def ex-txt (c/get-input "input.txt"))
 (def inp-txt (c/get-input "input.txt"))
@@ -24,14 +23,14 @@
 (def input (parse inp-txt))
 
 (def surrounding {:nw [-1 -1] :n [0 -1] :ne [+1 -1]
-                   :w [-1 0]            :e  [+1 0]
+                  :w [-1 0]            :e  [+1 0]
                   :se [+1 +1] :s [0 +1] :sw [-1 +1]})
 
 (defn go-to [[x y] dir]
   (let [[dx dy] (get surrounding dir)]
     [(+ x dx) (+ y dy)]))
 
-(defn around [[x y] inp]
+(defn around [[x y] input]
   (->> surrounding
        (map (fn [[d [xs ys]]] [d [(+ xs x) (+ ys y)]]))
        (filter #(get input (second %)))
@@ -52,7 +51,6 @@
     deft
     (first coll)))
 
-
 (defn first-valid-move-in-order [xy around order]
   (->> order
        (keep (fn [dir]
@@ -61,9 +59,9 @@
        (first-or [xy xy])))
 
 (defn propose-move [[input order]]
-  (->> inp
+  (->> input
        (map (fn [xy]
-              (let [around (around xy inp)]
+              (let [around (around xy input)]
                 (if (empty? around)
                   [xy xy]
                   (first-valid-move-in-order xy around order)))))))
@@ -77,10 +75,8 @@
                    (map first v))))
        (into #{})))
 
-
 (defn move [[input order]]
   [(remove-move-with-same-target (propose-move [input order])) (rotate order)])
-
 
 (defn calc-board-empty-squares [[input _]]
   (let [min-x (->> input (map first) (apply min))
@@ -97,7 +93,7 @@
   (reduce (fn [acc _] (move acc)) [input n-m] (range 10)))
 
 (defn do-until-no-moves [[input order]]
-  (loop [curr inp
+  (loop [curr input
          order order
          count 1]
     (let [[new order] (move [curr order])]
@@ -105,9 +101,11 @@
         count
         (recur new order (inc count))))))
 
-(->> [input order]
-     do-n-moves
-     calc-board-empty-squares)
+(defn part1 [input]
+  (->> [input order]
+       do-n-moves
+       calc-board-empty-squares))
 
-(time (do-until-no-moves [input order]))
+(defn part2 [input]
+  (do-until-no-moves [input order]))
 

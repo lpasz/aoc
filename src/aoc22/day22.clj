@@ -1,9 +1,9 @@
 (ns aoc22.day22
   (:require [clojure.string :as s]
-            [clojure.pprint :as pp]))
+            [core :as c]))
 
-(def ex-input (c/get-input "input.txt"))
-(def input (c/get-input "input.txt"))
+(def ex-inp (c/get-input "input.txt"))
+(def inp (c/get-input "input.txt"))
 
 (defn y-boundaries [mmap]
   (->> (group-by ffirst mmap)
@@ -129,8 +129,7 @@
   (let [side (side curr-pos)
         {:keys [warp on headed reverse] :as map} (get-in side-cubes [side dir])
         equivalent-position (downsize (if (#{:left :right} dir) y x))
-        equivalent-position (if reverse (rev equivalent-position) equivalent-position)
-        ]
+        equivalent-position (if reverse (rev equivalent-position) equivalent-position)]
     [headed (get-in borders [warp on equivalent-position])]))
 
 (defn walk-dir [curr-pos steps dir mmap warper]
@@ -168,7 +167,7 @@
                  :left 2
                  :up 3})
 
-(defn ex1 [text start]
+(defn part1 [text start]
   (let [[dirs mmap xb yb] (parse text)
         warper #(do [%2 (warp-to %1 %2 xb yb)])
         [[col row] direction] (walk-the-line start
@@ -178,7 +177,7 @@
                                              warper)]
     (+ (* 1000 row) (* 4 col) (dir-points direction))))
 
-(defn ex2 [text start borders]
+(defn part2 [text start borders]
   (let [[dirs mmap] (parse text)
         warper #(warp-to-cube %1 %2 borders)
         [[col row] direction] (walk-the-line start
@@ -198,6 +197,4 @@
 
 (def faces-borders (into (sorted-map) (map (fn [[k v]] [k (border v)]) sides)))
 
-(ex1 input [51 1]) ;; 67390
-(ex2 input [51 1] faces-borders) ;; 95291
 

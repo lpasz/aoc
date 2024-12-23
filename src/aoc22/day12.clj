@@ -1,6 +1,10 @@
 (ns aoc22.day12
   (:require [clojure.string :as s]
+            [core :as c]
             [clojure.set :as set]))
+
+(def inp (c/get-input "input.txt"))
+(def ex-inp (c/get-input "input.txt"))
 
 (defn assoc-start-end [graph]
   (let [start (:start graph)
@@ -43,24 +47,15 @@
       (<= (abs (- (int curr) (int next))) 1)
       true)))
 
-(at-most-one-higher? \a \a)
-(at-most-one-higher? \a \b)
-(at-most-one-higher? \a \c)
-(at-most-one-higher? \d \a)
-
 (defn can-go-to [curr-pos graph]
   (->> curr-pos
        (possible-paths)
        (filter graph)
        (filter #(at-most-one-higher? (graph curr-pos) (graph %1)))))
 
-(can-go-to (:start ex-graph) ex-graph)
-
-
 (defn next-steps [step pos graph]
   (->> (can-go-to pos graph)
        (map (fn [next] [(inc step) next]))))
-
 
 (defn shortest-path
   ([graph]
@@ -81,9 +76,6 @@
                             (conj paths-to-end [step pos])
                             paths-to-end)]
          (recur stack visited paths-to-end))))))
-
-(time (shortest-path ex-graph))
-(time (shortest-path graph))
 
 (defn a-starting-pos [graph]
   (keep (fn [[k val]] (when (= val \a) k)) graph))
