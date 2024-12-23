@@ -1,5 +1,6 @@
 (ns core
   (:require [clojure.pprint :as pp]
+            [clojure.set :as set]
             [clojure.string :as str]))
 
 (defmacro get-input [file]
@@ -18,12 +19,13 @@
   ([fun value] `(~fun ~value))
   ([args body value] `((fn ~args ~body) ~value)))
 
-(defn fnvec [& funs]
+(defn fnvec
   "create a function that receives a coll/vector and
   returns a vector with first fn applied to first elem, second to second
 
    example:
    ((fnvec inc dec core/parse-int) [0 3 \"3\"]) #=> [1 2 3]"
+  [& funs]
   (fn [args] (mapv (fn [fun args] (fun args)) funs args)))
 
 (defn next-position
@@ -507,3 +509,25 @@
   (a* graph "A" "D" costs)
 ;;
   )
+
+(defn bron-kerbosch
+  "Use to find all cliques of a graph/network"
+  ([nodes neighbours] (bron-kerbosch #{} nodes #{} neighbours))
+  ([r nodes x neighbours]
+   (if (every? empty? [nodes x])
+     [r]
+     (loop [nodes nodes
+            x x
+            result []]
+       (if (empty? nodes)
+         result
+         (let [node (first nodes)
+               nodes (disj nodes node)
+               result (into result
+                            (bron-kerbosch (conj r node)
+                                           (set/intersection nodes (neighbours node))
+                                           (set/intersection x (neighbours node))
+                                           neighbours))
+               x (conj x node)]
+           (recur nodes x result)))))))
+

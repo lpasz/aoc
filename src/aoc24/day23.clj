@@ -1,7 +1,6 @@
 (ns aoc24.day23
   (:require [core :as c]
-            [clojure.string :as s]
-            [clojure.set :as set]))
+            [clojure.string :as s]))
 
 (defn parse-input [file]
   (let [node-connections (->> (re-seq #"\w+" (c/get-input file))
@@ -38,38 +37,21 @@
          (filter (partial some #(s/starts-with? % "t")))
          (count))))
 
-(defn vector-intersection
-  "Finds the intersection between two vectors.
-  Assumes no duplicate elements in either vector."
-  [vec-1 vec-2]
-  (apply vector (set/intersection (set vec-1) (set vec-2))))
-
-(defn bron-kerbosch
-  "Performs the Bron-Kerbosch iterative algorithm."
-  ([nodes neighbours] (bron-kerbosch [] nodes [] neighbours))
-  ([r p x neighbours]
-   (if (and (empty? p) (empty? x))
-     [(set r)]
-     (loop [p p
-            x x
-            result []]
-       (if (empty? p)
-         result
-         (let [v (first p)
-               nv (neighbours v)
-               result (into result
-                            (bron-kerbosch (cons v r)
-                                           (vector-intersection p nv)
-                                           (vector-intersection x nv)
-                                           neighbours))
-               p (rest p)
-               x (cons v x)]
-           (recur p x result)))))))
-
 (defn part2 [file]
   (let [{:keys [nodes neighbours]} (parse-input file)]
-    (->> (bron-kerbosch nodes neighbours)
+    (->> (c/bron-kerbosch nodes neighbours)
          (sort-by count >)
          (first)
          (sort)
          (s/join ","))))
+
+
+
+
+
+
+
+
+
+
+
