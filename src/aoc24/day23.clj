@@ -15,25 +15,28 @@
     {:nodes (set (map first node-connections))
      :neighbours neighbours}))
 
+(defn unique-trios [nodes neighbours]
+  (->> (for [i nodes]
+         (for [j (neighbours  i)]
+           (for [k (neighbours j)
+                 :when (and (not= i j)
+                            (not= j k)
+                            (not= k j))]
+             (let [si (neighbours i)
+                   sj (neighbours j)
+                   sk (neighbours k)]
+               (when (and (si j) (si k)
+                          (sj i) (sj k)
+                          (sk i) (sk j))
+                 (set [i j k]))))))
+       (flatten)
+       (c/reject nil?)
+       (filter #(= (count %) 3))
+       (set)))
+
 (defn part1 [file]
   (let [{:keys [nodes neighbours]} (parse-input file)]
-    (->> (for [i nodes]
-           (for [j (neighbours  i)]
-             (for [k (neighbours j)
-                   :when (and (not= i j)
-                              (not= j k)
-                              (not= k j))]
-               (let [si (neighbours i)
-                     sj (neighbours j)
-                     sk (neighbours k)]
-                 (when (and (si j) (si k)
-                            (sj i) (sj k)
-                            (sk i) (sk j))
-                   (set [i j k]))))))
-         (flatten)
-         (filter #(= (count %) 3))
-         (c/reject nil?)
-         (set)
+    (->> (unique-trios nodes neighbours)
          (filter (partial some #(s/starts-with? % "t")))
          (count))))
 
