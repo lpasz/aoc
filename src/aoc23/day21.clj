@@ -3,8 +3,6 @@
   (:require [core :as c]
             [clojure.set :as set]))
 
-(def input (c/get-input "input.txt"))
-
 (defn remap [n nmax]
   (let [rm (rem n nmax)]
     (cond (zero? rm) 0
@@ -46,7 +44,7 @@
                        (conj results (count coords))
                        results)))))))))
 
-(defonce abc (second (part input 328)))
+(defn abc [input] (second (part input 328)))
 
 (defn calc [n a b c]
   (+ a (* n (+ (- b a) (quot (* (dec n) (+ a (- c b b))) 2)))))
@@ -54,7 +52,7 @@
 (defn part1 [input]
   (first (part input 64)))
 
-(defn part2 []
-  (let [[a b c] abc]
+(defn part2 [input]
+  (let [[a b c] (abc input)]
     (calc max-visited-gardens a b c)))
 
