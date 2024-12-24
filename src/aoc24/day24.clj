@@ -108,12 +108,13 @@
                          (verify-carry-bit x n formula))))))
 
 (let [{:keys [operations]} (parse-input "input.txt")
-      formulas (->> operations (map (fn [[x o y z]] [z [o x y]])) (into (sorted-map)))
-      n 1]
+      formulas (->> operations (map (fn [[x o y z]] [z [o x y]])) (into (sorted-map)))]
   (loop [n (range 0 46)]
     (if (verify-z (make-key "z" (first n)) (first n) formulas)
       (recur (rest n))
-      (first n))))
+      (first n)))
+  )
 
 ;; z16 <-> hmk
 ;; fhp <-> z20
+;; tpc <-> rvf

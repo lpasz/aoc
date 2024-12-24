@@ -188,7 +188,7 @@ ggg AND prd -> jcw
 mgm XOR cfr -> z25
 kvm OR svd -> z45
 ddg XOR tck -> z10
-y27 XOR x27 -> tpc
+y27 XOR x27 -> rvf
 wjq XOR thj -> z06
 y02 AND x02 -> cpf
 sjc OR jhb -> mch
@@ -306,7 +306,7 @@ mch AND jbk -> tcw
 fhp OR rwm -> vnk
 vmr XOR bnc -> z16
 ttw OR ggw -> dkb
-x27 AND y27 -> rvf
+x27 AND y27 -> tpc
 x19 XOR y19 -> gdq
 x40 XOR y40 -> grr
 y31 XOR x31 -> hbc
