@@ -112,9 +112,14 @@
   (loop [n (range 0 46)]
     (if (verify-z (make-key "z" (first n)) (first n) formulas)
       (recur (rest n))
-      (first n)))
-  )
+      (first n))))
 
+
+(s/join "," (sort ["z16""hmk"
+"fhp""z20"
+"tpc""rvf"
+"z33""fcd"]))
 ;; z16 <-> hmk
 ;; fhp <-> z20
 ;; tpc <-> rvf
+;; z33 <-> fcd

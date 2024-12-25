@@ -196,7 +196,7 @@ gms OR cpf -> tkj
 jtv XOR nsc -> z15
 fnw AND wcj -> kvm
 tcw OR gvh -> wjq
-smf XOR rfd -> fcd
+smf XOR rfd -> z33 
 jbj AND rkg -> dnv
 y19 AND x19 -> qgq
 jnh OR qkj -> spt
@@ -250,7 +250,7 @@ x00 AND y00 -> bdk
 x36 XOR y36 -> rhc
 jkg OR kgb -> wjt
 wfr AND fnv -> sjc
-wkw OR jgr -> z33
+wkw OR jgr -> fcd
 x20 AND y20 -> rwm
 y26 XOR x26 -> qwr
 y44 AND x44 -> svd
