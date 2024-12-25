@@ -84,7 +84,7 @@
   Carry its the join of the direct carry bit, and the recarry.
 
     OR -----> AND (direct carry)------------------------> X
-                      ^ 
+                      ^
                       +---------------------------------> Y
 
   "
