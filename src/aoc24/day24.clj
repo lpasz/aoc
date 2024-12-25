@@ -145,15 +145,22 @@
                 +------------------> CARRY IN BIT
  "
   [wire n formula]
-  (c/insp :verify-z [wire n])
   (let [[o x y] (formula wire)]
-    (c/insp :verify-z [o x y])
-    (cond (not= o :XOR) false
-          (zero? n) (= (sort [x y]) [:x00 :y00])
-          :else (or (and (verify-intermediate-xor  x n formula)
-                         (verify-carry-bit y n formula))
-                    (and (verify-intermediate-xor y n formula)
-                         (verify-carry-bit x n formula))))))
+    (c/insp :verify-z [wire n o x y])
+    (assert (= o :XOR))
+    (if (zero? n)
+      (= (sort [x y]) [:x00 :y00])
+      (or (and (verify-intermediate-xor  x n formula)
+               (verify-carry-bit y n formula))
+          (and (verify-intermediate-xor y n formula)
+               (verify-carry-bit x n formula))))))
+
+(defn formulas [file]
+  (let [{:keys [operations]} (parse-input file)
+        formulas (->> operations
+                      (map (fn [[x o y z]] [z [o x y]]))
+                      (into (sorted-map)))]
+    formulas))
 
 (defn attempt-to-run-example
   "
@@ -168,21 +175,41 @@
  we are essencially doing. going back from Z to determine if the rest is correct.
  
  
-        X -------+----> XOR----+-------> XOR ------------------> SUM (Z)
+        X -------+----> XOR----+--<-----> XOR ------------------> SUM (Z)
         Y ----+--|-------^     |         ^
  CARRY IN ----|--|-------------|---------+---AND-----> OR------> CARRY OUT
               |  |             +--------------^        ^
               |  +-------------------------------AND---+
               +-----------------------------------^
 
+  This is an example of what regressing z2 looks like, from the start. 
 
+            verify-z          verify-intermediate-xor
+  <--<Z2>---XOR ----<vjn>----XOR ---<y2>----
+             ^                 ^
+             |                 |
+             |                 +----<x2>----
+             |              verify-carry-bit    verify-recarry            verify-intermediate-xor
+             +-----<spt>----OR----<jnh>--------AND---<rsq>---------------XOR----<x01>----+
+                             ^                  ^                         ^
+                             |                  |                         |
+                             |                  |                         |
+                             |                  |                         +-----<y01>----+
+                             |                  |              verify-carry-bit
+                             |                  +----<bdk>----AND-----<x00>----+
+                             |                                 ^
+                             |                                 |
+                             |                                 +-----<y00>----+
+                             |  
+                             |                     verify-direct-carry
+                             +----<qkj>-----------AND-----<x01>----+
+                                                   ^
+                                                   |
+                                                   +------<y01>----+
   
   "
   [file]
-  (let [{:keys [operations]} (parse-input file)
-        formulas (->> operations
-                      (map (fn [[x o y z]] [z [o x y]]))
-                      (into (sorted-map)))]
+  (let [formulas (formulas file)]
     (loop [n (range 0 46)]
       (if (verify-z (make-key "z" (first n)) (first n) formulas)
         (recur (rest n))
