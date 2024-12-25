@@ -2,8 +2,6 @@
   (:require [core :as c]
             [clojure.string :as s]))
 
-(defn part2 [file] :not-implemented)
-
 (defn parse-input [file]
   (let [i (c/get-input file)
         [v t] (s/split i #"\n\n")
@@ -59,23 +57,57 @@
 (defn make-key [letter n]
   (keyword (str letter (format "%02d" n))))
 
-(def != not=)
+(declare verify-recarry)
+(declare verify-carry-bit)
+(declare verify-intermediate-xor)
 
-(defn verify-direct-carry [wire n formula]
+(defn verify-recarry
+  "
+  Carry its the join of the direct carry bit, and the recarry.
+
+   AND (Recarry) ------------------------------> Carry IN
+          ^--------XOR ------------------------> X
+                    ^--------------------------> Y
+
+  "
+  [wire n formula]
+  (c/insp :verify-recarry [wire n])
+  (let [[o x y] (formula wire)]
+    (if (not= o :AND) false
+        (or (and (verify-intermediate-xor x n formula)
+                 (verify-carry-bit y n formula))
+            (and (verify-intermediate-xor  y n formula)
+                 (verify-carry-bit x n formula))))))
+
+(defn verify-direct-carry
+  "
+  Carry its the join of the direct carry bit, and the recarry.
+
+    OR -----> AND (direct carry)------------------------> X
+                      ^ 
+                      +---------------------------------> Y
+
+  "
+  [wire n formula]
   (c/insp :verify-direct-carry  [wire n])
   (let [[o x y] (formula wire)]
     (c/insp :verify-direct-carry  [o x y])
-    (if (!= o :AND) false
+    (if (not= o :AND) false
         (= (sort [x y]) (map #(make-key % n) ["x" "y"])))))
 
-(defn verify-intermediate-xor [wire n formula]
-  (c/insp :verify-intermediate-xor [wire n])
-  (let [[o x y] (formula wire)]
-    (c/insp :verify-intermediate-xor [o x y])
-    (if (!= o :XOR) false
-        (= (sort [x y]) (map #(make-key % n) ["x" "y"])))))
+(defn verify-carry-bit
+  "
+  Carry its the join of the direct carry bit, and the recarry.
 
-(defn verify-carry-bit [wire n formula]
+  CARRY OUT BIT ------> OR ---> AND (Recarry) ------------------------------> Carry IN
+                        ^              ^--------XOR ----------------+-------> X
+                        |                        ^------------------|--+----> Y
+                        |                                           |  |
+                        +-----> AND (direct carry)------------------+  |
+                                     ^---------------------------------+
+
+  "
+  [wire n formula]
   (c/insp :verify-carry-bit [wire n])
   (let [[o x y] (formula wire)]
     (c/insp :verify-carry-bit [o x y])
@@ -87,16 +119,32 @@
                     (and (verify-direct-carry y (dec n) formula)
                          (verify-recarry x (dec n) formula))))))
 
-(defn verify-recarry [wire n formula]
-  (c/insp :verify-recarry [wire n])
-  (let [[o x y] (formula wire)]
-    (if (!= o :AND) false
-        (or (and (verify-intermediate-xor x n formula)
-                 (verify-carry-bit y n formula))
-            (and (verify-intermediate-xor  y n formula)
-                 (verify-carry-bit x n formula))))))
+(defn verify-intermediate-xor
+  "
+  The intermediate xor consists of the an Z current X and Y
+  So for a given Z12
 
-(defn verify-z [wire n formula]
+    Z12 -------> XOR ------> INTERMEDIATE-XOR ---> X12
+                                     ^-----------> Y12
+
+  We expect the intermediate xor to look like this
+  "
+  [wire n formula]
+  (c/insp :verify-intermediate-xor [wire n])
+  (let [[o x y] (formula wire)]
+    (c/insp :verify-intermediate-xor [o x y])
+    (if (not= o :XOR) false
+        (= (sort [x y]) (map #(make-key % n) ["x" "y"])))))
+
+(defn verify-z
+  "
+  This is the reversed circuit of a Z input
+
+     Z ------> XOR -------> XOR----> X
+                |            ^-----> Y
+                +------------------> CARRY IN BIT
+ "
+  [wire n formula]
   (c/insp :verify-z [wire n])
   (let [[o x y] (formula wire)]
     (c/insp :verify-z [o x y])
@@ -107,19 +155,48 @@
                     (and (verify-intermediate-xor y n formula)
                          (verify-carry-bit x n formula))))))
 
-(let [{:keys [operations]} (parse-input "input.txt")
-      formulas (->> operations (map (fn [[x o y z]] [z [o x y]])) (into (sorted-map)))]
-  (loop [n (range 0 46)]
-    (if (verify-z (make-key "z" (first n)) (first n) formulas)
-      (recur (rest n))
-      (first n))))
+(defn attempt-to-run-example
+  "
+ this is what runs part 2
+ part two was mostly copied from this video https://www.youtube.com/watch?v=SU6lp6wyd3I&t=2716s
+ but we basically reverting an addition with carry over bit, and checking if that is the actual operations happening.
+ If it fails, we can go back and check the input to find the error and fix it.
+ If you fix it manually if should be able to get to the next step.
+ Once you get to z45 you are at the very end of the input.
+
+ Here is the expected sum, with carry over bit this is the original circuit, the others are reversed, because that is what
+ we are essencially doing. going back from Z to determine if the rest is correct.
+ 
+ 
+        X -------+----> XOR----+-------> XOR ------------------> SUM (Z)
+        Y ----+--|-------^     |         ^
+ CARRY IN ----|--|-------------|---------+---AND-----> OR------> CARRY OUT
+              |  |             +--------------^        ^
+              |  +-------------------------------AND---+
+              +-----------------------------------^
 
 
-(s/join "," (sort ["z16""hmk"
-"fhp""z20"
-"tpc""rvf"
-"z33""fcd"]))
+  
+  "
+  [file]
+  (let [{:keys [operations]} (parse-input file)
+        formulas (->> operations
+                      (map (fn [[x o y z]] [z [o x y]]))
+                      (into (sorted-map)))]
+    (loop [n (range 0 46)]
+      (if (verify-z (make-key "z" (first n)) (first n) formulas)
+        (recur (rest n))
+        (first n)))))
+
+;; This are the changes made, they were made in the input.txt, for comparing, we kept and original.txt
 ;; z16 <-> hmk
 ;; fhp <-> z20
 ;; tpc <-> rvf
 ;; z33 <-> fcd
+(->> ["z16" "hmk"
+      "fhp" "z20"
+      "tpc" "rvf"
+      "z33" "fcd"]
+     (sort)
+     (s/join ","))
+
