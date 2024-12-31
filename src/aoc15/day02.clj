@@ -1,7 +1,7 @@
 (ns aoc15.day02
   (:require [core :as c]))
 
-(defn calc-ribbon [[x y z]]
+(defn calc-wrap [[x y z]]
   (let [areas [(* x y)
                (* y z)
                (* x z)]
@@ -10,10 +10,9 @@
                   (c/sum))]
     (+ area (apply min areas))))
 
-(defn calc-wrap [dim]
+(defn calc-ribbon [dim]
   (let [[m1 m2] (sort dim)]
-    (+ (* 2 m1) (* 2 m2))))
-
+    (+ (* 2 m1) (* 2 m2) (c/product dim))))
 
 (defn parse-input [file]
   (->> (c/get-input file)
@@ -26,8 +25,8 @@
        (map calc-wrap)
        (c/sum)))
 
+(defn part2 [file]
+  (->> (parse-input file)
+       (map calc-ribbon)
+       (c/sum)))
 
-
-(->> (parse-input "input.txt")
-     (map calc-wrap)
-     (c/sum))
