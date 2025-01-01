@@ -3,15 +3,17 @@
             [clojure.set :as set]
             [clojure.string :as str]))
 
-(defmacro get-input [file]
-  `(slurp (str "./assets/"
-               (-> ~*ns*
-                   (ns-name)
-                   (str)
-                   (str/replace "-test" "")
-                   (str/replace "." "/"))
-               "/"
-               ~file)))
+(defmacro get-input
+  ([] (get-input "input.txt"))
+  ([file]
+   `(slurp (str "./assets/"
+                (-> ~*ns*
+                    (ns-name)
+                    (str)
+                    (str/replace "-test" "")
+                    (str/replace "." "/"))
+                "/"
+                ~file))))
 
 ;; create a `.clj-kondo/config.edn` and add the line below
 ;; {:lint-as {core/then clojure.core/fn}}
