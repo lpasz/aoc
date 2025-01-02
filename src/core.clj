@@ -18,6 +18,7 @@
 ;; create a `.clj-kondo/config.edn` and add the line below
 ;; {:lint-as {core/then clojure.core/fn}}
 (defmacro then
+  {:lint-as {core/then clojure.core/fn}}
   ([fun value] `(~fun ~value))
   ([args body value] `((fn ~args ~body) ~value)))
 
