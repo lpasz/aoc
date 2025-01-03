@@ -3,7 +3,7 @@
             [aoc15.day05 :as day05]))
 
 (t/deftest part1
-  (t/testing "input" (t/is (= 400410 (day05/part1 "input.txt")))))
+  (t/testing "input" (t/is (= 255 (day05/part1 "input.txt")))))
 
 (t/deftest part2
-  (t/testing "input" (t/is (= 15343601 (day05/part2 "input.txt")))))
+  (t/testing "input" (t/is (= 55 (day05/part2 "input.txt")))))

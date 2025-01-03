@@ -1,7 +1,14 @@
 (ns core
   (:require [clojure.pprint :as pp]
             [clojure.set :as set]
-            [clojure.string :as str]))
+            [clojure.string :as str])
+  (:import java.security.MessageDigest
+           java.math.BigInteger))
+
+(defn md5 [s]
+  (let [algorithm (MessageDigest/getInstance "MD5")
+        raw (.digest algorithm (.getBytes s))]
+    (format "%032x" (BigInteger. 1 raw))))
 
 (defmacro get-input
   ([] (get-input "input.txt"))
@@ -15,10 +22,7 @@
                 "/"
                 ~file))))
 
-;; create a `.clj-kondo/config.edn` and add the line below
-;; {:lint-as {core/then clojure.core/fn}}
 (defmacro then
-  {:lint-as {core/then clojure.core/fn}}
   ([fun value] `(~fun ~value))
   ([args body value] `((fn ~args ~body) ~value)))
 
