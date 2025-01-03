@@ -22,6 +22,14 @@
                 "/"
                 ~file))))
 
+(defmacro cond-fn [& clauses]
+  (cond (empty? clauses) nil
+        (not (even? (count clauses))) (throw (ex-info (str `cond-fn " requires an even number of forms") {:form &form :meta (meta &form)}))
+        :else (let [[expr fn-value & rest-clauses] clauses]
+                `(if ~expr
+                   (~fn-value ~expr)
+                   (cond-let ~@rest-clauses)))))
+
 (defmacro then
   ([fun value] `(~fun ~value))
   ([args body value] `((fn ~args ~body) ~value)))
