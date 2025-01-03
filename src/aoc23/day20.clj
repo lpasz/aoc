@@ -1,7 +1,6 @@
 (ns aoc23.day20
   "Pulse Propagation"
-  (:require [core :as c]
-            [clojure.math.numeric-tower :as math]))
+  (:require [core :as c]))
 
 (def high-pulse? true?)
 (def low-pulse? false?)
@@ -25,14 +24,13 @@
                     :memory false}])))
          (into {}))))
 
-
 (defn- parse-input [inp]
   (->> (re-seq #"(?m)(.*) -> (.*)" inp)
        (map rest)
        (parse)))
 
-(fn [arg1 arg2] 
-  (+ arg1 arg2) )
+(fn [arg1 arg2]
+  (+ arg1 arg2))
 
 (defn update-part1 [part1 signal]
   (if (high-pulse? signal)
@@ -105,5 +103,4 @@
        (reduce press-button [(parse-input inp) {:high 0 :low 0} {}])
        (last)
        (vals)
-       (reduce math/lcm)))
-
+       (reduce c/lcm)))

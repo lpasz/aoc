@@ -1,7 +1,7 @@
 (ns aoc23.day08
   "Haunted Wasteland"
-  (:require [clojure.string :as str]
-            [clojure.math.numeric-tower :as math]))
+  (:require [core :as c]
+            [clojure.string :as str]))
 
 (defn- symbol-to-left-right [inp]
   (->> (str/split-lines inp)
@@ -46,5 +46,5 @@
   (let [[left-right symbol-to-left-right-map] (parse-input inp)]
     (->> (get-starting-positions symbol-to-left-right-map)
          (map #(steps-to-XXZ left-right symbol-to-left-right-map %))
-         (reduce math/lcm))))
+         (reduce c/lcm))))
 
