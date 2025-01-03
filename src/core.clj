@@ -24,7 +24,8 @@
 
 (defmacro cond-fn [& clauses]
   (cond (empty? clauses) nil
-        (not (even? (count clauses))) (throw (ex-info (str `cond-fn " requires an even number of forms") {:form &form :meta (meta &form)}))
+        (not (even? (count clauses))) (throw (ex-info (str `cond-fn " requires an even number of forms")
+                                                      {:form &form :meta (meta &form)}))
         :else (let [[expr fn-value & rest-clauses] clauses]
                 `(if ~expr
                    (~fn-value ~expr)
@@ -173,6 +174,11 @@
 (defn one? [n] (= 1 n))
 
 (defn third [coll] (nth coll 2))
+
+(defn hex->long
+  "Converts number from hex to long"
+  [n]
+  (read-string (str "16r" n)))
 
 (defn transpose [matrix]
   (apply map vector matrix))
