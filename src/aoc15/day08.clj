@@ -2,17 +2,33 @@
   (:require [core :as c]
             [clojure.string :as s]))
 
+(defn- cnt1 [t]
+  (-> t
+      (s/replace "\\\"" "a")
+      ;; this is order dependent
+      (s/replace "\\\\" "a")
+      (s/replace #"\\x[0123456789abcdef]{2}" "a")
+      (count)
+      (dec)
+      (dec)))
 
-(defn calc [n]
-  [(count (str \" n \"))
-   (count n)])
+(defn part1 [file]
+  (->> (c/get-input file)
+       (s/split-lines)
+       (map (fn [line] (- (count line) (cnt1 line))))
+       (c/sum)))
 
-(calc "")
-(calc "abc")
+(defn- cnt2 [t]
+  (-> t
+      (s/replace "\\" "\\\\")
+      (s/replace "\"" "\\\"")
+      (s/replace #"\\x[0123456789abcdef]{2}" "\\\\xaa")
+      (count)
+      (inc)
+      (inc)))
 
-(parse-long (first (rest (first (re-seq #"\\x(\d\d?)" "arsta\\x2")))))
-
-
-(s/split-lines (c/get-input "input.txt"))
-
-(char (c/hex->long 27))
+(defn part2 [file]
+  (->> (c/get-input file)
+       (s/split-lines)
+       (map (fn [line] (- (cnt2 line) (count line))))
+       (c/sum)))
