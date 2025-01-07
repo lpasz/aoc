@@ -565,3 +565,18 @@
   "Lowest Common Multiplier"
   [x y]
   (* (/ x (gcd x y)) y))
+
+(defn visit-all-nodes-distances
+  ([graph start-coord] (visit-all-nodes-distances graph start-coord #{} 0))
+  ([graph start-coord visited distance]
+   (let [visited (conj visited start-coord)
+         nexts (->> (graph start-coord)
+                    (reject (fn [[next-coord _]] (visited next-coord))))]
+     (if (empty? nexts)
+       [distance]
+       (mapcat (fn [[next-coord dist]]
+                 (visit-all-nodes-distances graph
+                                            next-coord
+                                            visited
+                                            (+ distance dist))) nexts)))))
+
