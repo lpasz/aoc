@@ -13,14 +13,14 @@
 (defmacro get-input
   ([] (get-input "input.txt"))
   ([file]
-   `(slurp (str "./assets/"
+   `(str/trim (slurp (str "./assets/"
                 (-> ~*ns*
                     (ns-name)
                     (str)
                     (str/replace "-test" "")
                     (str/replace "." "/"))
                 "/"
-                ~file))))
+                ~file)))))
 
 (defmacro cond-fn [& clauses]
   (cond (empty? clauses) nil

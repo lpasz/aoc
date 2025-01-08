@@ -1,6 +1,5 @@
 (ns aoc15.day09
-  (:require [core :as c]
-            [clojure.string :as s]))
+  (:require [core :as c]))
 
 (defn parse-input [file]
   (->> (c/get-input file)
