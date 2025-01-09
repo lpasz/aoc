@@ -1,6 +1,5 @@
 (ns aoc15.day10
-  (:require
-   [core :as c]))
+  (:require [core :as c]))
 
 (defn look-say [s]
   (->> (partition-by identity s)
