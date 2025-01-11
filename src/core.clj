@@ -4,6 +4,55 @@
             [clojure.string :as str])
   (:import java.security.MessageDigest
            java.math.BigInteger))
+(defn inc-range
+  ([n] (range (inc n)))
+  ([n m] (range n (inc m))))
+
+(def alphabet (->> (inc-range (int \a) (int \z))
+                   (map char)
+                   (apply str)))
+
+(defn neg-idx
+  "Clojure does not have -1 indexes, so we create a helper function for that"
+  ([coll] (neg-idx coll 1))
+  ([coll idx] (- (count coll) idx)))
+
+(defn get-neg-idx
+  "Clojure does not have negative indexes, so we get the reverse idx and "
+  ([coll] (coll (neg-idx coll)))
+  ([coll idx] (coll (neg-idx coll idx))))
+
+(defn returns 
+  "Retuns a function that returns the given value, useful in some situations"
+  [n] (fn [_] n))
+
+(defn inc-remap-with-wrap
+  "Given an order collection returns a map with the remap from one value to the next.
+  The last value wraps to the first and returns a carry of 1.
+  To better understand, take a look at aoc15/day11"
+  [ord-coll]
+  (->> (cycle ord-coll)
+       (partition 2 1)
+       (take (count ord-coll))
+       (map-indexed (fn [idx [from to]]
+                      [from [(if (= idx (neg-idx ord-coll)) 1 0) to]]))
+       (into {})))
+
+(defn inc-with-remap
+  "Increment 1 on the last position of a vector. 
+  Needs a function that tells what is incremented to. 
+  The function must return [0 next-val] or [carry next-val].
+  If carry is bigger than 1, we jump to next (previous) index and increment it instead"
+  [coll inc-remap-with-wrap]
+  (loop [idx 1
+         incr 1
+         coll coll]
+    (if (zero? incr)
+      coll
+      (let [[carry incr-val] (inc-remap-with-wrap (get-neg-idx coll idx))]
+        (recur (+ idx carry)
+               carry
+               (update coll (neg-idx coll idx) (returns incr-val)))))))
 
 (defn md5 [s]
   (let [algorithm (MessageDigest/getInstance "MD5")
@@ -14,13 +63,13 @@
   ([] (get-input "input.txt"))
   ([file]
    `(str/trim (slurp (str "./assets/"
-                (-> ~*ns*
-                    (ns-name)
-                    (str)
-                    (str/replace "-test" "")
-                    (str/replace "." "/"))
-                "/"
-                ~file)))))
+                          (-> ~*ns*
+                              (ns-name)
+                              (str)
+                              (str/replace "-test" "")
+                              (str/replace "." "/"))
+                          "/"
+                          ~file)))))
 
 (defmacro cond-fn [& clauses]
   (cond (empty? clauses) nil

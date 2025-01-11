@@ -1,28 +1,11 @@
-(ns aoc15.day11)
+(ns aoc15.day11
+  (:require [core :as c]))
 
-(def alphabet "abcdefghijklmnopqrstuvwxyz")
+(def letter-trios (into (sorted-set) (map vec (partition 3 1 c/alphabet))))
 
-(def letter-trios (into (sorted-set) (map vec (partition 3 1 alphabet))))
+(def next-letter (c/inc-remap-with-wrap c/alphabet))
 
-(def next-letter
-  (->>  (cycle alphabet)
-        (partition 2 1)
-        (take 26)
-        (map (fn [[from to]] [from [(if (> (int from) (int to)) 1 0) to]]))
-        (into {})))
-
-(defn next-word [word]
-  (let [cnt (count word)]
-    (loop [idx 1
-           acc 1
-           word word]
-      (if (zero? acc)
-        word
-        (let [[jump letter] (next-letter (word (- cnt idx)))]
-          (recur (+ idx jump) jump (update word (- cnt idx) (fn [_] letter))))))))
-(count (vec "abcdefgh"))
-
-(next-word (vec "abcdefgh"))
+(defn next-word [vec-word] (c/inc-with-remap vec-word next-letter))
 
 (defn contains-valid-letter-trio? [word]
   (->> (partition 3 1 word)
@@ -30,19 +13,15 @@
        (some letter-trios)))
 
 (defn contains-repeated-letter? [word]
-  (loop [i 0
-         pairs (partition 2 1 word)]
-    (if (empty? pairs)
-      (>= i 2)
-      (let [[a b] (first pairs)
-            r (rest pairs)]
-        (if (= a b)
-          (recur (inc i) (rest r))
-          (recur i r))))))
+  (loop [non-overlapping-pair-cnt 0
+         [[p1 p2] & tail :as pairs] (partition 2 1 word)]
+    (cond (empty? pairs) (>= non-overlapping-pair-cnt  2)
+          (= p1 p2) (recur (inc non-overlapping-pair-cnt) (rest tail))
+          :else (recur non-overlapping-pair-cnt   tail))))
 
 (defn valid-password? [word]
   (and (contains-valid-letter-trio? word)
-       (not (some #{\i \l \o} word))
+       (not-any? #{\i \l \o} word)
        (contains-repeated-letter? word)))
 
 (defn next-valid-password [value]
