@@ -1,6 +1,4 @@
-(ns aoc15.day11
-  (:require [core :as c]
-            [clojure.string :as s]))
+(ns aoc15.day11)
 
 (def alphabet "abcdefghijklmnopqrstuvwxyz")
 
@@ -61,4 +59,3 @@
   (->> (next-valid-password file)
        (second)
        (apply str)))
-
