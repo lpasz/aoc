@@ -4,7 +4,7 @@
 
 (def alphabet "abcdefghijklmnopqrstuvwxyz")
 
-(def letter-trios (set (partition 3 1 alphabet)))
+(def letter-trios (into (sorted-set) (map vec (partition 3 1 alphabet))))
 
 (def next-letter
   (->>  (cycle alphabet)
@@ -14,26 +14,51 @@
         (into {})))
 
 (defn next-word [word]
-  (let [rev (reverse word)]
-    (loop [acc 1
-           word rev
-           result '()]
+  (let [cnt (count word)]
+    (loop [idx 1
+           acc 1
+           word word]
       (if (zero? acc)
-        [:next (apply conj result word)]
-        (let [[cnt letter] (next-letter (first word))]
-          (recur cnt (rest word) (conj result letter)))))))
+        word
+        (let [[jump letter] (next-letter (word (- cnt idx)))]
+          (recur (+ idx jump) jump (update word (- cnt idx) (fn [_] letter))))))))
+(count (vec "abcdefgh"))
+
+(next-word (vec "abcdefgh"))
 
 (defn contains-valid-letter-trio? [word]
   (->> (partition 3 1 word)
+       (map vec)
        (some letter-trios)))
 
 (defn contains-repeated-letter? [word]
-  (->> (partition 2 1 word)
-       (some (fn [[a b]] (= a b)))))
+  (loop [i 0
+         pairs (partition 2 1 word)]
+    (if (empty? pairs)
+      (>= i 2)
+      (let [[a b] (first pairs)
+            r (rest pairs)]
+        (if (= a b)
+          (recur (inc i) (rest r))
+          (recur i r))))))
 
 (defn valid-password? [word]
   (and (contains-valid-letter-trio? word)
-       (not-any? #{\i \l \o} word)
+       (not (some #{\i \l \o} word))
        (contains-repeated-letter? word)))
 
-(first (filter valid-password? (iterate next-word (seq "ghijklmn"))))
+(defn next-valid-password [value]
+  (->> (vec value)
+       (iterate next-word)
+       (filter valid-password?)))
+
+(defn part1 [file]
+  (->> (next-valid-password file)
+       (first)
+       (apply str)))
+
+(defn part2 [file]
+  (->> (next-valid-password file)
+       (second)
+       (apply str)))
+
