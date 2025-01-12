@@ -24,27 +24,12 @@
                                 (assoc acc k1 happiness)))
                             {})))))
 
-(defn cyclic-distances
-  ([graph start]
-   (cyclic-distances graph start start #{} 0))
-  ([graph curr end visited acc]
-   (let [i (->> (graph curr)
-                (c/reject (fn [[k _]] (visited k))))]
-     (if (empty? i)
-       [(+ acc (get-in graph [curr end]))]
-       (mapcat (fn [[k v]]
-                 (cyclic-distances graph
-                                   k
-                                   end
-                                   (conj visited curr)
-                                   (+ v acc))) i)))))
-
 (defn part1 [file]
   (let [graph (parse-input file {})]
-    (apply max (cyclic-distances graph "Alice"))))
+    (apply max (c/visit-all-cyclic-distances graph "Alice"))))
 
 (defn part2 [file]
   (let [graph (parse-input file {"Myself" 0})
         myself (->> (keys graph) (map #(vector % 0)) (into {}))
         graph (assoc graph "Myself" myself)]
-    (apply max (cyclic-distances graph "Alice"))))
+    (apply max (c/visit-all-cyclic-distances graph "Alice"))))
