@@ -22,7 +22,7 @@
   ([coll] (coll (neg-idx coll)))
   ([coll idx] (coll (neg-idx coll idx))))
 
-(defn returns 
+(defn returns
   "Retuns a function that returns the given value, useful in some situations"
   [n] (fn [_] n))
 
@@ -628,4 +628,22 @@
                                             next-coord
                                             visited
                                             (+ distance dist))) nexts)))))
+
+(defn visit-all-cyclic-distances
+  "Given a graph with distances from a -> b, return all possible distances from a back to a
+  Does not work with uncyclic graphs (not 100% sure why)
+  If you want to undertand more on how to use it look at aoc15/day13"
+  ([graph start]
+   (visit-all-cyclic-distances graph start start #{} 0))
+  ([graph curr end visited acc]
+   (let [i (->> (graph curr)
+                (reject (fn [[k _]] (visited k))))]
+     (if (empty? i)
+       [(+ acc (get-in graph [curr end]))]
+       (mapcat (fn [[k v]]
+                 (visit-all-cyclic-distances graph
+                                             k
+                                             end
+                                             (conj visited curr)
+                                             (+ v acc))) i)))))
 

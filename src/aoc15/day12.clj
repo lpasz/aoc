@@ -17,7 +17,8 @@
   (and (map? json) (key-or-val-red? json)))
 
 (defn keep-nums-in-non-red-maps [json]
-  (loop [acc 0 [head & tail :as json] [json]]
+  (loop [acc 0
+         [head & tail :as json] [json]]
     (cond (empty? json) acc
           (discard-red? head) (recur acc tail)
           (number? head) (recur (+ acc head) tail)
