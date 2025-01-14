@@ -80,6 +80,9 @@
                    (~fn-value ~expr)
                    (cond-let ~@rest-clauses)))))
 
+(defn remove-at [idx coll]
+  (into (subvec coll 0 idx) (subvec coll (inc idx))))
+
 (defmacro then
   ([fun value] `(~fun ~value))
   ([args body value] `((fn ~args ~body) ~value)))
