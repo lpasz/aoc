@@ -203,12 +203,12 @@
         (flatten-once)
         (into (sorted-map)))))
 
-(defn cartesian-product [parts]
-  (if (= (count parts) 1)
-    parts
-    (let [[a b & tail] parts]
-      (for [a a b b]
-        [a b]))))
+(defn cartesian-product [colls]
+  (if (empty? colls)
+    '(())
+    (for [more (cartesian-product (rest colls))
+          x (first colls)]
+      (cons x more))))
 
 (defn print-matrix [mtx]
   (println "")

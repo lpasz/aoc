@@ -1,5 +1,6 @@
 (ns aoc20.day17
-  (:require [clojure.string :as s]))
+  (:require [clojure.string :as s]
+            [core :as c]))
 
 (def input (c/get-input "input.txt"))
 (def ex1 (c/get-input "./src/advent-of-code-2020/day-17/ex1.txt"))
@@ -7,17 +8,11 @@
 (defn distance [x]
   (range (dec x) (+ 2 x)))
 
-(defn cartesian-prod [colls]
-  (if (empty? colls)
-    '(())
-    (for [more (cartesian-prod (rest colls))
-          x (first colls)]
-      (cons x more))))
 
 (defn neighbors-coord [coord]
   (->> coord
        (map distance)
-       (cartesian-prod)
+       (c/cartesian-prod)
        (filter #(not= % coord))))
 
 (defn pocket-dimention [text n-dimentions]
