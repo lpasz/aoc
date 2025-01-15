@@ -36,27 +36,10 @@
   (t/testing \"part2\"
     (t/is (= :boom (day" day "/part2 \"input.txt\")))))"))
 
-(defn setup-year [year]
-  (for [day (inc-range 1 25)]
-    (list (->> (str "src/aoc" year "/day" day ".clj")
-               (tap [file] (io/make-parents file))
-               (tap [file] (spit file (clj-file year day))))
-          (->> (str "test/aoc" year "/day" day "_test.cljc")
-               (tap [file] (io/make-parents file))
-               (tap [file] (spit file (cljc-file year day)))))))
-
 (defn get-input-from-aoc [year day]
-  (deref (http-client/get (str "https://adventofcode.com/20" year "/day/" day "/input")
-                          {:headers {"Accept" "text/html,application/xhtml+xml,application/xml"
-                                     "Sec-Fetch-Site" "none"
-                                     "Cookie" (str/trim (slurp ".aoc-session"))
-                                     "Accept-Encoding" "gzip, deflate, br"
-                                     "Sec-Fetch-Mode" "navigate"
-                                     "Host" "adventofcode.com"
-                                     "User-Agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15"
-                                     "Accept-Language" "en-GB,en-US"
-                                     "Sec-Fetch-Dest" "document"
-                                     "Connection" "keep-alive"}})))
+  (->> (http-client/get (str "https://adventofcode.com/20" year "/day/" day "/input")
+                        {:headers {"Cookie" (str/trim (slurp ".aoc-session"))}})
+       (deref)))
 
 (defn download-input [year day]
   (let [response (get-input-from-aoc year day)
@@ -64,18 +47,35 @@
     (when (= 200 (:status response))
       (io/make-parents filename)
       (spit filename (:body response))
-      :error)))
+      :ok)))
+
+(defn- setup-clj [year day]
+  (let [filename (str "src/aoc" year "/day" day ".clj")]
+    (io/make-parents filename)
+    (spit filename (clj-file year day))
+    :ok))
+
+(defn- setup-cljc [year day]
+  (let [filename (str "test/aoc" year "/day" day ".cljc")]
+    (io/make-parents filename)
+    (spit filename (clj-file year day))
+    :ok))
+
+(defn setup-day [year day]
+  {:file (setup-clj year day)
+   :test (setup-cljc year day)
+   :input (download-input year day)})
+
+(defn setup-year [year]
+  (for [day (inc-range 1 25)]
+    (setup-day year day)))
 
 (defn file-exists? [filename]
   (.exists (io/as-file filename)))
 
 (defn ns-input [curr-ns file]
   (str "./assets/"
-       (-> curr-ns
-           (ns-name)
-           (str)
-           (str/replace "-test" "")
-           (str/replace "." "/"))
+       (-> curr-ns (ns-name) (str) (str/replace "-test" "") (str/replace "." "/"))
        "/"
        file))
 
@@ -544,8 +544,6 @@
        (map (fn [[coord ncoords]] [coord (into (sorted-map) ncoords)]))
        (into (sorted-map))))
 
-;; (matrix-values-to-graph (to-matrix "789\n456\n123\n#0A") #{\0 \1 \2 \3\ \4 \5 \6 \7 \8 \9 \A})
-
 (defn create-matrix [x y value]
   (into (sorted-map)
         (for [x (range 0 x) y (range 0 y)]
@@ -622,30 +620,6 @@
     (a*-seq graph dest init-adjacent
             (or distance (constantly 1))
             (or heuristic (constantly 0)))))
-
-(comment
-  (def graph
-    "Map of node => set of adjacent nodes."
-    {"A" #{"B", "E"}
-     "B" #{"A", "C", "D"}
-     "C" #{"B", "D"}
-     "D" #{"B", "C", "E"}
-     "E" #{"A", "D"}})
-
-  (def costs
-    "Map of node => adjacent node => cost. This could
-  be replaced with any cost function of the shape
-  (node, node') => cost."
-    {"A" {"B" 2, "E" 10}
-     "B" {"A" 2, "C" 3, "D" 4}
-     "C" {"B" 3, "D" 2}
-     "D" {"B" 4, "C" 3, "E" 10}
-     "E" {"A" 10, "D" 10}})
-
-  (a* graph "A" "D")
-  (a* graph "A" "D" costs)
-;;
-  )
 
 (defn bron-kerbosch
   "Use to find all cliques of a graph/network"
