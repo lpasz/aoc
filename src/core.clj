@@ -38,12 +38,12 @@
 
 (defn setup-year [year]
   (for [day (inc-range 1 25)]
-    (concat (->> (str "src/aoc" year "/day" day ".clj")
-                 (tap [file] (io/make-parents file))
-                 (tap [file] (spit file (clj-file year day))))
-            (->> (str "test/aoc" year "/day" day "_test.cljc")
-                 (tap [file] (io/make-parents file))
-                 (tap [file] (spit file (cljc-file year day)))))))
+    (list (->> (str "src/aoc" year "/day" day ".clj")
+               (tap [file] (io/make-parents file))
+               (tap [file] (spit file (clj-file year day))))
+          (->> (str "test/aoc" year "/day" day "_test.cljc")
+               (tap [file] (io/make-parents file))
+               (tap [file] (spit file (cljc-file year day)))))))
 
 (defn get-input-from-aoc [year day]
   (deref (http-client/get (str "https://adventofcode.com/20" year "/day/" day "/input")
