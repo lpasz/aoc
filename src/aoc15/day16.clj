@@ -28,7 +28,7 @@
                       (map #(= (get sue-items % :nope)
                                (get aunt-sue % :not-here)))
                       (every? true?))))
-       (first)))
+       (ffirst)))
 
 (defn part2 [file]
   (->> (parse-input file)
@@ -38,12 +38,13 @@
                              (if (and (contains? sue-items k)
                                       (contains? aunt-sue k))
                                (case k
-                                 :cats (> (aunt-sue k) (sue-items k))
-                                 :trees (> (aunt-sue k) (sue-items k))
-                                 :pomeranians (< (aunt-sue k) (sue-items k))
-                                 :goldfish (< (aunt-sue k) (sue-items k))
+                                 :cats (< (aunt-sue k) (sue-items k))
+                                 :trees (< (aunt-sue k) (sue-items k))
+                                 :pomeranians (> (aunt-sue k) (sue-items k))
+                                 :goldfish (> (aunt-sue k) (sue-items k))
                                  (= (sue-items k) (aunt-sue k)))
                                false)))
-                      (every? true?))))))
+                      (every? true?))))
+       (ffirst)))
 
 (part2 "input.txt")
