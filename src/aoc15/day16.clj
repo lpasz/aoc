@@ -29,3 +29,21 @@
                                (get aunt-sue % :not-here)))
                       (every? true?))))
        (first)))
+
+(defn part2 [file]
+  (->> (parse-input file)
+       (filter (fn [[_sue-number sue-items]]
+                 (->> (keys sue-items)
+                      (map (fn [k]
+                             (if (and (contains? sue-items k)
+                                      (contains? aunt-sue k))
+                               (case k
+                                 :cats (> (aunt-sue k) (sue-items k))
+                                 :trees (> (aunt-sue k) (sue-items k))
+                                 :pomeranians (< (aunt-sue k) (sue-items k))
+                                 :goldfish (< (aunt-sue k) (sue-items k))
+                                 (= (sue-items k) (aunt-sue k)))
+                               false)))
+                      (every? true?))))))
+
+(part2 "input.txt")
