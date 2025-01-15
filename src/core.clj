@@ -56,7 +56,7 @@
     :ok))
 
 (defn- setup-cljc [year day]
-  (let [filename (str "test/aoc" year "/day" day ".cljc")]
+  (let [filename (str "test/aoc" year "/day" day "_test.cljc")]
     (io/make-parents filename)
     (spit filename (cljc-file year day))
     :ok))
@@ -174,6 +174,9 @@
                  (> ny (dec size-y)) (rem ny size-y)
                  :else ny)]
     [nx ny]))
+
+(defn map-value [fun coll]
+  (map (fn [[key value]] [key (fun value)]) coll))
 
 (defn map-key [fun coll]
   (map (fn [[key value]] [(fun key) value]) coll))

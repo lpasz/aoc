@@ -4,7 +4,7 @@
 
 (t/deftest part1
   (t/testing "part1"
-    (t/is (= :boom (day16/part1 "input.txt")))))
+    (t/is (= 40 (day16/part1 "input.txt")))))
 
 (t/deftest part2
   (t/testing "part2"
