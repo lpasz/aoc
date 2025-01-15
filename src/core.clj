@@ -1,12 +1,92 @@
 (ns core
   (:require [clojure.pprint :as pp]
             [clojure.set :as set]
+            [clojure.java.io :as io]
+            [org.httpkit.client :as http-client]
             [clojure.string :as str])
   (:import java.security.MessageDigest
            java.math.BigInteger))
+
+(defmacro then
+  ([fun value] `(~fun ~value))
+  ([args body value] `((fn ~args ~body) ~value)))
+
+(defmacro tap
+  ([fun value] `(do (~fun ~value) ~value))
+  ([args body value] `(do ((fn ~args ~body) ~value) ~value)))
+
 (defn inc-range
   ([n] (range (inc n)))
   ([n m] (range n (inc m))))
+
+(defn- clj-file [year day]
+  (str "(ns aoc" year ".day" day "
+  (:require [core :as c]))"))
+
+(defn- cljc-file [year day]
+  (str "(ns aoc" year ".day" day "-test
+  (:require [clojure.test :as t]
+            [aoc15.day" day " :as day" day "]))
+
+(t/deftest part1
+  (t/testing \"part1\"
+    (t/is (= :boom (day" day "/part1 \"input.txt\")))))
+
+(t/deftest part2
+  (t/testing \"part2\"
+    (t/is (= :boom (day" day "/part2 \"input.txt\")))))"))
+
+(defn setup-year [year]
+  (for [day (inc-range 1 25)]
+    (concat (->> (str "src/aoc" year "/day" day ".clj")
+                 (tap [file] (io/make-parents file))
+                 (tap [file] (spit file (clj-file year day))))
+            (->> (str "test/aoc" year "/day" day "_test.cljc")
+                 (tap [file] (io/make-parents file))
+                 (tap [file] (spit file (cljc-file year day)))))))
+
+(defn get-input-from-aoc [year day]
+  (deref (http-client/get (str "https://adventofcode.com/20" year "/day/" day "/input")
+                          {:headers {"Accept" "text/html,application/xhtml+xml,application/xml"
+                                     "Sec-Fetch-Site" "none"
+                                     "Cookie" (str/trim (slurp ".aoc-session"))
+                                     "Accept-Encoding" "gzip, deflate, br"
+                                     "Sec-Fetch-Mode" "navigate"
+                                     "Host" "adventofcode.com"
+                                     "User-Agent" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15"
+                                     "Accept-Language" "en-GB,en-US"
+                                     "Sec-Fetch-Dest" "document"
+                                     "Connection" "keep-alive"}})))
+
+(defn download-input [year day]
+  (let [response (get-input-from-aoc year day)
+        filename (str "assets/aoc" year "/day" day "/input.txt")]
+    (when (= 200 (:status response))
+      (io/make-parents filename)
+      (spit filename (:body response))
+      :error)))
+
+(defn file-exists? [filename]
+  (.exists (io/as-file filename)))
+
+(defn ns-input [curr-ns file]
+  (str "./assets/"
+       (-> curr-ns
+           (ns-name)
+           (str)
+           (str/replace "-test" "")
+           (str/replace "." "/"))
+       "/"
+       file))
+
+(defn ns-year-day [curr-ns]
+  (let [[year day] (re-seq #"\d{2}" (str (ns-name curr-ns)))]
+    [year day]))
+
+(defmacro get-input [file]
+  `(do (when (and (= "input.txt" ~file) (not (file-exists? (ns-input ~*ns* ~file))))
+         (apply download-input (ns-year-day ~*ns*)))
+       (str/trim (slurp (ns-input ~*ns* ~file)))))
 
 (def alphabet (->> (inc-range (int \a) (int \z))
                    (map char)
@@ -59,18 +139,6 @@
         raw (.digest algorithm (.getBytes s))]
     (format "%032x" (BigInteger. 1 raw))))
 
-(defmacro get-input
-  ([] (get-input "input.txt"))
-  ([file]
-   `(str/trim (slurp (str "./assets/"
-                          (-> ~*ns*
-                              (ns-name)
-                              (str)
-                              (str/replace "-test" "")
-                              (str/replace "." "/"))
-                          "/"
-                          ~file)))))
-
 (defmacro cond-fn [& clauses]
   (cond (empty? clauses) nil
         (not (even? (count clauses))) (throw (ex-info (str `cond-fn " requires an even number of forms")
@@ -82,10 +150,6 @@
 
 (defn remove-at [idx coll]
   (into (subvec coll 0 idx) (subvec coll (inc idx))))
-
-(defmacro then
-  ([fun value] `(~fun ~value))
-  ([args body value] `((fn ~args ~body) ~value)))
 
 (defn fnvec
   "create a function that receives a coll/vector and
