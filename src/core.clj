@@ -58,7 +58,7 @@
 (defn- setup-cljc [year day]
   (let [filename (str "test/aoc" year "/day" day ".cljc")]
     (io/make-parents filename)
-    (spit filename (clj-file year day))
+    (spit filename (cljc-file year day))
     :ok))
 
 (defn setup-day [year day]
@@ -66,9 +66,11 @@
    :test (setup-cljc year day)
    :input (download-input year day)})
 
-(defn setup-year [year]
-  (for [day (inc-range 1 25)]
-    (setup-day year day)))
+(defn setup-year
+  ([year] (setup-year year 1 25))
+  ([year daystart dayend]
+   (for [day (inc-range daystart dayend)]
+     (setup-day year day))))
 
 (defn file-exists? [filename]
   (.exists (io/as-file filename)))

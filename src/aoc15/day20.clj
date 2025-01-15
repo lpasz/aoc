@@ -1,2 +1,2 @@
-(ns aoc15.day16
+(ns aoc15.day20
   (:require [core :as c]))
