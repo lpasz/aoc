@@ -205,10 +205,11 @@
   (try (Integer/parseInt int)
        (catch Exception _ nil)))
 
-(defn surrounding-xy [[x y]]
-  [[(dec x) (inc y)] [x (inc y)] [(inc x) (inc y)]
-   [(dec x) y]                   [(inc x) y]
-   [(dec x) (dec y)] [x (dec y)] [(inc x) (dec y)]])
+(defn around [[x y]]
+  (->> [[-1 -1]  [0 -1] [+1 -1]
+        [-1  0]         [+1  0]
+        [-1 +1]  [0 +1] [+1 +1]]
+       (map (fn [[a b]] [(+ x a) (+ y b)]))))
 
 (defn up-down-left-right [[x y]]
   [[x (dec y)]
@@ -284,7 +285,9 @@
 
 (defn print-matrix [mtx]
   (println "")
-  (->> mtx
+  (->> (if (sorted? mtx)
+         mtx
+         (into (sorted-map) mtx))
        (group-by (comp second first))
        (into (sorted-map))
        (then [sor]
@@ -692,4 +695,5 @@
                                              end
                                              (conj visited curr)
                                              (+ v acc))) i)))))
+
 
