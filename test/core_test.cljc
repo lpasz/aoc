@@ -39,3 +39,17 @@
                                6 #{4}})
              [#{1 2 5} #{4 6} #{4 3} #{4 5} #{3 2}]))))
 
+(t/deftest includes-count
+  (t/testing "bk"
+    (t/is (= (c/includes-count "123" "4") 0))
+    (t/is (= (c/includes-count "123" "1") 1))
+    (t/is (= (c/includes-count "113" "1") 2))
+    (t/is (= (c/includes-count "123 123 123" "123") 3))))
+
+(t/deftest replace-nth
+  (t/testing "bk"
+    (t/is (= (c/replace-nth "123" "4" "0" 0) "123"))
+    (t/is (= (c/replace-nth "123" "1" "0" 0) "123"))
+    (t/is (= (c/replace-nth "123" "1" "0" 1) "023"))
+    (t/is (= (c/replace-nth "113" "1" "0" 2) "103"))
+    (t/is (= (c/replace-nth "123 123 123" "123" "000" 3) "123 123 000"))))

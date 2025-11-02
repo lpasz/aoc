@@ -696,4 +696,26 @@
                                              (conj visited curr)
                                              (+ v acc))) i)))))
 
+(defn includes-count [^String s ^String sub]
+  (loop [count 0
+         from-index 0]
+    (let [idx (.indexOf s sub from-index)]
+      (if (= idx -1)
+        count
+        (recur (inc count) (+ idx (.length sub)))))))
+
+(defn replace-nth [^String s ^String sub ^String replacement n]
+  (let [sub-len (.length sub)]
+    (loop [count 0
+           idx 0]
+      (let [found-idx (.indexOf s sub idx)]
+        (cond
+          (= found-idx -1) ;; não achou mais ocorrências
+          s
+
+          (= (inc count) n) ;; achou a N-ésima ocorrência
+          (str (subs s 0 found-idx) replacement (subs s (+ found-idx sub-len)))
+
+          :else ;; continua procurando
+          (recur (inc count) (+ found-idx 1)))))))
 
