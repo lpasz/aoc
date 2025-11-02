@@ -57,21 +57,20 @@
         (cond
           (nil? head) :error
           (visited head) (recur visited rest)
-          :else
-          (let [[round molecule] head]
-            (if (= molecule "e")
-              round
-              (recur (conj visited head)
-                     (reduce
-                      (fn [acc [to from]]
-                        (let [cnt (c/includes-count molecule from)]
-                          (if (zero? cnt)
-                            acc
-                            (reduce
-                             (fn [acc n]
-                               (conj acc [(inc round) (c/replace-nth molecule from to n)]))
-                             acc
-                             (c/inc-range 1 cnt)))))
-                      rest
-                      reps)))))))))
+          :else (let [[round molecule] head]
+                  (if (= molecule "e")
+                    round
+                    (recur (conj visited head)
+                           (reduce
+                            (fn [acc [to from]]
+                              (let [cnt (c/includes-count molecule from)]
+                                (if (zero? cnt)
+                                  acc
+                                  (reduce
+                                   (fn [acc n]
+                                     (conj acc [(inc round) (c/replace-nth molecule from to n)]))
+                                   acc
+                                   (c/inc-range 1 cnt)))))
+                            rest
+                            reps)))))))))
 

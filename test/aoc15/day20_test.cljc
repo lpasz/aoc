@@ -4,8 +4,8 @@
 
 (t/deftest part1
   (t/testing "part1"
-    (t/is (= :boom (day20/part1 "input.txt")))))
+    (t/is (= 776160 (day20/part1 "input.txt")))))
 
 (t/deftest part2
   (t/testing "part2"
-    (t/is (= :boom (day20/part2 "input.txt")))))
+    (t/is (= 786240 (day20/part2 "input.txt")))))

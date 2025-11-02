@@ -10,8 +10,6 @@
 
 (t/deftest part2
   (t/testing "example"
-    (t/is (= 6 (time (day19/part2 "example2.txt"))))))
-
-(t/deftest part2-2
+    (t/is (= 6 (time (day19/part2 "example2.txt")))))
   (t/testing "part2"
     (t/is (= 212 (day19/part2 "input.txt")))))
