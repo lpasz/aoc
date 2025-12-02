@@ -21,12 +21,15 @@
 
 (defn- clj-file [year day]
   (str "(ns aoc" year ".day" day "
-  (:require [core :as c]))"))
+  (:require [core :as c]))
+
+  (defn part1 [file] :part1)
+  (defn part2 [file] :part2)"))
 
 (defn- cljc-file [year day]
   (str "(ns aoc" year ".day" day "-test
   (:require [clojure.test :as t]
-            [aoc15.day" day " :as day" day "]))
+            [aoc" year ".day" day " :as day" day "]))
 
 (t/deftest part1
   (t/testing \"part1\"
@@ -48,7 +51,6 @@
       (io/make-parents filename)
       (spit filename (:body response))
       :ok)))
-
 (defn- setup-clj [year day]
   (let [filename (str "src/aoc" year "/day" day ".clj")]
     (io/make-parents filename)
@@ -97,12 +99,17 @@
 (defn neg-idx
   "Clojure does not have -1 indexes, so we create a helper function for that"
   ([coll] (neg-idx coll 1))
-  ([coll idx] (- (count coll) idx)))
+  ([coll idx] (rem (- (count coll) idx) (count coll))))
 
 (defn get-neg-idx
   "Clojure does not have negative indexes, so we get the reverse idx and "
   ([coll] (coll (neg-idx coll)))
   ([coll idx] (coll (neg-idx coll idx))))
+
+(defn get<> [coll idx]
+  (if (neg? idx)
+    (get-neg-idx coll idx)
+    (get coll idx)))
 
 (defn returns
   "Retuns a function that returns the given value, useful in some situations"
@@ -658,7 +665,6 @@
         (= x y) x
         (> x y) (if (zero? (rem x y)) y  (recur (- x y) y))
         :else (if (zero? (rem y x)) x (recur y (- y x)))))
-
 
 (defn lcm
   "Lowest Common Multiplier"
