@@ -10,7 +10,6 @@
                (fn [idx itm] [idx (c/parse-int itm)])
                (re-seq #"\d" line))))))
 
-
 (defn next-combinations [curr-bat next-bat]
   (->> (for [idx (range 0 (count curr-bat))]
          (conj (c/remove-at idx curr-bat) next-bat))
@@ -20,7 +19,6 @@
        (ffirst)))
 
 (defn max-jolt [batteries num-of-batteries]
-  (c/insp batteries)
   (let [batteries (map (fn [[_ jolts]] jolts) batteries)
         curr-bat (vec (take num-of-batteries batteries))
         rem-bats (drop num-of-batteries batteries)]
@@ -34,7 +32,7 @@
            (next-combinations curr-bat head)
            tail))))))
 
-(defn max-jolts file num-of-batteries
+(defn max-jolts [file num-of-batteries]
   (let [lines (parse-input file)]
     (->> (for [line lines]
            (max-jolt line num-of-batteries))

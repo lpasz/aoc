@@ -5,8 +5,9 @@
 (t/deftest part1
   (t/testing "part1"
     (t/is (= 357 (day03/part1 "example.txt")))
-    (t/is (= :boom (day03/part1 "input.txt")))))
+    (t/is (= 17193 (day03/part1 "input.txt")))))
 
 (t/deftest part2
   (t/testing "part2"
-    (t/is (= :boom (day03/part2 "input.txt")))))
+    (t/is (= 3121910778619 (day03/part2 "example.txt")))
+    (t/is (= 171297349921310 (day03/part2 "input.txt")))))
