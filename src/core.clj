@@ -537,6 +537,10 @@
   (->> (re-seq #"-?\d+" text)
        (map parse-long)))
 
+(defn extract-natural-numbers [text]
+  (->> (re-seq #"\d+" text)
+       (map parse-long)))
+
 (defn matrix-to-graph
   ([mtx] (matrix-to-graph mtx #{\.}))
   ([mtx valid?]
