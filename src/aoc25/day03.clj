@@ -14,9 +14,7 @@
   (->> (for [idx (range 0 (count curr-bat))]
          (conj (c/remove-at idx curr-bat) next-bat))
        (c/then [coll] (conj coll curr-bat))
-       (map (fn [coll] [coll (parse-long (apply str coll))]))
-       (sort-by second >)
-       (ffirst)))
+       (c/max-by c/digits-to-number)))
 
 (defn max-jolt [batteries num-of-batteries]
   (let [batteries (map (fn [[_ jolts]] jolts) batteries)

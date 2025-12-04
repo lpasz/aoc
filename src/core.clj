@@ -40,7 +40,7 @@
     (t/is (= :boom (day" day "/part2 \"input.txt\")))))"))
 
 (defn get-input-from-aoc [year day]
-  (->> (http-client/get (str "https://adventofcode.com/20" year "/day/" day "/input")
+  (->> (http-client/get (str "https://adventofcode.com/20" year "/day/" (parse-long day) "/input")
                         {:headers {"Cookie" (str/trim (slurp ".aoc-session"))}})
        (deref)))
 
@@ -51,6 +51,7 @@
       (io/make-parents filename)
       (spit filename (:body response))
       :ok)))
+
 (defn- setup-clj [year day]
   (let [filename (str "src/aoc" year "/day" day ".clj")]
     (io/make-parents filename)
@@ -195,10 +196,14 @@
   (filter (fn [[_ value]] (fun value)) coll))
 
 (defn max-by [fun coll]
-  (apply max (map fun coll)))
+  (->> coll
+       (sort-by fun >)
+       (first)))
 
 (defn min-by [fun coll]
-  (apply min (map fun coll)))
+  (->> coll
+       (sort-by fun <)
+       (first)))
 
 (defn flatten-once [coll]
   (mapcat identity coll))
@@ -730,3 +735,5 @@
           :else ;; continua procurando
           (recur (inc count) (+ found-idx 1)))))))
 
+(defn digits-to-number [number-seq]
+  (reduce (fn [acc n] (+ (* acc 10) n)) 0 number-seq))
