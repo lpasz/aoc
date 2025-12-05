@@ -2,7 +2,6 @@
   (:require [clojure.pprint :as pp]
             [clojure.set :as set]
             [clojure.java.io :as io]
-            [org.httpkit.client :as http-client]
             [clojure.string :as str])
   (:import java.security.MessageDigest
            java.math.BigInteger))
@@ -18,62 +17,6 @@
 (defn inc-range
   ([n] (range (inc n)))
   ([n m] (range n (inc m))))
-
-(defn- clj-file [year day]
-  (str "(ns aoc" year ".day" day "
-  (:require [core :as c]))
-
-  (defn part1 [file] :part1)
-  (defn part2 [file] :part2)"))
-
-(defn- cljc-file [year day]
-  (str "(ns aoc" year ".day" day "-test
-  (:require [clojure.test :as t]
-            [aoc" year ".day" day " :as day" day "]))
-
-(t/deftest part1
-  (t/testing \"part1\"
-    (t/is (= :boom (day" day "/part1 \"input.txt\")))))
-
-(t/deftest part2
-  (t/testing \"part2\"
-    (t/is (= :boom (day" day "/part2 \"input.txt\")))))"))
-
-(defn get-input-from-aoc [year day]
-  (->> (http-client/get (str "https://adventofcode.com/20" year "/day/" (parse-long day) "/input")
-                        {:headers {"Cookie" (str/trim (slurp ".aoc-session"))}})
-       (deref)))
-
-(defn download-input [year day]
-  (let [response (get-input-from-aoc year day)
-        filename (str "assets/aoc" year "/day" day "/input.txt")]
-    (when (= 200 (:status response))
-      (io/make-parents filename)
-      (spit filename (:body response))
-      :ok)))
-
-(defn- setup-clj [year day]
-  (let [filename (str "src/aoc" year "/day" day ".clj")]
-    (io/make-parents filename)
-    (spit filename (clj-file year day))
-    :ok))
-
-(defn- setup-cljc [year day]
-  (let [filename (str "test/aoc" year "/day" day "_test.cljc")]
-    (io/make-parents filename)
-    (spit filename (cljc-file year day))
-    :ok))
-
-(defn setup-day [year day]
-  {:file (setup-clj year day)
-   :test (setup-cljc year day)
-   :input (download-input year day)})
-
-(defn setup-year
-  ([year] (setup-year year 1 25))
-  ([year daystart dayend]
-   (for [day (inc-range daystart dayend)]
-     (setup-day year day))))
 
 (defn file-exists? [filename]
   (.exists (io/as-file filename)))

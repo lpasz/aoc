@@ -1,5 +1,6 @@
 (ns aoc-gen
   (:require [clojure.java.io :as io]
+            [org.httpkit.client :as http-client]
             [clojure.string :as str])
   (:gen-class))
 
@@ -36,14 +37,14 @@
   "Converte entrada flexível (string/número, 2025/25, 4/04) em strings de 2 dígitos."
   (let [y (if (string? year) (Long/parseLong year) year)
         d (if (string? day) (Long/parseLong day) day)
-        
+
         ;; Pega o sufixo de 2 dígitos do ano (ex: 2025 -> "25", 25 -> "25")
         y-suffix-long (mod y 100)
         y-suffix (format "%02d" y-suffix-long)
-        
+
         ;; Garante 2 dígitos para o dia (ex: 4 -> "04")
         day-pad (format "%02d" d)]
-    
+
     {:year-full y :y-suffix y-suffix :day-pad day-pad}))
 
 (defn- create-file [filepath content]
@@ -52,9 +53,14 @@
     (spit f content)
     (str "Criado: " filepath)))
 
+(defn get-input-from-aoc [year day]
+  (->> (http-client/get (str "https://adventofcode.com/20" year "/day/" (parse-long day) "/input")
+                        {:headers {"Cookie" (str/trim (slurp ".aoc-session"))}})
+       (deref)))
+
 (defn- setup-day [year day]
   (let [{:keys [y-suffix day-pad]} (format-aoc-inputs year day)
-        
+
         mod-path (str "src/aoc" y-suffix "/day" day-pad ".clj")
         test-path (str "test/aoc" y-suffix "/day" day-pad "_test.clj")
         asset-dir (str "assets/aoc" y-suffix "/day" day-pad "/")
@@ -68,12 +74,16 @@
 
     ;; Garante que a pasta de assets exista e cria arquivos placeholders
     (io/make-parents input-path)
-    (spit input-path "") ; Arquivo de entrada real vazio (pode ser preenchido manualmente)
-    (spit example-path "") ; Arquivo de exemplo vazio
-    (println (str "Criado assets/dir: " asset-dir))
 
-    (println (str "\n✨ Day " day-pad " (" year ") pronto!")))
-  
+    (let [response (get-input-from-aoc year day)]
+      (when (= 200 (:status response))
+        (spit input-path (:body response))))
+
+    (spit example-path "") ; Arquivo de exemplo vazio
+    (println (str "Criado assets/dir: " input-path ", " example-path))
+
+    (println (str "\n✨ Day " day-pad " (20" year ") pronto!")))
+
   (shutdown-agents))
 
 ;; --- Função Principal (Entry Point) ---
