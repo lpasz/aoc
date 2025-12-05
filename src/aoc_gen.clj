@@ -44,9 +44,9 @@
     (str "Criado: " filepath)))
 
 (defn get-input-from-aoc [year day]
-  (->> (str "https://adventofcode.com/20" year "/day/" (parse-long day) "/input")
-       (http-client/get {:headers {"Cookie" (str/trim (slurp ".aoc-session"))}})
-       (deref)))
+  (-> (str "https://adventofcode.com/20" year "/day/" (parse-long day) "/input")
+      (http-client/get {:headers {"Cookie" (str/trim (slurp ".aoc-session"))}})
+      (deref)))
 
 (defn- setup-day [year day]
   (let [{:keys [y-suffix day-pad]} (format-aoc-inputs year day)
