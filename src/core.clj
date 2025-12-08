@@ -32,9 +32,7 @@
     [year day]))
 
 (defmacro get-input [file]
-  `(do (when (and (= "input.txt" ~file) (not (file-exists? (ns-input ~*ns* ~file))))
-         (apply download-input (ns-year-day ~*ns*)))
-       (str/trim (slurp (ns-input ~*ns* ~file)))))
+  `(do (str/trim (slurp (ns-input ~*ns* ~file)))))
 
 (def alphabet (->> (inc-range (int \a) (int \z))
                    (map char)
@@ -147,6 +145,22 @@
   (->> coll
        (sort-by fun <)
        (first)))
+
+(defn up
+  ([pos] (up pos 1))
+  ([[x, y] n] [x, (- y  n)]))
+
+(defn down
+  ([pos] (down pos 1))
+  ([[x, y] n] [x, (+ y  n)]))
+
+(defn left
+  ([pos] (left pos 1))
+  ([[x, y] n] [(- x  n), y]))
+
+(defn right
+  ([pos] (right pos 1))
+  ([[x, y] n] [(+ x  n), y]))
 
 (defn flatten-once [coll]
   (mapcat identity coll))
