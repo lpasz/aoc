@@ -51,7 +51,7 @@
 (defn- setup-day [year day]
   (let [{:keys [y-suffix day-pad]} (format-aoc-inputs year day)
         mod-path (str "src/aoc" y-suffix "/day" day-pad ".clj")
-        test-path (str "test/aoc" y-suffix "/day" day-pad "_test.clj")
+        test-path (str "test/aoc" y-suffix "/day" day-pad "_test.cljc")
         asset-dir (str "assets/aoc" y-suffix "/day" day-pad "/")
         input-path (str asset-dir "input.txt")
         example-path (str asset-dir "example.txt")]
