@@ -3,7 +3,7 @@
             [clojure.string :as str]))
 
 (defn parse [file-path]
-  (str/split-lines (c/get-input file-path)))
+  (str/split-lines (c/get-raw file-path)))
 
 (defn part1 [file-path]
   (->> (parse file-path)
@@ -30,13 +30,13 @@
   (->> (parse file-path)
        (map seq)
        (c/transpose)
-       (map vec)
        (mapcat (fn [coll]
                  (let [n (charlist-to-int coll)]
                    (case (peek coll)
                      \* ["*" n]
                      \+ ["+" n]
                      (when n [n])))))
+
        (partition-by string?)
        (partition 2)
        (map (fn [[[op] rest]]

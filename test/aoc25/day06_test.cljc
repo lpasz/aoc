@@ -10,6 +10,6 @@
 
 (t/deftest part2
   (t/testing "Example Input"
-    (t/is (= :boom (day06/part2 "example.txt")))))
-;   (t/testing "Real Input"
-;     (t/is (= :boom (day06/part2 "input.txt")))))
+    (t/is (= 3263827 (day06/part2 "example.txt"))))
+  (t/testing "Real Input"
+    (t/is (= 11044319475191 (day06/part2 "input.txt")))))

@@ -34,6 +34,9 @@
 (defmacro get-input [file]
   `(do (str/trim (slurp (ns-input ~*ns* ~file)))))
 
+(defmacro get-raw [file]
+  `(do (slurp (ns-input ~*ns* ~file))))
+
 (def alphabet (->> (inc-range (int \a) (int \z))
                    (map char)
                    (apply str)))
