@@ -21,7 +21,10 @@
        (c/sum)))
 
 (defn charlist-to-int [coll]
-  (parse-long (str/trim (str/join coll))))
+  (->> coll
+       (filter #(Character/isDigit %))
+       (str/join)
+       (parse-long)))
 
 (defn part2 [file-path]
   (->> (parse file-path)
@@ -29,10 +32,11 @@
        (c/transpose)
        (map vec)
        (mapcat (fn [coll]
-                 (case (peek coll)
-                   \* ["*" (charlist-to-int (pop coll))]
-                   \+ ["+" (charlist-to-int (pop coll))]
-                   (if-let [n (charlist-to-int coll)] [n] []))))
+                 (let [n (charlist-to-int coll)]
+                   (case (peek coll)
+                     \* ["*" n]
+                     \+ ["+" n]
+                     (when n [n])))))
        (partition-by string?)
        (partition 2)
        (map (fn [[[op] rest]]
